@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Filesystem Explorer</string>
+    <string name="no_files">This directory is empty</string>
+    <string name="to_top">[Back to Top]</string>
+    <string name="not_directory_title">Not a Directory</string>
+    <string name="not_directory_message">That's a file, not a directory</string>
+    <string name="cancel">Cancel</string>
+</resources>
