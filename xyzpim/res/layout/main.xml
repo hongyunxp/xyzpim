@@ -3,5 +3,8 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="初始导入" />
+		android:layout_height="?android:attr/listPreferredItemHeight"
+		android:textAppearance="?android:attr/textAppearanceLargeInverse"
+		android:textColor="?android:attr/textColorDim"
+		android:text="初始导入" />
 </LinearLayout>
