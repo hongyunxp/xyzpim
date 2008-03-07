@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">文件浏览器</string>
+    <string name="current_dir">当前目录</string>
+    <string name="up_one_level">返回</string>
+    <!-- define file type -->
+    <array name="imageExt">
+    	<item>.png</item>
+    	<item>.gif</item>
+    	<item>.jpeg</item>
+    	<item>.ico</item>
+    	<item>.bmp</item>
+    </array>
+    <array name="audioExt">
+    	<item>.mp3</item>
+    	<item>.wav</item>
+    	<item>.ogg</item>
+    	<item>.midi</item>
+    </array>
+    <array name="packageExt">
+    	<item>.jar</item>
+    	<item>.zip</item>
+    	<item>.rar</item>
+    	<item>.gz</item>
+    </array>
+    <array name="webFileExt">
+    	<item>.html</item>
+    	<item>.php</item>
+    	<item>.css</item>
+    	<item>.js</item>
+    </array>
+</resources>
