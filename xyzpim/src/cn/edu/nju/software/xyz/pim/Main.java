@@ -25,16 +25,38 @@ package cn.edu.nju.software.xyz.pim;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 
 /**
  * @author xmx 2008-3-5 下午08:02:15
  * 
  */
 public class Main extends Activity {
+	private ImageButton contactsButton;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.main);
+		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
+		contactsButton.setOnClickListener(new OnClickListener() {
+			private boolean flag = true;
+
+			@Override
+			public void onClick(View arg0) {
+				if (flag) {
+					contactsButton.setImageResource(R.drawable.email);
+					flag = false;
+				} else {
+					contactsButton.setImageResource(R.drawable.contacts);
+					flag = true;
+				}
+
+			}
+
+		});
 	}
 }
