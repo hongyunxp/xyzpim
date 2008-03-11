@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/*
+* XYZPIM, A pim on Android Platform
+*
+* Copyright (c) 2008, xyz team or third-party contributors as
+* indicated by the @author tags or express copyright attribution
+* statements applied by the authors.  All third-party contributions are
+* distributed under license by xyz team.
+*
+* This copyrighted material is made available to anyone wishing to use, modify,
+* copy, or redistribute it subject to the terms and conditions of the GNU
+* Lesser General Public License, as published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+* or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+* for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with this distribution; if not, write to:
+* Free Software Foundation, Inc.
+* 51 Franklin Street, Fifth Floor
+* Boston, MA  02110-1301  USA
+*/
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
 	<TextView android:layout_width="fill_parent"
-		android:layout_height="?android:attr/listPreferredItemHeight"
-		android:textAppearance="?android:attr/textAppearanceLargeInverse"
-		android:textColor="?android:attr/textColorDim"
-		android:text="初始导入" />
+		android:layout_height="wrap_content" android:text="@string/app_welcome" />
+	<TableLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<TableRow android:gravity="center">
+			<TextView android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="@string/contacts" />
+			<ImageButton android:id="@+id/contactsButton" android:src="@drawable/contacts"/>
+		</TableRow>
+		<TableRow android:gravity="center">
+			<TextView android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="@string/fair" />
+			<ImageButton android:id="@+id/fairButton" android:src="@drawable/fair"/>
+		</TableRow>
+		<TableRow android:gravity="center">
+			<TextView android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="@string/email" />
+			<ImageButton android:id="@+id/emailButton" android:src="@drawable/email"/>
+		</TableRow>
+		<TableRow android:gravity="center">
+			<TextView android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="@string/account" />
+			<ImageButton android:id="@+id/accountButton" android:src="@drawable/account"/>
+		</TableRow>
+		<TableRow android:gravity="center">
+			<TextView android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="@string/news" />
+			<ImageButton android:id="@+id/rssButton" android:src="@drawable/rss"/>
+		</TableRow>
+
+	</TableLayout>
 </LinearLayout>
