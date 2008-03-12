@@ -1,5 +1,5 @@
 /*
- * XYZPIM, A pim on Android Platform
+ * XYZPIM, the pim on Android Platform
  *
  * Copyright (c) 2008, xyz team or third-party contributors as
  * indicated by the @author tags or express copyright attribution
@@ -21,43 +21,22 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim;
+package cn.edu.nju.software.xyz.pim.fair;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author xmx 2008-3-5 下午08:02:15
+ * @author xmx 2008-3-12 下午03:12:07
  * 
  */
-public class Main extends Activity implements OnClickListener {
-	private ImageButton contactsButton;
-	private ImageButton fairButton;
+public class Fair extends Activity {
 
-	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle icicle) {
+	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.main);
-		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
-		fairButton = (ImageButton) findViewById(R.id.fairButton);
-		contactsButton.setOnClickListener(this);
-		fairButton.setOnClickListener(this);
+		setContentView(R.layout.fair);
 	}
 
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		if (null != arg0) {
-			if (arg0 == fairButton) {
-				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.Fair.class);
-				startSubActivity(i, 0);
-			}
-		}
-	}
 }
