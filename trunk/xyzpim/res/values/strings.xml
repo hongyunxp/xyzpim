@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">XYZPIM</string>
-    <string name="app_welcome">XYZ团队打造</string>
+    <string name="app_welcome">By Team XYZ Version Alpha</string>
     <string name="contacts">联系人</string>
     <string name="fair">事务</string>
     <string name="email">电子邮件</string>
     <string name="account">帐务</string>
     <string name="news">新闻</string>
+    <string name="memorandum">备忘录</string>
+    <string name="schedule">任务计划</string>
+    <string name="meeting">会议</string>
+    <string name="note">笔记</string>
 </resources>

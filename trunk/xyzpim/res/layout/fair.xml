@@ -28,34 +28,27 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:orientation="vertical" android:gravity="center_vertical">
 	<TableLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		>
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="@string/contacts" />
-			<ImageButton android:id="@+id/contactsButton" android:src="@drawable/contacts"/>
+				android:layout_height="wrap_content" android:text="@string/memorandum" />
+			<ImageButton android:id="@+id/backup" android:src="@drawable/pim"/>
 		</TableRow>
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="@string/fair" />
-			<ImageButton android:id="@+id/fairButton" android:src="@drawable/fair"/>
+				android:layout_height="wrap_content" android:text="@string/schedule" />
+			<ImageButton android:id="@+id/schedule" android:src="@drawable/schedule"/>
 		</TableRow>
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="@string/email" />
-			<ImageButton android:id="@+id/emailButton" android:src="@drawable/email"/>
+				android:layout_height="wrap_content" android:text="@string/meeting" />
+			<ImageButton android:id="@+id/meeting" android:src="@drawable/meeting"/>
 		</TableRow>
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="@string/account" />
-			<ImageButton android:id="@+id/accountButton" android:src="@drawable/account"/>
-		</TableRow>
-		<TableRow android:gravity="center">
-			<TextView android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="@string/news" />
-			<ImageButton android:id="@+id/rssButton" android:src="@drawable/rss"/>
+				android:layout_height="wrap_content" android:text="@string/note" />
+			<ImageButton android:id="@+id/note" android:src="@drawable/note"/>
 		</TableRow>
 	</TableLayout>
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="@string/app_welcome"
-		android:textAlign="center" />
 </LinearLayout>
