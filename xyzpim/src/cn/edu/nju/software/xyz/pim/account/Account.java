@@ -1,5 +1,5 @@
 /*
- * XYZPIM, A pim on Android Platform
+ * XYZPIM, the pim on Android Platform
  *
  * Copyright (c) 2008, xyz team or third-party contributors as
  * indicated by the @author tags or express copyright attribution
@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim;
+package cn.edu.nju.software.xyz.pim.account;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,42 +29,41 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author xmx 2008-3-5 下午08:02:15
+ * @author xmx Mar 18, 2008 5:29:22 PM
  * 
  */
-public class Main extends Activity implements OnClickListener {
-	private ImageButton contactsButton;
-	private ImageButton fairButton;
-	private ImageButton accountButton;
+public class Account extends Activity implements OnClickListener {
+	private ImageButton houseloanButton;
+	private ImageButton exchangerateButton;
 
-	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle icicle) {
+	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.main);
-		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
-		fairButton = (ImageButton) findViewById(R.id.fairButton);
-		accountButton = (ImageButton) findViewById(R.id.accountButton);
-		contactsButton.setOnClickListener(this);
-		fairButton.setOnClickListener(this);
-		accountButton.setOnClickListener(this);
+		setContentView(R.layout.account);
+		houseloanButton = (ImageButton) findViewById(R.id.houseloanButton);
+		exchangerateButton = (ImageButton) findViewById(R.id.exchangerateButton);
+		houseloanButton.setOnClickListener(this);
+		exchangerateButton.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
 		if (null != arg0) {
-			if (arg0 == fairButton) {
+			if (arg0 == houseloanButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.Fair.class);
+						cn.edu.nju.software.xyz.pim.account.HouseLoanCal.class);
 				startSubActivity(i, 0);
-			} else if (arg0 == accountButton) {
-				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.account.Account.class);
+			} else if (arg0 == exchangerateButton) {
+				Intent i = new Intent(
+						this,
+						cn.edu.nju.software.xyz.pim.account.ExchangeRateCal.class);
 				startSubActivity(i, 0);
 			}
 		}
+
 	}
+
 }
