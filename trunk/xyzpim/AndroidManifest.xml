@@ -9,5 +9,8 @@
             </intent-filter>
         </activity>
     <activity android:label="@string/fair" android:icon="@drawable/fair" android:name=".fair.Fair">
+</activity><activity android:name=".account.Account" android:label="@string/account">
+</activity><activity android:name=".account.HouseLoanCal" android:label="@string/houseloancal">
+</activity><activity android:name=".account.ExchangeRateCal" android:label="@string/exchageratecal">
 </activity></application>
 </manifest> 
