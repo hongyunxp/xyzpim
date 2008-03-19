@@ -25,35 +25,41 @@ package cn.edu.nju.software.xyz.pim.account;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
  * @author xmx Mar 18, 2008 5:46:48 PM
  * 
  */
-public class HouseLoanCal extends Activity implements OnClickListener {
-	private Button calculateButton;
+public class HouseLoanCal extends Activity implements OnClickListener,
+		OnItemSelectedListener {
+	private Spinner loanTypeSppiner;
 	private EditText loanAmountText;
 	private EditText loanMonthText;
 	private EditText loanRateText;
 	private TextView loanResultText;
+	private Button calculateButton;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		setContentView(R.layout.housecal);
-		Spinner s1 = (Spinner) this.findViewById(R.id.loan_type);
+		loanTypeSppiner = (Spinner) this.findViewById(R.id.loan_type);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				this, R.array.loan_type, android.R.layout.simple_spinner_item);
 		adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s1.setAdapter(adapter);
+		loanTypeSppiner.setAdapter(adapter);
+		loanTypeSppiner.setOnItemSelectedListener(this);
 		loanAmountText = (EditText) this.findViewById(R.id.loan_amount);
 		loanMonthText = (EditText) this.findViewById(R.id.loan_month);
 		loanRateText = (EditText) this.findViewById(R.id.loan_rate);
@@ -79,6 +85,17 @@ public class HouseLoanCal extends Activity implements OnClickListener {
 				loanResultText.setText("" + pay);
 			}
 		}
+	}
+
+	@Override
+	public void onItemSelected(AdapterView parent, View v, int position, long id) {
+		TextView tv = (TextView) v;
+		Log.v(this.toString(), String.valueOf(tv.getText()));
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView arg0) {
+		// TODO Auto-generated method stub
 
 	}
 }
