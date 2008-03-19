@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.edu.nju.software.xyz.pim">
-    <application android:icon="@drawable/icon">
-        <activity android:name=".Main" android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    <activity android:label="@string/fair" android:icon="@drawable/fair" android:name=".fair.Fair">
-</activity><activity android:name=".account.Account" android:label="@string/account">
-</activity><activity android:name=".account.HouseLoanCal" android:label="@string/houseloancal">
-</activity><activity android:name=".account.ExchangeRateCal" android:label="@string/exchageratecal">
-</activity></application>
-</manifest> 
+	package="cn.edu.nju.software.xyz.pim">
+	<application android:icon="@drawable/icon">
+		<activity android:name=".Main"
+			android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category
+					android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:label="@string/fair"
+			android:icon="@drawable/fair" android:name=".fair.Fair">
+		</activity>
+		<activity android:name=".fair.NewTask"
+			android:label="@string/newtask">
+		</activity>
+		<activity android:name=".account.Account"
+			android:label="@string/account">
+		</activity>
+		<activity android:name=".account.HouseLoanCal"
+			android:label="@string/houseloancal">
+		</activity>
+		<activity android:name=".account.ExchangeRateCal"
+			android:label="@string/exchageratecal">
+		</activity>
+	</application>
+</manifest>
