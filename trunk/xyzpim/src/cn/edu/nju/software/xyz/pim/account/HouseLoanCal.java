@@ -27,6 +27,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
@@ -34,18 +39,82 @@ import cn.edu.nju.software.xyz.pim.R;
  * 
  */
 public class HouseLoanCal extends Activity implements OnClickListener {
+	private Button calculateButton;
+	private EditText loanAmountText;
+	private EditText loanMonthText;
+	private EditText loanRateText;
+	private TextView loanResultText;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
-		// 下拉框里添加选项的方法可参考APIDEMO中的com.google.android.samples.view.Spinner1
 		setContentView(R.layout.housecal);
+		Spinner s1 = (Spinner) this.findViewById(R.id.loan_type);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				this, R.array.loan_type, android.R.layout.simple_spinner_item);
+		adapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s1.setAdapter(adapter);
+		loanAmountText = (EditText) this.findViewById(R.id.loan_amount);
+		loanMonthText = (EditText) this.findViewById(R.id.loan_month);
+		loanRateText = (EditText) this.findViewById(R.id.loan_rate);
+		loanResultText = (TextView) this.findViewById(R.id.loan_result);
+		calculateButton = (Button) this.findViewById(R.id.house_calculate);
+		calculateButton.setOnClickListener(this);
 		super.onCreate(icicle);
 	}
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
+		if (null != arg0) {
+			if (arg0 == calculateButton) {
+				Martgage m = new Martgage();
+				m.loan = Double
+						.parseDouble(loanAmountText.getText().toString());
+				m.month = Integer.parseInt(loanMonthText.getText().toString());
+				m.rate = Double.parseDouble(loanRateText.getText().toString());
+				LoanInfo info = new LoanInfo();
+				Calc calc = new Calc();
+				calc.execute(m, info);
+				double pay = info.payForMonth;
+				loanResultText.setText("" + pay);
+			}
+		}
 
 	}
+}
 
+class LoanInfo {
+	int month = 0;
+	double loan = 0;
+	double totalPay = 0;
+	double bornNumber = 0;
+	double payForMonth = 0;
+}
+
+class Martgage {
+	int month = 0;
+	double rate = 0;
+	double loan = 0;
+}
+
+class Calc {
+
+	void execute(Martgage mart, LoanInfo info) {
+
+		double start = mart.loan * mart.rate;
+		double end = 1;
+
+		for (int i = mart.month; i > 0; i--) {
+			start *= (1 + mart.rate);
+		}
+		for (int j = mart.month; j > 0; j--) {
+			end *= (1 + mart.rate);
+		}
+		end = end - 1;
+		info.month = mart.month;
+		info.loan = mart.loan;
+		info.totalPay = start;
+		info.bornNumber = info.totalPay - info.loan;
+		info.payForMonth = start / end;
+	}
 }
