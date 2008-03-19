@@ -25,7 +25,6 @@ package cn.edu.nju.software.xyz.pim.account;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -87,16 +86,20 @@ public class HouseLoanCal extends Activity implements OnClickListener,
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
-		TextView tv = (TextView) v;
-		Log.v(this.toString(), String.valueOf(tv.getText()));
+		if (0 == id) {
+			loanRateText.setText("0.015");
+		} else if (1 == id) {
+			loanRateText.setText("0.001");
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onNothingSelected(AdapterView arg0) {
-		// TODO Auto-generated method stub
-
+		// Nothing!
 	}
 }
 

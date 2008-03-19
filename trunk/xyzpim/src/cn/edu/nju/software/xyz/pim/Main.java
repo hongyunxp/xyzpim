@@ -25,8 +25,8 @@ package cn.edu.nju.software.xyz.pim;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -81,8 +81,8 @@ public class Main extends Activity implements OnClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_1) {
 			// When the user center presses, let them pick a contact.
-			startSubActivity(new Intent(Intent.PICK_ACTION, Uri
-					.parse("content://contacts")), PICK_CONTACT_REQUEST);
+			startSubActivity(new Intent(Intent.PICK_ACTION,
+					Contacts.People.CONTENT_URI), PICK_CONTACT_REQUEST);
 			return true;
 		}
 		return false;
