@@ -30,4 +30,6 @@
 	<string name="endtime">结束时间</string>
 	<string name="notify">提醒</string>
 	<string name="place">地点</string>
+    
+    <string name="test">测试</string>
 </resources>

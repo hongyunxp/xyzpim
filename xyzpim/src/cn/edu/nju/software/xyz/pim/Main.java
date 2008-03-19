@@ -25,7 +25,9 @@ package cn.edu.nju.software.xyz.pim;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -35,9 +37,11 @@ import android.widget.ImageButton;
  * 
  */
 public class Main extends Activity implements OnClickListener {
+	private static final int PICK_CONTACT_REQUEST = 1;
 	private ImageButton contactsButton;
 	private ImageButton fairButton;
 	private ImageButton accountButton;
+	private ImageButton testButton;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -47,9 +51,11 @@ public class Main extends Activity implements OnClickListener {
 		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
 		fairButton = (ImageButton) findViewById(R.id.fairButton);
 		accountButton = (ImageButton) findViewById(R.id.accountButton);
+		testButton = (ImageButton) findViewById(R.id.testButton);
 		contactsButton.setOnClickListener(this);
 		fairButton.setOnClickListener(this);
 		accountButton.setOnClickListener(this);
+		testButton.setOnClickListener(this);
 	}
 
 	@Override
@@ -64,7 +70,33 @@ public class Main extends Activity implements OnClickListener {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.account.Account.class);
 				startSubActivity(i, 0);
+			} else if (arg0 == testButton) {
+				Intent i = new Intent(this,
+						cn.edu.nju.software.xyz.pim.test.Test.class);
+				startSubActivity(i, 0);
 			}
 		}
 	}
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_1) {
+			// When the user center presses, let them pick a contact.
+			startSubActivity(new Intent(Intent.PICK_ACTION, Uri
+					.parse("content://contacts")), PICK_CONTACT_REQUEST);
+			return true;
+		}
+		return false;
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode,
+			String data, Bundle extras) {
+		if (requestCode == PICK_CONTACT_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				// A contact was picked. Here we will just display it
+				// to the user.
+				// startActivity(new Intent(Intent.VIEW_ACTION, data));
+			}
+		}
+	}
+
 }

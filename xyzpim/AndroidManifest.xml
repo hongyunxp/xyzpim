@@ -25,5 +25,10 @@
 		<activity android:name=".account.ExchangeRateCal"
 			android:label="@string/exchageratecal">
 		</activity>
+		<activity android:name=".test.Test"
+			android:label="@string/test">
+		</activity>
 	</application>
+	<uses-permission android:name="android.permission.READ_CONTACTS">
+	</uses-permission>
 </manifest>
