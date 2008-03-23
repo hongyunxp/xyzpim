@@ -25,46 +25,52 @@
 	*/
 -->
 <!-- 房贷计算器的界面-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="vertical" android:gravity="center_vertical">
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/houseloantype" />
-	<Spinner android:id="@+id/loan_type"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:drawSelectorOnTop="true" />
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/houseloanamount" />
-	<EditText android:id="@+id/loan_amount"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/houseloanmonth" />
-	<EditText android:id="@+id/loan_month"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:drawSelectorOnTop="true" />
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/houseloanrate" />
-	<EditText android:id="@+id/loan_rate"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-	<TextView android:id="@+id/loan_result"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
 	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<Button android:id="@+id/house_calculate"
-			android:layout_width="wrap_content"
+		android:layout_height="fill_parent" android:orientation="vertical"
+		android:gravity="center_vertical">
+		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/calculate" />
-		<Button android:id="@+id/house_recalculate"
-			android:layout_width="wrap_content"
+			android:text="@string/loan_type" />
+		<Spinner android:id="@+id/loan_type"
+			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/recalculate" />
+			android:drawSelectorOnTop="true" />
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/loan_amount" />
+		<EditText android:id="@+id/loan_amount"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/loan_month" />
+		<EditText android:id="@+id/loan_month"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:drawSelectorOnTop="true" />
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/loan_rate" />
+		<EditText android:id="@+id/loan_rate"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<TextView android:id="@+id/loan_result"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<Button android:id="@+id/house_calculate"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/calculate" />
+			<Button android:id="@+id/house_recalculate"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/recalculate" />
+		</LinearLayout>
 	</LinearLayout>
-</LinearLayout>
+</ScrollView>

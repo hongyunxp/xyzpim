@@ -37,7 +37,7 @@ public class Test extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle icicle) {
-		setContentView(R.layout.test);
+		setContentView(R.layout.housecalresult);
 		super.onCreate(icicle);
 	}
 

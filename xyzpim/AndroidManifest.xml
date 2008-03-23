@@ -28,6 +28,7 @@
 		<activity android:name=".test.Test"
 			android:label="@string/test">
 		</activity>
+		<activity android:name=".account.HouseLoanResult"></activity>
 	</application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>

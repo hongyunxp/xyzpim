@@ -49,7 +49,7 @@
 		</TableRow>
 	</TableLayout>
 	<TableLayout android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:stretchColumns="2">
+		android:layout_height="wrap_content">
 		<TableRow android:gravity="right">
 			<Button android:id="@+id/exchange_rate_calculate"
 				android:text="@string/calculate" />
