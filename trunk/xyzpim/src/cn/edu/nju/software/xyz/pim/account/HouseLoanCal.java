@@ -24,6 +24,7 @@
 package cn.edu.nju.software.xyz.pim.account;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +33,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import cn.edu.nju.software.xyz.pim.R;
 
@@ -46,12 +46,13 @@ public class HouseLoanCal extends Activity implements OnClickListener,
 	private EditText loanAmountText;
 	private EditText loanMonthText;
 	private EditText loanRateText;
-	private TextView loanResultText;
+	// private TextView loanResultText;
 	private Button calculateButton;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		setContentView(R.layout.housecal);
+
 		loanTypeSppiner = (Spinner) this.findViewById(R.id.loan_type);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				this, R.array.loan_type, android.R.layout.simple_spinner_item);
@@ -62,26 +63,39 @@ public class HouseLoanCal extends Activity implements OnClickListener,
 		loanAmountText = (EditText) this.findViewById(R.id.loan_amount);
 		loanMonthText = (EditText) this.findViewById(R.id.loan_month);
 		loanRateText = (EditText) this.findViewById(R.id.loan_rate);
-		loanResultText = (TextView) this.findViewById(R.id.loan_result);
+		// loanResultText = (TextView) this.findViewById(R.id.loan_result);
 		calculateButton = (Button) this.findViewById(R.id.house_calculate);
 		calculateButton.setOnClickListener(this);
+
 		super.onCreate(icicle);
 	}
 
 	@Override
 	public void onClick(View arg0) {
 		if (null != arg0) {
+			// 处理计算事件
 			if (arg0 == calculateButton) {
+				// 构造房贷计算输入信息
 				Martgage m = new Martgage();
 				m.loan = Double
 						.parseDouble(loanAmountText.getText().toString());
 				m.month = Integer.parseInt(loanMonthText.getText().toString());
 				m.rate = Double.parseDouble(loanRateText.getText().toString());
-				LoanInfo info = new LoanInfo();
+
+				LoanInfo info = new LoanInfo(); // 结果信息
 				Calc calc = new Calc();
-				calc.execute(m, info);
-				double pay = info.payForMonth;
-				loanResultText.setText("" + pay);
+				calc.execute(m, info); // 计算
+
+				Intent i = new Intent(this, HouseLoanResult.class);
+
+				// 附加要传递的结果信息
+				i.putExtra("loan_amount", info.loan);
+				i.putExtra("repay_amount", info.totalPay);
+				i.putExtra("interest_amount", info.bornNumber);
+				i.putExtra("loan_month", info.month);
+				i.putExtra("repay_per_month", info.payForMonth);
+
+				startSubActivity(i, 0);
 			}
 		}
 	}

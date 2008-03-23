@@ -27,7 +27,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Contacts;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -37,7 +36,7 @@ import android.widget.ImageButton;
  * 
  */
 public class Main extends Activity implements OnClickListener {
-	private static final int PICK_CONTACT_REQUEST = 1;
+
 	private ImageButton contactsButton;
 	private ImageButton fairButton;
 	private ImageButton accountButton;
@@ -62,7 +61,10 @@ public class Main extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		if (null != arg0) {
-			if (arg0 == fairButton) {
+			if (arg0 == contactsButton) {
+				startSubActivity(new Intent(Intent.VIEW_ACTION,
+						Contacts.People.CONTENT_URI), 0);
+			} else if (arg0 == fairButton) {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.fair.Fair.class);
 				startSubActivity(i, 0);
@@ -78,25 +80,9 @@ public class Main extends Activity implements OnClickListener {
 		}
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_1) {
-			// When the user center presses, let them pick a contact.
-			startSubActivity(new Intent(Intent.PICK_ACTION,
-					Contacts.People.CONTENT_URI), PICK_CONTACT_REQUEST);
-			return true;
-		}
-		return false;
-	}
-
 	protected void onActivityResult(int requestCode, int resultCode,
 			String data, Bundle extras) {
-		if (requestCode == PICK_CONTACT_REQUEST) {
-			if (resultCode == RESULT_OK) {
-				// A contact was picked. Here we will just display it
-				// to the user.
-				// startActivity(new Intent(Intent.VIEW_ACTION, data));
-			}
-		}
+
 	}
 
 }
