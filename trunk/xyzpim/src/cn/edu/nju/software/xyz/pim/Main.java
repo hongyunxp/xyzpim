@@ -26,7 +26,6 @@ package cn.edu.nju.software.xyz.pim;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -62,8 +61,9 @@ public class Main extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		if (null != arg0) {
 			if (arg0 == contactsButton) {
-				startSubActivity(new Intent(Intent.VIEW_ACTION,
-						Contacts.People.CONTENT_URI), 0);
+				Intent i = new Intent(this,
+						cn.edu.nju.software.xyz.pim.contacts.GroupsView.class);
+				startSubActivity(i, 0);
 			} else if (arg0 == fairButton) {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.fair.Fair.class);
