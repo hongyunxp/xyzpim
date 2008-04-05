@@ -26,6 +26,8 @@ package cn.edu.nju.software.xyz.pim.contacts;
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.Menu.Item;
 import android.widget.SimpleCursorAdapter;
 import cn.edu.nju.software.xyz.pim.R;
 
@@ -34,6 +36,11 @@ import cn.edu.nju.software.xyz.pim.R;
  * 
  */
 public class GroupsView extends ListActivity {
+
+	private static final int NEW_M_ID = 0;
+	private static final int DEL_M_ID = 1;
+	private static final int EDIT_M_ID = 2;
+	private static final int RETURN_M_ID = 3;
 
 	private GroupsDbAdapter mGroupDbAdp;
 
@@ -49,23 +56,51 @@ public class GroupsView extends ListActivity {
 	}
 
 	@SuppressWarnings("static-access")
+	/**
+	 * 填充数据
+	 */
 	private void fillData() {
-		// Get all of the rows from the database and create the item list
+		// 获得所有的分组
 		Cursor groupsCursor = mGroupDbAdp.fetchAllGroups();
 		startManagingCursor(groupsCursor);
 
-		// Create an array to specify the fields we want to display in the list
-		// (only TITLE)
+		// 需要显示的列名
 		String[] from = new String[] { mGroupDbAdp.COL_NAME };
 
-		// and an array of the fields we want to bind those fields to (in this
-		// case just text1)
+		// 绑定显示的textview控件
 		int[] to = new int[] { R.id.groups_row_text };
 
-		// Now create a simple cursor adapter and set it to display
+		// 创建适配器
 		SimpleCursorAdapter groups = new SimpleCursorAdapter(this,
 				R.layout.groups_row, groupsCursor, from, to);
 		setListAdapter(groups);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, NEW_M_ID, "新建");
+		menu.add(0, DEL_M_ID, "删除");
+		menu.add(0, EDIT_M_ID, "修改");
+		menu.add(0, RETURN_M_ID, "返回");
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, Item item) {
+		switch (item.getId()) {
+		case NEW_M_ID:
+			// createNote();
+			return true;
+		case DEL_M_ID:
+			// mDbHelper.deleteNote(getListView().getSelectedItemId());
+			// fillData();
+			return true;
+		case EDIT_M_ID:
+			return true;
+		case RETURN_M_ID:
+			finish();
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 }

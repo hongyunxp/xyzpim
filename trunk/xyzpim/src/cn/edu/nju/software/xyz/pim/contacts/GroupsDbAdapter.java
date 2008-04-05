@@ -37,13 +37,13 @@ import android.database.sqlite.SQLiteDatabase;
  * @author xmx 2008-4-4 下午09:22:00
  */
 public class GroupsDbAdapter {
-	public static String COL_ROWID = "gid";
+	public static String COL_ROWID = "_id";
 	public static String COL_NAME = "gname";
 
 	/**
 	 * Database creation sql statement
 	 */
-	private static final String TABLE_CREATE = "create table groups (gid integer primary key autoincrement, "
+	private static final String TABLE_CREATE = "create table groups (_id integer primary key autoincrement, "
 			+ "gname text not null);";
 
 	private static final String DATABASE_NAME = "contacts";
