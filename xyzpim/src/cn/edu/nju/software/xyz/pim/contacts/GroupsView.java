@@ -79,10 +79,10 @@ public class GroupsView extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, NEW_M_ID, "新建");
-		menu.add(0, DEL_M_ID, "删除");
-		menu.add(0, EDIT_M_ID, "修改");
-		menu.add(0, RETURN_M_ID, "返回");
+		menu.add(0, NEW_M_ID, R.string.contacts_group_menu_new);
+		menu.add(0, DEL_M_ID, R.string.contacts_group_menu_del);
+		menu.add(0, EDIT_M_ID, R.string.contacts_group_menu_edit);
+		menu.add(0, RETURN_M_ID, R.string.contacts_group_menu_return);
 		return true;
 	}
 
@@ -90,7 +90,7 @@ public class GroupsView extends ListActivity {
 	public boolean onMenuItemSelected(int featureId, Item item) {
 		switch (item.getId()) {
 		case NEW_M_ID:
-			// createNote();
+			createGroup();
 			return true;
 		case DEL_M_ID:
 			// mDbHelper.deleteNote(getListView().getSelectedItemId());
@@ -102,5 +102,10 @@ public class GroupsView extends ListActivity {
 			finish();
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	private void createGroup() {
+		// TODO Auto-generated method stub
+
 	}
 }

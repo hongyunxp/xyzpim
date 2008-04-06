@@ -58,6 +58,10 @@
 	<string name="endtime">结束时间</string>
 	<string name="notify">提醒</string>
 	<string name="place">地点</string>
+	<string name="contacts_group_menu_new">新建</string>
+	<string name="contacts_group_menu_del">删除</string>
+	<string name="contacts_group_menu_edit">修改</string>
+	<string name="contacts_group_menu_return">返回</string>
     
     <string name="test">测试</string>
 </resources>
