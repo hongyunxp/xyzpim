@@ -27,6 +27,15 @@
 <resources>
 	<string name="app_name">XYZPIM</string>
 	<string name="app_welcome">By Team XYZ Version Alpha</string>
+	
+	<string name="ok">确定</string>
+	<string name="create">新建</string>
+	<string name="del">删除</string>
+	<string name="edit">修改</string>
+	<string name="back">返回</string>
+	<string name="rename">重命名</string>
+	
+	<string name="cancel">取消</string>
 	<string name="contacts">联系人</string>
 	<string name="fair">事务</string>
 	<string name="email">电子邮件</string>
@@ -58,10 +67,9 @@
 	<string name="endtime">结束时间</string>
 	<string name="notify">提醒</string>
 	<string name="place">地点</string>
-	<string name="contacts_group_menu_new">新建</string>
-	<string name="contacts_group_menu_del">删除</string>
-	<string name="contacts_group_menu_edit">修改</string>
-	<string name="contacts_group_menu_return">返回</string>
+	
+	<string name="group_list">Group List</string>
+	<string name="group">Group</string>
     
     <string name="test">测试</string>
 </resources>
