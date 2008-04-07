@@ -32,32 +32,34 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * 联系人分组的助手类，提供基本的增删改查操作，参照android教程练习三中NotesDbAdapter实现
+ * 记录分组成员信息，一个分组中有多个成员，一个成员也可以属于多个分组 该类提供加入成员，删除成员，列出指定分组成员的操作
  * 
- * @author xmx 2008-4-4 下午09:22:00
+ * @author xmx 2008-4-7 下午08:20:18
+ * 
  */
-public class GroupsDbAdapter {
-	public static String COL_ROWID = "_id";
-	public static String COL_NAME = "gname";
+public class GroupMemberDbAdapter {
+
+	public static final String COL_ROWID = "_id";
+	public static final String COL_GID = "gid";
+	public static final String COL_CID = "cid";
 
 	/**
 	 * Database creation sql statement
 	 */
-	private static final String TABLE_CREATE = "create table groups (_id integer primary key autoincrement, "
-			+ "gname text not null);";
+	private static final String TABLE_CREATE = "create table groupmembers (_id integer primary key autoincrement, gid integer not null, cid integer not null);";
 
 	private static final String DATABASE_NAME = "contacts";
-	private static final String DATABASE_TABLE = "groups";
+	private static final String DATABASE_TABLE = "groupmembers";
 	private static final int DATABASE_VERSION = 2;
 
 	private SQLiteDatabase mDb;
 	private final Context mCtx;
 
-	public GroupsDbAdapter(Context ctx) {
-		this.mCtx = ctx;
+	public GroupMemberDbAdapter(Context ctx) {
+		mCtx = ctx;
 	}
 
-	public GroupsDbAdapter open() throws SQLException {
+	public GroupMemberDbAdapter open() {
 		try {
 			mDb = mCtx.openDatabase(DATABASE_NAME, null);
 		} catch (FileNotFoundException e) {
@@ -65,7 +67,8 @@ public class GroupsDbAdapter {
 				mDb = mCtx.createDatabase(DATABASE_NAME, DATABASE_VERSION, 0,
 						null);
 				mDb.execSQL(TABLE_CREATE);
-				mDb.execSQL("insert into groups (gname) values(\"Friends\")");
+				// mDb.execSQL("insert into groups (gname)
+				// values(\"Friends\")");
 			} catch (FileNotFoundException e1) {
 				throw new SQLException("Could not create database");
 			}
@@ -77,34 +80,25 @@ public class GroupsDbAdapter {
 		mDb.close();
 	}
 
-	public long createGroup(String name) {
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(COL_NAME, name);
-		return mDb.insert(DATABASE_TABLE, null, initialValues);
-	}
-
-	public boolean deleteGroup(long rowId) {
-		return mDb.delete(DATABASE_TABLE, COL_ROWID + "=" + rowId, null) > 0;
-	}
-
-	public Cursor fetchAllGroups() {
-		return mDb.query(DATABASE_TABLE, new String[] { COL_ROWID, COL_NAME },
-				null, null, null, null, null);
-	}
-
-	public Cursor fetchGroup(long rowId) throws SQLException {
-		Cursor result = mDb.query(true, DATABASE_TABLE, new String[] {
-				COL_ROWID, COL_NAME }, COL_NAME + "=" + rowId, null, null,
-				null, null);
-		if ((result.count() == 0) || !result.first()) {
-			throw new SQLException("No group matching ID: " + rowId);
+	public void addMember(int gid, int cid) {
+		Cursor c = mDb.query(DATABASE_TABLE, new String[] { "COL_GID",
+				"COL_CID" }, "gid=" + gid + "and cid=" + cid, null, null, null,
+				null);
+		// if语句十分重要，否则会重复插入
+		if (0 != c.count()) {
+			ContentValues values = new ContentValues();
+			values.put(COL_GID, gid);
+			values.put(COL_CID, cid);
+			mDb.insert(DATABASE_TABLE, null, values);
 		}
-		return result;
 	}
 
-	public boolean updateNote(long rowId, String name) {
-		ContentValues args = new ContentValues();
-		args.put(COL_NAME, name);
-		return mDb.update(DATABASE_TABLE, args, COL_ROWID + "=" + rowId, null) > 0;
+	public void delMember(int gid, int cid) {
+		mDb.delete(DATABASE_TABLE, "gid=" + gid + "and cid=" + cid, null);
+	}
+
+	public int[] listMembers(int gid) {
+		// TODO: 待实现
+		return null;
 	}
 }
