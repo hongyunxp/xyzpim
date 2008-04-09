@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -35,7 +34,6 @@ import android.view.Menu.Item;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
-import cn.edu.nju.software.xyz.pim.contacts.GroupNameEdit;
 import cn.edu.nju.software.xyz.pim.contacts.GroupsDbAdapter;
 
 /**
@@ -47,10 +45,9 @@ public class RssView extends ListActivity {
 	private static final int ACTIVITY_EDIT = 2;
 
 	private static final int NEW_M_ID = 0;
-	private static final int DEL_M_ID = 1;
-	private static final int RENAME_M_ID = 2;
-	private static final int OPEN_M_ID = 3;
-	private static final int RETURN_M_ID = 4;
+	private static final int OPEN_M_ID = 1;
+	private static final int RETURN_M_ID = 2;
+	private static final int DEL_M_ID = 3;
 
 	private List<Feed> rssList;
 
@@ -79,7 +76,6 @@ public class RssView extends ListActivity {
 		ArrayAdapter feedsAdapter = new ArrayAdapter(this, R.layout.rss_row,
 				feedTitle);
 		this.setListAdapter(feedsAdapter);
-		// setListAdapter(groups);
 	}
 
 	@Override
@@ -87,7 +83,6 @@ public class RssView extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, NEW_M_ID, R.string.create);
 		menu.add(0, DEL_M_ID, R.string.del);
-		menu.add(0, RENAME_M_ID, R.string.rename);
 		menu.add(0, OPEN_M_ID, R.string.open);
 		menu.add(0, RETURN_M_ID, R.string.back);
 		return true;
@@ -96,15 +91,11 @@ public class RssView extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, Item item) {
 		switch (item.getId()) {
+
 		case NEW_M_ID:
-			createGroup();
-			return true;
 		case DEL_M_ID:
 			// mGroupDbAdp.deleteGroup(getListView().getSelectedItemId());
 			fillData();
-			return true;
-		case RENAME_M_ID:
-			// editGroupName(getSelectedItemPosition());
 			return true;
 		case OPEN_M_ID:
 
@@ -124,11 +115,11 @@ public class RssView extends ListActivity {
 		// editGroupName(position);
 	}
 
-	private void createGroup() {
+	/*private void createGroup() {
 		Intent i = new Intent(this, GroupNameEdit.class);
 		startSubActivity(i, ACTIVITY_CREATE);
 	}
-
+	*/
 	/*private void editGroupName(int position) {
 		if (position < 0)
 			return;
