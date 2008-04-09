@@ -93,7 +93,12 @@ public class RssView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
+			return true;
 		case DEL_M_ID:
+			NewsDroidDB rssDbAdp = new NewsDroidDB(this);
+			rssDbAdp.deleteFeed(rssList.get((int) getListView()
+					.getSelectedItemId()).FeedId);
+			rssList = rssDbAdp.getFeeds();
 			// mGroupDbAdp.deleteGroup(getListView().getSelectedItemId());
 			fillData();
 			return true;
