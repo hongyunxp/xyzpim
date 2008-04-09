@@ -39,6 +39,7 @@ public class Main extends Activity implements OnClickListener {
 	private ImageButton contactsButton;
 	private ImageButton fairButton;
 	private ImageButton accountButton;
+	private ImageButton rssButton;
 	private ImageButton testButton;
 
 	/** Called when the activity is first created. */
@@ -49,10 +50,12 @@ public class Main extends Activity implements OnClickListener {
 		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
 		fairButton = (ImageButton) findViewById(R.id.fairButton);
 		accountButton = (ImageButton) findViewById(R.id.accountButton);
+		rssButton = (ImageButton) findViewById(R.id.rssButton);
 		testButton = (ImageButton) findViewById(R.id.testButton);
 		contactsButton.setOnClickListener(this);
 		fairButton.setOnClickListener(this);
 		accountButton.setOnClickListener(this);
+		rssButton.setOnClickListener(this);
 		testButton.setOnClickListener(this);
 	}
 
@@ -71,6 +74,10 @@ public class Main extends Activity implements OnClickListener {
 			} else if (arg0 == accountButton) {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.account.Account.class);
+				startSubActivity(i, 0);
+			} else if (arg0 == rssButton) {
+				Intent i = new Intent(this,
+						cn.edu.nju.software.xyz.pim.rss.RssView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == testButton) {
 				Intent i = new Intent(this,
