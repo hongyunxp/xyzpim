@@ -77,7 +77,7 @@ public class Main extends Activity implements OnClickListener {
 				startSubActivity(i, 0);
 			} else if (arg0 == rssButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.rss.RssView.class);
+						cn.edu.nju.software.xyz.pim.rss.RSSFeedsView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == testButton) {
 				Intent i = new Intent(this,

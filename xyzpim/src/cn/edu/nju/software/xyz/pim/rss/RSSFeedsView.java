@@ -23,26 +23,28 @@
  */
 package cn.edu.nju.software.xyz.pim.rss;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Menu.Item;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
-import cn.edu.nju.software.xyz.pim.contacts.GroupsDbAdapter;
 
 /**
  * @author savio 2008-4-9 下午02:59:17
  * 
  */
-public class RssView extends ListActivity {
+public class RSSFeedsView extends ListActivity {
 	private static final int ACTIVITY_CREATE = 1;
-	private static final int ACTIVITY_EDIT = 2;
 
 	private static final int NEW_M_ID = 0;
 	private static final int OPEN_M_ID = 1;
@@ -93,6 +95,8 @@ public class RssView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
+			Intent newURLIntent = new Intent(this, RSSURLEdit.class);
+			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
 			NewsDroidDB rssDbAdp = new NewsDroidDB(this);
@@ -103,7 +107,8 @@ public class RssView extends ListActivity {
 			fillData();
 			return true;
 		case OPEN_M_ID:
-
+			Intent openIntent = new Intent(this, RSSArticlesView.class);
+			startSubActivity(openIntent, ACTIVITY_CREATE);
 			return true;
 		case RETURN_M_ID:
 			finish();
@@ -145,19 +150,20 @@ public class RssView extends ListActivity {
 		// String groupName = extras.getString(GroupsDbAdapter.COL_NAME);
 		switch (requestCode) {
 		case ACTIVITY_CREATE:
-			if (null != extras) {
-				// mGroupDbAdp.createGroup(extras
-				// .getString(GroupsDbAdapter.COL_NAME));
+			if (resultCode == RESULT_OK && null != extras) {
+				String rssURLString = extras.getString("RSSURL");
+				URL url = null;
+				try {
+					url = new URL(rssURLString);
+				} catch (MalformedURLException e) {
+					Log.e("XYZPIM", e.getLocalizedMessage(), e);
+				}
+				RSSHandler rh = new RSSHandler();
+				rh.createFeed(this, url);
+				NewsDroidDB rssDbAdp = new NewsDroidDB(this);
+				rssList = rssDbAdp.getFeeds();
 				fillData();
 			}
-			break;
-		case ACTIVITY_EDIT:
-			if (null != extras) {
-				Long rowId = extras.getLong(GroupsDbAdapter.COL_ROWID);
-				// mGroupDbAdp.updateNote(rowId, extras
-				// .getString(GroupsDbAdapter.COL_NAME));
-			}
-			fillData();
 			break;
 		}
 	}
