@@ -107,8 +107,7 @@ public class RSSFeedsView extends ListActivity {
 			fillData();
 			return true;
 		case OPEN_M_ID:
-			Intent openIntent = new Intent(this, RSSArticlesView.class);
-			startSubActivity(openIntent, ACTIVITY_CREATE);
+			openFeed((int) this.getListView().getSelectedItemId());
 			return true;
 		case RETURN_M_ID:
 			finish();
@@ -122,7 +121,15 @@ public class RSSFeedsView extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// editGroupName(position);
+		openFeed(position);
+	}
+
+	private void openFeed(int position) {
+		Intent openIntent = new Intent(this, RSSArticlesView.class);
+		openIntent.putExtra("FEEDID", rssList.get(position).FeedId);
+		RSSHandler rh = new RSSHandler();
+		rh.updateArticles(this, rssList.get(position));
+		startSubActivity(openIntent, ACTIVITY_CREATE);
 	}
 
 	/*private void createGroup() {
