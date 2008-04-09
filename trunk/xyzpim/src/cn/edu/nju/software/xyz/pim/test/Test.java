@@ -25,13 +25,9 @@ package cn.edu.nju.software.xyz.pim.test;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import cn.edu.nju.software.xyz.pim.R;
-import cn.edu.nju.software.xyz.pim.rss.Feed;
-import cn.edu.nju.software.xyz.pim.rss.NewsDroidDB;
-import cn.edu.nju.software.xyz.pim.rss.RSSHandler;
 
 /**
  * @author xmx 2008-3-18 下午10:39:33
@@ -43,19 +39,30 @@ public class Test extends Activity implements OnClickListener {
 	protected void onCreate(Bundle icicle) {
 		setContentView(R.layout.housecalresult);
 		super.onCreate(icicle);
-		NewsDroidDB db = new NewsDroidDB(this);
-		/*try {
-			db.insertFeed("百度互联网焦点新闻", new URL(
-					"http://news.baidu.com/n?cmd=1&class=internet&tn=rss"));
+		/*NewsDroidDB db = new NewsDroidDB(this);
+		try {
+			db.insertFeed("百度房产焦点新闻", new URL(
+					"http:// news.baidu.com/n?cmd=1&class=housenews&tn=rss"));
+			db.insertFeed("百度娱乐焦点新闻", new URL(
+					"http://news.baidu.com/n?cmd=1&class=enternews&tn=rss"));
+			db.insertFeed("百度健康焦点新闻", new URL(
+					"http://news.baidu.com/n?cmd=1&class=healthnews&tn=rss"));
+			db.insertFeed("百度房产焦点新闻", new URL(
+					"http:// news.baidu.com/n?cmd=1&class=housenews&tn=rss"));
+			db
+					.insertFeed(
+							"云海天潮：My life",
+							new URL(
+									"http://xmxsuperstar.spaces.live.com/category/My+life/feed.rss"));
 		} catch (Exception e) {
 
 		}*/
-		Feed feed = db.getFeeds().get(0);
+		/*Feed feed = db.getFeeds().get(0);
 		Log.i("XYZPIM", feed.Url.toString());
 		RSSHandler rh = new RSSHandler();
 		rh.updateArticles(this, feed);
 		// Article a = db.getArticles(feed.FeedId).get(0);
-		Log.i("XYZPIM", "中文");
+		Log.i("XYZPIM", "中文");*/
 	}
 
 	@Override
