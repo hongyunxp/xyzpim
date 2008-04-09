@@ -23,12 +23,12 @@
  */
 package cn.edu.nju.software.xyz.pim.contacts;
 
-import android.app.Activity;
+import android.app.ListActivity;
 
 /**
  * @author xmx 2008-4-5 下午09:35:41
  * 
  */
-public class GroupEdit extends Activity {
+public class GroupMembersView extends ListActivity {
 
 }
