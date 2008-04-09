@@ -55,7 +55,7 @@ public class Test extends Activity implements OnClickListener {
 		RSSHandler rh = new RSSHandler();
 		rh.updateArticles(this, feed);
 		// Article a = db.getArticles(feed.FeedId).get(0);
-		Log.i("XYZPIM", "" + "" + db.getArticles(feed.FeedId).size());
+		Log.i("XYZPIM", "中文");
 	}
 
 	@Override

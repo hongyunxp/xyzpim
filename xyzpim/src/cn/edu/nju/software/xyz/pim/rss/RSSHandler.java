@@ -26,12 +26,12 @@ package cn.edu.nju.software.xyz.pim.rss;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.jar.Attributes;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -90,8 +90,9 @@ public class RSSHandler extends DefaultHandler {
 
 	private NewsDroidDB droidDB = null;
 
-	public void startElement(String uri, String name, String qName,
-			Attributes atts) {
+	@Override
+	public void startElement(String uri, String localName, String name,
+			Attributes attributes) throws SAXException {
 		if (name.trim().equals("title"))
 			inTitle = true;
 		else if (name.trim().equals("item"))
@@ -123,6 +124,8 @@ public class RSSHandler extends DefaultHandler {
 
 			// We know everything we need to know, so insert feed and exit
 			droidDB.insertFeed(currentFeed.Title, currentFeed.Url);
+			Log.i("XYZPIM", currentFeed.Title);
+			Log.i("XYZPIM", currentFeed.Url.toString());
 			throw new SAXException();
 		}
 
@@ -154,8 +157,8 @@ public class RSSHandler extends DefaultHandler {
 			if (!inItem) {
 				if (inTitle)
 					currentFeed.Title = chars;
-				if (inLink)
-					currentFeed.Url = new URL(chars);
+				// if (inLink)
+				// currentFeed.Url = new URL(chars);
 			} else {
 				if (inLink)
 					currentArticle.Url = new URL(chars);
