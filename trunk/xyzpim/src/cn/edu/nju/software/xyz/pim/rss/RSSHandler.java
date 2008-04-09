@@ -79,7 +79,7 @@ public class RSSHandler extends DefaultHandler {
 	private int articlesAdded = 0;
 
 	// Number of articles to download
-	private static final int ARTICLES_LIMIT = 100;
+	private static final int ARTICLES_LIMIT = 200;
 
 	// The possible values for targetFlag
 	private static final int TARGET_FEED = 0;
@@ -200,6 +200,8 @@ public class RSSHandler extends DefaultHandler {
 			targetFlag = TARGET_ARTICLES;
 			droidDB = new NewsDroidDB(ctx);
 			currentFeed = feed;
+
+			droidDB.deleteAricles(feed.FeedId);
 
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			SAXParser sp = spf.newSAXParser();

@@ -33,6 +33,7 @@
 </activity><activity android:name=".contacts.GroupNameEdit" android:label="@string/group">
 </activity><activity android:name=".rss.RSSFeedsView">
 </activity><activity android:name=".rss.RSSURLEdit">
+</activity><activity android:name=".rss.RSSArticlesView">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
