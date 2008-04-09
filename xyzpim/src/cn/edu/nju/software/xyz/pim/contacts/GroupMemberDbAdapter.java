@@ -24,6 +24,8 @@
 package cn.edu.nju.software.xyz.pim.contacts;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -97,8 +99,16 @@ public class GroupMemberDbAdapter {
 		mDb.delete(DATABASE_TABLE, "gid=" + gid + "and cid=" + cid, null);
 	}
 
-	public int[] listMembers(int gid) {
-		// TODO: 待实现
+	public List<Integer> listMembers(int gid) {
+		Cursor c = mDb.query(DATABASE_TABLE, new String[] { "COL_CID" }, "gid="
+				+ gid, null, null, null, null);
+		int count = c.count();
+		List<Integer> list = new ArrayList<Integer>();
+		for (int index = 0; index < count; ++index) {
+			c.moveTo(index);
+			int cid = c.getInt(c.getColumnIndex(COL_CID));
+			list.add(cid);
+		}
 		return null;
 	}
 }

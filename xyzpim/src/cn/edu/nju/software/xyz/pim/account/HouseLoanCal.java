@@ -147,7 +147,7 @@ class Calc {
 		end = end - 1;
 		info.month = mart.month;
 		info.loan = mart.loan;
-		info.totalPay = start;
+		info.totalPay = start / end * mart.month;
 		info.bornNumber = info.totalPay - info.loan;
 		info.payForMonth = start / end;
 	}

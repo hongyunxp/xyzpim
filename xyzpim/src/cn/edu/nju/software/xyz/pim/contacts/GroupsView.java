@@ -46,7 +46,7 @@ public class GroupsView extends ListActivity {
 	private static final int NEW_M_ID = 0;
 	private static final int DEL_M_ID = 1;
 	private static final int RENAME_M_ID = 2;
-	private static final int EDIT_M_ID = 3;
+	private static final int OPEN_M_ID = 3;
 	private static final int RETURN_M_ID = 4;
 
 	private GroupsDbAdapter mGroupDbAdp;
@@ -90,7 +90,7 @@ public class GroupsView extends ListActivity {
 		menu.add(0, NEW_M_ID, R.string.create);
 		menu.add(0, DEL_M_ID, R.string.del);
 		menu.add(0, RENAME_M_ID, R.string.rename);
-		menu.add(0, EDIT_M_ID, R.string.edit);
+		menu.add(0, OPEN_M_ID, R.string.open);
 		menu.add(0, RETURN_M_ID, R.string.back);
 		return true;
 	}
@@ -108,7 +108,8 @@ public class GroupsView extends ListActivity {
 		case RENAME_M_ID:
 			editGroupName(getSelectedItemPosition());
 			return true;
-		case EDIT_M_ID:
+		case OPEN_M_ID:
+
 			return true;
 		case RETURN_M_ID:
 			finish();
@@ -147,18 +148,20 @@ public class GroupsView extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			String data, Bundle extras) {
 		super.onActivityResult(requestCode, resultCode, data, extras);
-		String groupName = extras.getString(GroupsDbAdapter.COL_NAME);
+		// String groupName = extras.getString(GroupsDbAdapter.COL_NAME);
 		switch (requestCode) {
 		case ACTIVITY_CREATE:
-			if (null != groupName) {
-				mGroupDbAdp.createGroup(groupName);
+			if (null != extras) {
+				mGroupDbAdp.createGroup(extras
+						.getString(GroupsDbAdapter.COL_NAME));
 				fillData();
 			}
 			break;
 		case ACTIVITY_EDIT:
-			Long rowId = extras.getLong(GroupsDbAdapter.COL_ROWID);
-			if (rowId != null) {
-				mGroupDbAdp.updateNote(rowId, groupName);
+			if (null != extras) {
+				Long rowId = extras.getLong(GroupsDbAdapter.COL_ROWID);
+				mGroupDbAdp.updateNote(rowId, extras
+						.getString(GroupsDbAdapter.COL_NAME));
 			}
 			fillData();
 			break;
