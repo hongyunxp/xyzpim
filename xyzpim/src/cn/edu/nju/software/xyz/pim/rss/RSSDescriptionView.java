@@ -23,67 +23,62 @@
  */
 package cn.edu.nju.software.xyz.pim.rss;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.ListActivity;
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 import android.view.Menu.Item;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author xmx 2008-4-9 下午05:40:59
+ * @author savio 2008-4-9 下午09:57:12
  * 
  */
-public class RSSArticlesView extends ListActivity {
+public class RSSDescriptionView extends Activity {
 	private static final int ACTIVITY_CREATE = 1;
 
 	private static final int RETURN_M_ID = 0;
 
-	private List<Article> articleList;
+	private String date;
+	private String description;
+	private String title;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.rss_article_list);
-		NewsDroidDB rssDbAdp = new NewsDroidDB(this);
-		articleList = new ArrayList<Article>();
+		// setContentView(R.layout.rss_description_list);
+
 		Bundle extras = getIntent().getExtras();
 
 		if (extras != null) {
-			long feedId = extras.getLong("FEEDID");
-			// RSSHandler rh = new RSSHandler();
-			// rh.updateArticles(this,feedId );
-			articleList = rssDbAdp.getArticles(feedId);
-
+			long articleId = extras.getLong("ARTICLEID");
+			NewsDroidDB rssDbAdp = new NewsDroidDB(this);
+			Article article = rssDbAdp.getArticle(articleId);
+			date = new String(article.date);
+			title = new String(article.Title);
+			description = new String(article.Discription);
 		}
-		fillData();
+		// fillData();
 	}
 
 	@SuppressWarnings( { "static-access", "unchecked" })
 	/**
 	 * 向界面填充数据
 	 */
-	private void fillData() {
-		// 创建适配器
-		int count = articleList.size();
-		List<String> articleTitle = new ArrayList<String>(count);
+	/*	private void fillData() {
+			// 创建适配器
+			int count = articleList.size();
+			List<String> articleTitle = new ArrayList<String>(count);
 
-		for (int index = 0; index < count; ++index) {
-			Integer INT = new Integer(index + 1);
-			articleTitle.add(INT.toString() + "."
-					+ articleList.get(index).Title);
+			for (int index = 0; index < count; ++index) {
+				Integer INT = new Integer(index + 1);
+				articleTitle.add(INT.toString() + "."
+						+ articleList.get(index).Title);
+			}
+			ArrayAdapter feedsAdapter = new ArrayAdapter(this,
+					R.layout.rss_article_row, articleTitle);
+			this.setListAdapter(feedsAdapter);
 		}
-		ArrayAdapter feedsAdapter = new ArrayAdapter(this,
-				R.layout.rss_article_row, articleTitle);
-		this.setListAdapter(feedsAdapter);
-	}
-
+	*/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -99,17 +94,4 @@ public class RSSArticlesView extends ListActivity {
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		openFeed(position);
-	}
-
-	private void openFeed(int position) {
-		Intent openIntent = new Intent(this, RSSArticlesView.class);
-		openIntent.putExtra("ARTICLEID", articleList.get(position).ArticleId);
-		startSubActivity(openIntent, ACTIVITY_CREATE);
-	}
-
 }

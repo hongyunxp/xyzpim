@@ -132,24 +132,6 @@ public class RSSFeedsView extends ListActivity {
 		startSubActivity(openIntent, ACTIVITY_CREATE);
 	}
 
-	/*private void createGroup() {
-		Intent i = new Intent(this, GroupNameEdit.class);
-		startSubActivity(i, ACTIVITY_CREATE);
-	}
-	*/
-	/*private void editGroupName(int position) {
-		if (position < 0)
-			return;
-		Cursor c = groupsCursor;
-		c.moveTo(position);
-		Intent i = new Intent(this, GroupNameEdit.class);
-		i.putExtra(GroupsDbAdapter.COL_ROWID, c.getLong(c
-				.getColumnIndex(GroupsDbAdapter.COL_ROWID)));
-		i.putExtra(GroupsDbAdapter.COL_NAME, c.getString(c
-				.getColumnIndex(GroupsDbAdapter.COL_NAME)));
-		startSubActivity(i, ACTIVITY_EDIT);
-	}*/
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			String data, Bundle extras) {
