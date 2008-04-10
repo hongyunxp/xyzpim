@@ -147,4 +147,33 @@ public class NewsDroidDB {
 		}
 		return articles;
 	}
+
+	public Article getArticle(Long articleId) {
+		Article article = new Article();
+
+		try {
+			Cursor c = db.query(ARTICLES_TABLE, new String[] { "article_id",
+					"feed_id", "title", "url", "date", "discription" },
+					"article_id=" + articleId.toString(), null, null, null,
+					null);
+
+			int numRows = c.count();
+			c.first();
+			for (int i = 0; i < numRows; ++i) {
+				article.ArticleId = c.getLong(0);
+				article.FeedId = c.getLong(1);
+				article.Title = c.getString(2);
+				article.Url = new URL(c.getString(3));
+				article.date = c.getString(4);
+				article.Discription = c.getString(5);
+				c.next();
+			}
+		} catch (SQLException e) {
+			Log.e("NewsDroid", e.toString());
+		} catch (MalformedURLException e) {
+			Log.e("NewsDroid", e.toString());
+		}
+		return article;
+	}
+
 }
