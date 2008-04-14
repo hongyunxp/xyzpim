@@ -44,25 +44,6 @@ import android.util.Log;
  * @author savio 2008-4-8 下午09:39:13 Parses RSS feed and saves what we need from
  *         them
  */
-/*
- * <?xml version="1.0" encoding="utf-8" ?> 
-<rss version="2.0" xml:base="http://www.helloandroid.com" xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <channel>
-        <title>Hello Android - Android OS news, tutorials, downloads</title> 
-        <link>http://www.helloandroid.com</link> 
-        <description /> 
-        <language>en</language> 
-        <item>
-            <title>Biggest story of the year!</title> 
-            <link>http://www.helloandroid.com/node/59</link> 
-            <description>Here is a teaser for the story.</description> 
-            <comments>http://www.helloandroid.com/node/59#comments</comments> 
-            <pubDate>Sat, 17 Nov 2007 15:07:25 -0600</pubDate> 
-            <dc:creator>hobbs</dc:creator> 
-        </item>
-    </channel>
-</rss>
- */
 public class RSSHandler extends DefaultHandler {
 	// Used to define what elements we are currently in
 	private boolean inItem = false;
@@ -89,6 +70,17 @@ public class RSSHandler extends DefaultHandler {
 	private int targetFlag;
 
 	private NewsDroidDB droidDB = null;
+
+	private static RSSHandler ins;// for singleton
+
+	private RSSHandler() {
+	}// for singleton!
+
+	public synchronized static RSSHandler getInstance() {
+		if (null == ins)
+			ins = new RSSHandler();
+		return ins;
+	}
 
 	@Override
 	public void startElement(String uri, String localName, String name,
@@ -177,7 +169,7 @@ public class RSSHandler extends DefaultHandler {
 	public void createFeed(Context ctx, URL url) {
 		try {
 			targetFlag = TARGET_FEED;
-			droidDB = new NewsDroidDB(ctx);
+			droidDB = NewsDroidDB.getInstance(ctx);
 			currentFeed.Url = url;
 
 			SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -198,7 +190,7 @@ public class RSSHandler extends DefaultHandler {
 	public void updateArticles(Context ctx, Feed feed) {
 		try {
 			targetFlag = TARGET_ARTICLES;
-			droidDB = new NewsDroidDB(ctx);
+			droidDB = NewsDroidDB.getInstance(ctx);
 			currentFeed = feed;
 
 			droidDB.deleteAricles(feed.FeedId);

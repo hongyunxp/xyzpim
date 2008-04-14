@@ -57,7 +57,7 @@ public class RSSFeedsView extends ListActivity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.rss_list);
-		NewsDroidDB rssDbAdp = new NewsDroidDB(this);
+		NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
 		rssList = new ArrayList<Feed>();
 		rssList = rssDbAdp.getFeeds();
 		fillData();
@@ -99,7 +99,7 @@ public class RSSFeedsView extends ListActivity {
 			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
-			NewsDroidDB rssDbAdp = new NewsDroidDB(this);
+			NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
 			rssDbAdp.deleteFeed(rssList.get((int) getListView()
 					.getSelectedItemId()).FeedId);
 			rssList = rssDbAdp.getFeeds();
@@ -127,8 +127,8 @@ public class RSSFeedsView extends ListActivity {
 	private void openFeed(int position) {
 		Intent openIntent = new Intent(this, RSSArticlesView.class);
 		openIntent.putExtra("FEEDID", rssList.get(position).FeedId);
-		RSSHandler rh = new RSSHandler();
-		rh.updateArticles(this, rssList.get(position));
+		/*RSSHandler rh = RSSHandler.getInstance();
+		rh.updateArticles(this, rssList.get(position));*/
 		startSubActivity(openIntent, ACTIVITY_CREATE);
 	}
 
@@ -136,7 +136,6 @@ public class RSSFeedsView extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			String data, Bundle extras) {
 		super.onActivityResult(requestCode, resultCode, data, extras);
-		// String groupName = extras.getString(GroupsDbAdapter.COL_NAME);
 		switch (requestCode) {
 		case ACTIVITY_CREATE:
 			if (resultCode == RESULT_OK && null != extras) {
@@ -147,9 +146,9 @@ public class RSSFeedsView extends ListActivity {
 				} catch (MalformedURLException e) {
 					Log.e("XYZPIM", e.getLocalizedMessage(), e);
 				}
-				RSSHandler rh = new RSSHandler();
+				RSSHandler rh = RSSHandler.getInstance();
 				rh.createFeed(this, url);
-				NewsDroidDB rssDbAdp = new NewsDroidDB(this);
+				NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
 				rssList = rssDbAdp.getFeeds();
 				fillData();
 			}

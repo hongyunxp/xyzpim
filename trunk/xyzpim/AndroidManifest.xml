@@ -29,12 +29,25 @@
 			android:label="@string/test">
 		</activity>
 		<activity android:name=".account.HouseLoanResult"></activity>
-	<activity android:name=".contacts.GroupsView" android:label="@string/group_list">
-</activity><activity android:name=".contacts.GroupNameEdit" android:label="@string/group">
-</activity><activity android:name=".rss.RSSFeedsView">
-</activity><activity android:name=".rss.RSSURLEdit">
-</activity><activity android:name=".rss.RSSArticlesView">
-</activity></application>
+		<activity android:name=".contacts.GroupsView"
+			android:label="@string/group_list">
+		</activity>
+		<activity android:name=".contacts.GroupNameEdit"
+			android:label="@string/group">
+		</activity>
+		<activity android:name=".rss.RSSFeedsView"
+			android:label="RSS Feeds">
+		</activity>
+		<activity android:name=".rss.RSSURLEdit"
+			android:label="Input RSS Feed URL">
+		</activity>
+		<activity android:name=".rss.RSSArticlesView"
+			android:label="RSS Articles">
+		</activity>
+		<activity android:name=".rss.RSSDescriptionView"
+			android:label="Read Article">
+		</activity>
+	</application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>
