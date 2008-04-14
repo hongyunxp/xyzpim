@@ -55,7 +55,12 @@ public class NewsDroidDB {
 
 	private SQLiteDatabase db;
 
-	public NewsDroidDB(Context ctx) {
+	private static NewsDroidDB ins;
+
+	private NewsDroidDB() {
+	}
+
+	private NewsDroidDB(Context ctx) {
 		try {
 			db = ctx.openDatabase(DATABASE_NAME, null);
 		} catch (FileNotFoundException e) {
@@ -68,6 +73,12 @@ public class NewsDroidDB {
 				db = null;
 			}
 		}
+	}
+
+	public synchronized static NewsDroidDB getInstance(Context ctx) {
+		if (null == ins)
+			ins = new NewsDroidDB(ctx);
+		return ins;
 	}
 
 	public boolean insertFeed(String title, URL url) {
@@ -120,6 +131,29 @@ public class NewsDroidDB {
 		return feeds;
 	}
 
+	public Feed getFeed(long id) {
+		Feed feed = new Feed();
+		try {
+			Cursor c = db.query(FEEDS_TABLE, new String[] { "feed_id", "title",
+					"url" }, "feed_id=?", new String[] { String.valueOf(id) },
+					null, null, null);
+
+			int numRows = c.count();
+			if (numRows != 1) {
+				Log.e("XYZPIM", "newRows=" + String.valueOf(numRows));
+			}
+			c.first();
+			feed.FeedId = c.getLong(0);
+			feed.Title = c.getString(1);
+			feed.Url = new URL(c.getString(2));
+		} catch (SQLException e) {
+			Log.e("XYZPIM", e.toString());
+		} catch (MalformedURLException e) {
+			Log.e("XYZPIM", e.toString());
+		}
+		return feed;
+	}
+
 	public List<Article> getArticles(Long feedId) {
 		ArrayList<Article> articles = new ArrayList<Article>();
 		try {
@@ -141,9 +175,9 @@ public class NewsDroidDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e("XYZPIM", e.toString());
 		} catch (MalformedURLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e("XYZPIM", e.toString());
 		}
 		return articles;
 	}
@@ -169,9 +203,9 @@ public class NewsDroidDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e("XYZPIM", e.toString());
 		} catch (MalformedURLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e("XYZPIM", e.toString());
 		}
 		return article;
 	}

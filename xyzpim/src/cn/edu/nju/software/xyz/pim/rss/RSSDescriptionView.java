@@ -27,6 +27,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.Menu.Item;
+import android.webkit.WebView;
+import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
@@ -34,51 +36,40 @@ import cn.edu.nju.software.xyz.pim.R;
  * 
  */
 public class RSSDescriptionView extends Activity {
-	private static final int ACTIVITY_CREATE = 1;
 
 	private static final int RETURN_M_ID = 0;
 
-	private String date;
-	private String description;
-	private String title;
+	private Article article;
+	private TextView titleText;
+	private TextView dateText;
+	private WebView descriptionWebView;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		// setContentView(R.layout.rss_description_list);
+		setContentView(R.layout.rss_description);
+
+		titleText = (TextView) findViewById(R.id.rss_article_title_lable);
+		dateText = (TextView) findViewById(R.id.rss_article_date_lable);
+		descriptionWebView = (WebView) findViewById(R.id.rss_article_description_content);
 
 		Bundle extras = getIntent().getExtras();
 
 		if (extras != null) {
 			long articleId = extras.getLong("ARTICLEID");
-			NewsDroidDB rssDbAdp = new NewsDroidDB(this);
-			Article article = rssDbAdp.getArticle(articleId);
-			date = new String(article.date);
-			title = new String(article.Title);
-			description = new String(article.Discription);
+			NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
+			article = rssDbAdp.getArticle(articleId);
 		}
-		// fillData();
+		fillData();
 	}
 
-	@SuppressWarnings( { "static-access", "unchecked" })
-	/**
-	 * 向界面填充数据
-	 */
-	/*	private void fillData() {
-			// 创建适配器
-			int count = articleList.size();
-			List<String> articleTitle = new ArrayList<String>(count);
+	private void fillData() {
+		titleText.setText(article.Title);
+		dateText.setText(article.date);
+		descriptionWebView.loadData(article.Discription, "text/html", "UTF-8");
 
-			for (int index = 0; index < count; ++index) {
-				Integer INT = new Integer(index + 1);
-				articleTitle.add(INT.toString() + "."
-						+ articleList.get(index).Title);
-			}
-			ArrayAdapter feedsAdapter = new ArrayAdapter(this,
-					R.layout.rss_article_row, articleTitle);
-			this.setListAdapter(feedsAdapter);
-		}
-	*/
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);

@@ -43,25 +43,22 @@ import cn.edu.nju.software.xyz.pim.R;
 public class RSSArticlesView extends ListActivity {
 	private static final int ACTIVITY_CREATE = 1;
 
-	private static final int RETURN_M_ID = 0;
+	private static final int REFRESH_M_ID = 0;
+	private static final int RETURN_M_ID = 1;
 
+	private long feedId;
 	private List<Article> articleList;
+
+	// /private List<String> articleTitle;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.rss_article_list);
-		NewsDroidDB rssDbAdp = new NewsDroidDB(this);
-		articleList = new ArrayList<Article>();
+
 		Bundle extras = getIntent().getExtras();
-
-		if (extras != null) {
-			long feedId = extras.getLong("FEEDID");
-			// RSSHandler rh = new RSSHandler();
-			// rh.updateArticles(this,feedId );
-			articleList = rssDbAdp.getArticles(feedId);
-
-		}
+		if (extras != null)
+			feedId = extras.getLong("FEEDID");
 		fillData();
 	}
 
@@ -70,15 +67,17 @@ public class RSSArticlesView extends ListActivity {
 	 * 向界面填充数据
 	 */
 	private void fillData() {
-		// 创建适配器
+		articleList = NewsDroidDB.getInstance(this).getArticles(feedId);
+		List<String> articleTitle = new ArrayList<String>(articleList.size());
 		int count = articleList.size();
-		List<String> articleTitle = new ArrayList<String>(count);
 
+		articleTitle.clear();
 		for (int index = 0; index < count; ++index) {
 			Integer INT = new Integer(index + 1);
 			articleTitle.add(INT.toString() + "."
 					+ articleList.get(index).Title);
 		}
+
 		ArrayAdapter feedsAdapter = new ArrayAdapter(this,
 				R.layout.rss_article_row, articleTitle);
 		this.setListAdapter(feedsAdapter);
@@ -87,6 +86,7 @@ public class RSSArticlesView extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
+		menu.add(0, REFRESH_M_ID, R.string.refresh);
 		menu.add(0, RETURN_M_ID, R.string.back);
 		return true;
 	}
@@ -94,8 +94,14 @@ public class RSSArticlesView extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, Item item) {
 		switch (item.getId()) {
+		case REFRESH_M_ID:
+			RSSHandler.getInstance().updateArticles(this,
+					NewsDroidDB.getInstance(this).getFeed(feedId));
+			fillData();
+			break;
 		case RETURN_M_ID:
 			finish();
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -107,7 +113,7 @@ public class RSSArticlesView extends ListActivity {
 	}
 
 	private void openFeed(int position) {
-		Intent openIntent = new Intent(this, RSSArticlesView.class);
+		Intent openIntent = new Intent(this, RSSDescriptionView.class);
 		openIntent.putExtra("ARTICLEID", articleList.get(position).ArticleId);
 		startSubActivity(openIntent, ACTIVITY_CREATE);
 	}
