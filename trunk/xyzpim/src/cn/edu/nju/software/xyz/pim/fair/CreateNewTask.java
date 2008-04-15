@@ -25,6 +25,10 @@ package cn.edu.nju.software.xyz.pim.fair;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.Menu.Item;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
@@ -33,15 +37,55 @@ import cn.edu.nju.software.xyz.pim.R;
  */
 public class CreateNewTask extends Activity {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
+	private static final int RETURN_M_ID = 0;
+	private static final int FINISH_M_ID = 1;
+
+	private EditText titleText;
+	private EditText DateText;
+	private EditText notifyText;
+	private CheckBox isImportant;
+	private EditText contentText;
+
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.create_newtask);
+		titleText = (EditText) findViewById(R.id.task_title);
+		DateText = (EditText) findViewById(R.id.task_time);
+		notifyText = (EditText) findViewById(R.id.task_notify);
+		isImportant = (CheckBox) findViewById(R.id.important_notify);
+		contentText = (EditText) findViewById(R.id.task_content);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, FINISH_M_ID, R.string.finish);
+		menu.add(0, RETURN_M_ID, R.string.back);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, Item item) {
+		switch (item.getId()) {
+
+		case FINISH_M_ID:
+			int im;
+			FairDB FairDbAdp = FairDB.getInstance(this);
+			String title = titleText.getText().toString();
+			String date = DateText.getText().toString();
+			String notify = notifyText.getText().toString();
+			if (isImportant.isChecked())
+				im = 1;
+			else
+				im = 0;
+			String content = contentText.getText().toString();
+			FairDbAdp.insertTask(title, date, im, notify, content);
+			finish();
+			return true;
+		case RETURN_M_ID:
+			finish();
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 }

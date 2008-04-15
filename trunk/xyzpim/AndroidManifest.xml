@@ -52,6 +52,8 @@
 </activity><activity android:name=".fair.EditNote">
 </activity><activity android:name=".fair.CreateNote">
 </activity><activity android:name=".fair.MeetingView">
+</activity><activity android:name=".fair.EditMeeting">
+</activity><activity android:name=".fair.EditTask">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
