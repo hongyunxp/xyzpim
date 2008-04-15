@@ -28,20 +28,13 @@ import android.os.Bundle;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author xmx 2008-3-13 下午01:16:54
+ * @author savio 2008-4-15 下午01:32:20
  * 
  */
-public class NewTask extends Activity {
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
+public class CreateMeeting extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.newtask);
+		setContentView(R.layout.create_meeting);
 	}
-
 }
