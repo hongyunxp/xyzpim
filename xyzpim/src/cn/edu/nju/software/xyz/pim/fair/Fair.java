@@ -68,7 +68,7 @@ public class Fair extends Activity implements OnClickListener {
 				startSubActivity(i, 0);
 			} else if (arg0 == noteButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.CreateNote.class);
+						cn.edu.nju.software.xyz.pim.fair.NoteView.class);
 				startSubActivity(i, 0);
 			}
 		}
