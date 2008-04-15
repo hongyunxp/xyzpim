@@ -103,6 +103,18 @@ public class FairDB {
 				null));
 	}
 
+	public int updateMeeting(Long MeetingId, String title, String start_time,
+			String end_time, int notify, String place) {
+		ContentValues values = new ContentValues();
+		values.put("title", title);
+		values.put("start_time", start_time);
+		values.put("end_time", end_time);
+		values.put("is_notify", notify);
+		values.put("place", place);
+		return (db.update(MEETINGS_TABLE, values, "meeting_id="
+				+ MeetingId.toString(), null));
+	}
+
 	public boolean insertMeeting(String title, String start_time,
 			String end_time, int notify, String place) {
 		ContentValues values = new ContentValues();
@@ -117,6 +129,17 @@ public class FairDB {
 	public boolean deleteMeeting(Long meetingId) {
 		return (db.delete(MEETINGS_TABLE, "meeting_id=" + meetingId.toString(),
 				null) > 0);
+	}
+
+	public int updateTask(Long taskId, String title, String date,
+			int important, String notify) {
+		ContentValues values = new ContentValues();
+		values.put("title", title);
+		values.put("date", date);
+		values.put("is_important", important);
+		values.put("notify", notify);
+		return (db.update(TASKS_TABLE, values, "task_id=" + taskId.toString(),
+				null));
 	}
 
 	public boolean insertTask(String title, String date, int important,

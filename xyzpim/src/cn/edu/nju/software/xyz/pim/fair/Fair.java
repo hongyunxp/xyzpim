@@ -60,11 +60,11 @@ public class Fair extends Activity implements OnClickListener {
 		if (null != arg0) {
 			if (arg0 == scheduleButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.CreateNewTask.class);
+						cn.edu.nju.software.xyz.pim.fair.TaskView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == meetingButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.CreateMeeting.class);
+						cn.edu.nju.software.xyz.pim.fair.MeetingView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == noteButton) {
 				Intent i = new Intent(this,
