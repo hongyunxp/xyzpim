@@ -32,29 +32,45 @@ import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author savio 2008-4-15 下午01:32:20
+ * @author savio 2008-4-15 下午10:33:28
  * 
  */
-public class CreateMeeting extends Activity {
+public class EditTask extends Activity {
 
 	private static final int RETURN_M_ID = 0;
 	private static final int FINISH_M_ID = 1;
 
 	private EditText titleText;
-	private EditText startDateText;
-	private EditText endDateText;
-	private CheckBox notifyText;
-	private EditText placeText;
+	private EditText DateText;
+	private EditText notifyText;
+	private CheckBox isImportant;
+	private EditText contentText;
 
-	@Override
+	private long TaskId;
+
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.create_meeting);
-		titleText = (EditText) findViewById(R.id.meeting_title);
-		startDateText = (EditText) findViewById(R.id.meeting_start_time);
-		endDateText = (EditText) findViewById(R.id.meeting_end_time);
-		notifyText = (CheckBox) findViewById(R.id.meeting_notify);
-		placeText = (EditText) findViewById(R.id.meeting_place);
+		setContentView(R.layout.create_newtask);
+		titleText = (EditText) findViewById(R.id.task_title);
+		DateText = (EditText) findViewById(R.id.task_time);
+		notifyText = (EditText) findViewById(R.id.task_notify);
+		isImportant = (CheckBox) findViewById(R.id.important_notify);
+		contentText = (EditText) findViewById(R.id.task_content);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			TaskId = extras.getLong("TaskId");
+			FairDB fairDbAdp = FairDB.getInstance(this);
+			Task task = fairDbAdp.getTask(TaskId);
+			titleText.setText(task.Title);
+			DateText.setText(task.Date);
+			notifyText.setText(task.Notify);
+			if (task.IsImportant == 0)
+				isImportant.setChecked(false);
+			else
+				isImportant.setChecked(true);
+			contentText.setText(task.Content);
+		}
 	}
 
 	@Override
@@ -70,17 +86,17 @@ public class CreateMeeting extends Activity {
 		switch (item.getId()) {
 
 		case FINISH_M_ID:
-			int notify;
+			int im;
 			FairDB FairDbAdp = FairDB.getInstance(this);
 			String title = titleText.getText().toString();
-			String startDate = startDateText.getText().toString();
-			String endDate = endDateText.getText().toString();
-			if (notifyText.isChecked())
-				notify = 1;
+			String date = DateText.getText().toString();
+			String notify = notifyText.getText().toString();
+			if (isImportant.isChecked())
+				im = 1;
 			else
-				notify = 0;
-			String place = placeText.getText().toString();
-			FairDbAdp.insertMeeting(title, startDate, endDate, notify, place);
+				im = 0;
+			String content = contentText.getText().toString();
+			FairDbAdp.updateTask(TaskId, title, date, im, notify, content);
 			finish();
 			return true;
 		case RETURN_M_ID:

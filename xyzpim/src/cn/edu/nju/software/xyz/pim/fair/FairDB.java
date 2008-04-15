@@ -47,7 +47,7 @@ public class FairDB {
 			+ "title text not null, start_time text not null, end_time text not null,is_notify integer not null,place text not null);";
 
 	private static final String CREATE_TABLE_TASKS = "create table tasks (task_id integer primary key autoincrement, "
-			+ "title text not null, date text not null,is_important integer not null,notify text not null,content text);";
+			+ "title text not null, date text not null,is_important integer not null,notify text not null,content text not null);";
 
 	private static final String NOTES_TABLE = "notes";
 	private static final String MEETINGS_TABLE = "meetings";
@@ -132,23 +132,25 @@ public class FairDB {
 	}
 
 	public int updateTask(Long taskId, String title, String date,
-			int important, String notify) {
+			int important, String notify, String content) {
 		ContentValues values = new ContentValues();
 		values.put("title", title);
 		values.put("date", date);
 		values.put("is_important", important);
 		values.put("notify", notify);
+		values.put("content", content);
 		return (db.update(TASKS_TABLE, values, "task_id=" + taskId.toString(),
 				null));
 	}
 
 	public boolean insertTask(String title, String date, int important,
-			String notify) {
+			String notify, String content) {
 		ContentValues values = new ContentValues();
 		values.put("title", title);
 		values.put("date", date);
 		values.put("is_important", important);
 		values.put("notify", notify);
+		values.put("content", content);
 		return (db.insert(TASKS_TABLE, null, values) > 0);
 	}
 

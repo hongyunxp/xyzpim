@@ -32,10 +32,10 @@ import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author savio 2008-4-15 下午01:32:20
+ * @author savio 2008-4-15 下午09:59:09
  * 
  */
-public class CreateMeeting extends Activity {
+public class EditMeeting extends Activity {
 
 	private static final int RETURN_M_ID = 0;
 	private static final int FINISH_M_ID = 1;
@@ -46,7 +46,8 @@ public class CreateMeeting extends Activity {
 	private CheckBox notifyText;
 	private EditText placeText;
 
-	@Override
+	private long meetingId;
+
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.create_meeting);
@@ -55,6 +56,21 @@ public class CreateMeeting extends Activity {
 		endDateText = (EditText) findViewById(R.id.meeting_end_time);
 		notifyText = (CheckBox) findViewById(R.id.meeting_notify);
 		placeText = (EditText) findViewById(R.id.meeting_place);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			meetingId = extras.getLong("MeetingId");
+			FairDB fairDbAdp = FairDB.getInstance(this);
+			Meeting meeting = fairDbAdp.getMeeting(meetingId);
+			titleText.setText(meeting.Title);
+			startDateText.setText(meeting.StartTime);
+			endDateText.setText(meeting.EndTime);
+			if (meeting.IsNotify == 0)
+				notifyText.setChecked(false);
+			else
+				notifyText.setChecked(true);
+			placeText.setText(meeting.Place);
+		}
 	}
 
 	@Override
@@ -80,7 +96,8 @@ public class CreateMeeting extends Activity {
 			else
 				notify = 0;
 			String place = placeText.getText().toString();
-			FairDbAdp.insertMeeting(title, startDate, endDate, notify, place);
+			FairDbAdp.updateMeeting(meetingId, title, startDate, endDate,
+					notify, place);
 			finish();
 			return true;
 		case RETURN_M_ID:
@@ -88,4 +105,5 @@ public class CreateMeeting extends Activity {
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
+
 }

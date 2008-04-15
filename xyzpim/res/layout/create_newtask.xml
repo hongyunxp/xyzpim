@@ -30,13 +30,13 @@
 	android:layout_height="fill_parent" android:stretchColumns="1">
 
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/title" />
-		<EditText />
+		<TextView  android:text="@string/title" />
+		<EditText android:id="@+id/task_title" />
 	</TableRow>
 
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/time" />
-		<EditText />
+		<TextView  android:text="@string/time" />
+		<EditText android:id="@+id/task_time" />
 	</TableRow>
 	<TableRow>
 			<TextView android:text="@string/important" />
@@ -44,8 +44,9 @@
 		</TableRow>
 	
 	<TableRow>
-			<TextView android:textAlign="end" android:text="@string/notify" />
-		<EditText />
+			<TextView  android:text="@string/notify" />
+			<EditText android:id="@+id/task_notify" />
 	</TableRow>
-	<EditText android:layout_height="fill_parent"/>
+	<EditText android:layout_height="fill_parent"
+					android:id="@+id/task_content"/>
 </TableLayout>
