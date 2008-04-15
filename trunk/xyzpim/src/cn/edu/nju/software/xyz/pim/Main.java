@@ -38,6 +38,7 @@ public class Main extends Activity implements OnClickListener {
 
 	private ImageButton contactsButton;
 	private ImageButton fairButton;
+	private ImageButton emailButton;
 	private ImageButton accountButton;
 	private ImageButton rssButton;
 	private ImageButton testButton;
@@ -49,11 +50,13 @@ public class Main extends Activity implements OnClickListener {
 		setContentView(R.layout.main);
 		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
 		fairButton = (ImageButton) findViewById(R.id.fairButton);
+		emailButton = (ImageButton) findViewById(R.id.emailButton);
 		accountButton = (ImageButton) findViewById(R.id.accountButton);
 		rssButton = (ImageButton) findViewById(R.id.rssButton);
 		testButton = (ImageButton) findViewById(R.id.testButton);
 		contactsButton.setOnClickListener(this);
 		fairButton.setOnClickListener(this);
+		emailButton.setOnClickListener(this);
 		accountButton.setOnClickListener(this);
 		rssButton.setOnClickListener(this);
 		testButton.setOnClickListener(this);
@@ -61,7 +64,6 @@ public class Main extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
 		if (null != arg0) {
 			if (arg0 == contactsButton) {
 				Intent i = new Intent(this,
@@ -71,6 +73,8 @@ public class Main extends Activity implements OnClickListener {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.fair.Fair.class);
 				startSubActivity(i, 0);
+			} else if (arg0 == emailButton) {
+
 			} else if (arg0 == accountButton) {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.account.Account.class);
