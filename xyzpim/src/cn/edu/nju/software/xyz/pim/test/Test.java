@@ -27,7 +27,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.email.Message;
+import cn.edu.nju.software.xyz.pim.email.POP3Session;
 
 /**
  * @author xmx 2008-3-18 下午10:39:33
@@ -35,34 +38,33 @@ import cn.edu.nju.software.xyz.pim.R;
  */
 public class Test extends Activity implements OnClickListener {
 
+	private TextView subjectText;
+	private TextView senderText;
+	private TextView dateText;
+	private TextView contentText;
+
 	@Override
 	protected void onCreate(Bundle icicle) {
 		setContentView(R.layout.test);
 		super.onCreate(icicle);
-		/*NewsDroidDB db = new NewsDroidDB(this);
-		try {
-			db.insertFeed("百度房产焦点新闻", new URL(
-					"http:// news.baidu.com/n?cmd=1&class=housenews&tn=rss"));
-			db.insertFeed("百度娱乐焦点新闻", new URL(
-					"http://news.baidu.com/n?cmd=1&class=enternews&tn=rss"));
-			db.insertFeed("百度健康焦点新闻", new URL(
-					"http://news.baidu.com/n?cmd=1&class=healthnews&tn=rss"));
-			db.insertFeed("百度房产焦点新闻", new URL(
-					"http:// news.baidu.com/n?cmd=1&class=housenews&tn=rss"));
-			db
-					.insertFeed(
-							"云海天潮：My life",
-							new URL(
-									"http://xmxsuperstar.spaces.live.com/category/My+life/feed.rss"));
-		} catch (Exception e) {
 
-		}*/
-		/*Feed feed = db.getFeeds().get(0);
-		Log.i("XYZPIM", feed.Url.toString());
-		RSSHandler rh = new RSSHandler();
-		rh.updateArticles(this, feed);
-		// Article a = db.getArticles(feed.FeedId).get(0);
-		Log.i("XYZPIM", "中文");*/
+		subjectText = (TextView) findViewById(R.id.mail_subject);
+		senderText = (TextView) findViewById(R.id.mail_sender);
+		dateText = (TextView) findViewById(R.id.mail_date);
+		contentText = (TextView) findViewById(R.id.mail_content);
+
+		POP3Session s = POP3Session.getInstance();
+		s.host = "pop3.163.com";
+		s.port = 110;
+		s.username = "xmxsuperstar";
+		s.password = "851121";
+		s.open();
+		Message m = s.getMsg(1);
+
+		subjectText.setText(m.subject);
+		senderText.setText(m.from);
+		dateText.setText(m.date);
+		contentText.setText(m.content);
 	}
 
 	@Override

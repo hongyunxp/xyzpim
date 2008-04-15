@@ -28,5 +28,12 @@ package cn.edu.nju.software.xyz.pim.email;
  * 
  */
 public class Message {
-
+	public String id;// <message-id>
+	public String from;
+	public String to;
+	public String date;
+	public String subject;
+	// public String reply_to;
+	public String contentType;
+	public String content;
 }

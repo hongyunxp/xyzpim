@@ -27,6 +27,15 @@ package cn.edu.nju.software.xyz.pim.email;
  * @author xmx 2008-4-14 下午07:57:26
  * 
  */
-public interface Session {
+public abstract class Session {
+	public String host;
+	public int port;
+	public String username;
+	public String password;
 
+	protected static String CRLF = "\r\n";
+
+	public abstract void open();
+
+	public abstract void close();
 }
