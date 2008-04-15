@@ -32,11 +32,6 @@
 		>
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="@string/memorandum" />
-			<ImageButton android:id="@+id/backup" android:src="@drawable/pim"/>
-		</TableRow>
-		<TableRow android:gravity="center">
-			<TextView android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="@string/schedule" />
 			<ImageButton android:id="@+id/schedule" android:src="@drawable/schedule"/>
 		</TableRow>

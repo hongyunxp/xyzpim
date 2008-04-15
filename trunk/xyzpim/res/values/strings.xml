@@ -69,6 +69,7 @@
 	<string name="endtime">结束时间</string>
 	<string name="notify">提醒</string>
 	<string name="place">地点</string>
+	<string name="important">重要</string>
 	
 	<string name="group_list">Group List</string>
 	<string name="group">Group</string>
