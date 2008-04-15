@@ -47,7 +47,9 @@
 		<activity android:name=".rss.RSSDescriptionView"
 			android:label="Read Article">
 		</activity>
-	</application>
+	<activity android:name=".fair.Meeting">
+</activity><activity android:name=".fair.Note">
+</activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>
