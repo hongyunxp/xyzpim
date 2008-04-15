@@ -37,7 +37,7 @@ public class Test extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle icicle) {
-		setContentView(R.layout.housecalresult);
+		setContentView(R.layout.test);
 		super.onCreate(icicle);
 		/*NewsDroidDB db = new NewsDroidDB(this);
 		try {
