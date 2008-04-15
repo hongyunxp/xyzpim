@@ -13,8 +13,7 @@
 		<activity android:label="@string/fair"
 			android:icon="@drawable/fair" android:name=".fair.Fair">
 		</activity>
-		<activity android:name=".fair.NewTask"
-			android:label="@string/newtask">
+		<activity android:label="@string/newtask" android:name=".fair.CreateNewTask">
 		</activity>
 		<activity android:name=".account.Account"
 			android:label="@string/account">
@@ -47,8 +46,8 @@
 		<activity android:name=".rss.RSSDescriptionView"
 			android:label="Read Article">
 		</activity>
-	<activity android:name=".fair.Meeting">
-</activity><activity android:name=".fair.Note">
+	<activity android:name=".fair.CreateMeeting">
+</activity><activity android:name=".fair.CreateNote">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>

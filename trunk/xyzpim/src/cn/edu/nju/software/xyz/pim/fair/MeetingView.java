@@ -23,17 +23,12 @@
  */
 package cn.edu.nju.software.xyz.pim.fair;
 
-import android.app.Activity;
-import android.os.Bundle;
-import cn.edu.nju.software.xyz.pim.R;
+import android.app.ListActivity;
 
 /**
- * @author savio 2008-4-15 下午01:57:13
+ * @author savio 2008-4-15 下午03:19:02
  * 
  */
-public class Note extends Activity {
-	protected void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
-		setContentView(R.layout.note);
-	}
+public class MeetingView extends ListActivity {
+
 }

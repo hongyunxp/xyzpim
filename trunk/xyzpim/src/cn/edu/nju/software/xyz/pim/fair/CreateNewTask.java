@@ -24,54 +24,24 @@
 package cn.edu.nju.software.xyz.pim.fair;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author xmx 2008-3-12 下午03:12:07
+ * @author xmx 2008-3-13 下午01:16:54
  * 
  */
-public class Fair extends Activity implements OnClickListener {
+public class CreateNewTask extends Activity {
 
-	private ImageButton scheduleButton;
-	private ImageButton meetingButton;
-	private ImageButton noteButton;
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.fair);
-		scheduleButton = (ImageButton) this.findViewById(R.id.schedule);
-		scheduleButton.setOnClickListener(this);
-
-		meetingButton = (ImageButton) this.findViewById(R.id.meeting);
-		meetingButton.setOnClickListener(this);
-
-		noteButton = (ImageButton) this.findViewById(R.id.note);
-		noteButton.setOnClickListener(this);
-	}
-
-	@Override
-	public void onClick(View arg0) {
-		if (null != arg0) {
-			if (arg0 == scheduleButton) {
-				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.CreateNewTask.class);
-				startSubActivity(i, 0);
-			} else if (arg0 == meetingButton) {
-				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.CreateMeeting.class);
-				startSubActivity(i, 0);
-			} else if (arg0 == noteButton) {
-				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.CreateNote.class);
-				startSubActivity(i, 0);
-			}
-		}
+		setContentView(R.layout.create_newtask);
 	}
 
 }
