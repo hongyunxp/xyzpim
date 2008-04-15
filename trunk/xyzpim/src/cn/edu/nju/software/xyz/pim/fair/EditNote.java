@@ -31,22 +31,31 @@ import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author savio 2008-4-15 下午01:57:13
+ * @author savio 2008-4-15 下午06:59:58
  * 
  */
-public class CreateNote extends Activity {
-
+public class EditNote extends Activity {
 	private static final int RETURN_M_ID = 0;
 	private static final int FINISH_M_ID = 1;
 
 	private EditText titleText;
 	private EditText contentText;
+	private long noteId;
 
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.create_note);
 		titleText = (EditText) findViewById(R.id.note_tilte_text);
 		contentText = (EditText) findViewById(R.id.note_content_text);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			noteId = extras.getLong("NoteId");
+			FairDB fairDbAdp = FairDB.getInstance(this);
+			Note note = fairDbAdp.getNote(noteId);
+			titleText.setText(note.Title);
+			contentText.setText(note.Content);
+		}
 	}
 
 	@Override
@@ -65,7 +74,7 @@ public class CreateNote extends Activity {
 			FairDB FairDbAdp = FairDB.getInstance(this);
 			String title = titleText.getText().toString();
 			String content = contentText.getText().toString();
-			FairDbAdp.insertNote(title, content);
+			FairDbAdp.updateNote(noteId, title, content);
 			finish();
 			return true;
 		case RETURN_M_ID:

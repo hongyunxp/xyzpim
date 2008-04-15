@@ -95,6 +95,14 @@ public class FairDB {
 		return (db.delete(NOTES_TABLE, "note_id=" + noteId.toString(), null) > 0);
 	}
 
+	public int updateNote(Long noteId, String title, String content) {
+		ContentValues values = new ContentValues();
+		values.put("title", title);
+		values.put("content", content);
+		return (db.update(NOTES_TABLE, values, "note_id=" + noteId.toString(),
+				null));
+	}
+
 	public boolean insertMeeting(String title, String start_time,
 			String end_time, int notify, String place) {
 		ContentValues values = new ContentValues();

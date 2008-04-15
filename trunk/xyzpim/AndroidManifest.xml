@@ -47,6 +47,9 @@
 			android:label="Read Article">
 		</activity>
 	<activity android:name=".fair.CreateMeeting">
+</activity><activity android:name=".fair.TaskView">
+</activity><activity android:name=".fair.NoteView">
+</activity><activity android:name=".fair.EditNote">
 </activity><activity android:name=".fair.CreateNote">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
