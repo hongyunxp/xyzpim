@@ -35,5 +35,6 @@ public class Message {
 	public String subject;
 	// public String reply_to;
 	public String contentType;
+	public String contentTransferEncoding;
 	public String content;
 }

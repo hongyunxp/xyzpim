@@ -39,6 +39,7 @@ import cn.edu.nju.software.xyz.pim.email.POP3Session;
 public class Test extends Activity implements OnClickListener {
 
 	private TextView subjectText;
+	private TextView reciverText;
 	private TextView senderText;
 	private TextView dateText;
 	private TextView contentText;
@@ -49,6 +50,7 @@ public class Test extends Activity implements OnClickListener {
 		super.onCreate(icicle);
 
 		subjectText = (TextView) findViewById(R.id.mail_subject);
+		reciverText = (TextView) findViewById(R.id.mail_reciver);
 		senderText = (TextView) findViewById(R.id.mail_sender);
 		dateText = (TextView) findViewById(R.id.mail_date);
 		contentText = (TextView) findViewById(R.id.mail_content);
@@ -57,11 +59,13 @@ public class Test extends Activity implements OnClickListener {
 		s.host = "pop3.163.com";
 		s.port = 110;
 		s.username = "xmxsuperstar";
-		s.password = "851121";
+		s.password = "test123456";
 		s.open();
 		Message m = s.getMsg(1);
+		s.close();
 
 		subjectText.setText(m.subject);
+		reciverText.setText(m.to);
 		senderText.setText(m.from);
 		dateText.setText(m.date);
 		contentText.setText(m.content);

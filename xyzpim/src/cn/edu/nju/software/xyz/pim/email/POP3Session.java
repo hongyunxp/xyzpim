@@ -28,6 +28,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.regex.Matcher;
@@ -66,11 +67,10 @@ public class POP3Session extends Session {
 			pop3Socket = new Socket(host, port);
 			in = new BufferedReader(new InputStreamReader(pop3Socket
 					.getInputStream()));
-			// Creat input stream for pop3socket
 
 			out = new BufferedWriter(new OutputStreamWriter(pop3Socket
 					.getOutputStream()));
-			// Creat output stream for po3socket
+
 			String cmd;
 
 			log(S, in.readLine());
@@ -114,41 +114,54 @@ public class POP3Session extends Session {
 				if (isHeader) {
 					if (line.toLowerCase().startsWith("message-id: "))
 						msg.id = line.substring(13, line.length() - 1);
-					else if (line.toLowerCase().startsWith("from:")) {
-						String fromText = line.substring(6);
-						String fromEncode = fromText.substring(fromText
-								.indexOf("=?") + 2, fromText.indexOf("?B?"));
-						String fromName = fromText.substring(fromText
-								.indexOf("?B?") + 3, fromText.indexOf("?="));
-						fromName = new String(Base64Coder.decode(fromName),
-								fromEncode);
-						String fromAddr = fromText.substring(fromText
-								.indexOf("?=") + 4);
-						msg.from = fromName + " " + fromAddr;
-					}
-
-					else if (line.toLowerCase().startsWith("to:"))
-						msg.to = line.substring(4);
-					else if (line.toLowerCase().startsWith("date: "))
+					else if (line.toLowerCase().startsWith("from: ")) {
+						String fromText = line.substring(6).trim();
+						msg.from = cplxStringDecode(fromText);
+						while (fromText.endsWith(",")) {
+							fromText = in.readLine().trim();
+							msg.from = msg.from + cplxStringDecode(fromText);
+						}
+					} else if (line.toLowerCase().startsWith("to: ")) {
+						String toText = line.substring(4).trim();
+						msg.to = cplxStringDecode(toText);
+						while (toText.endsWith(",")) {
+							toText = in.readLine().trim();
+							msg.to = msg.to + cplxStringDecode(toText);
+						}
+					} else if (line.toLowerCase().startsWith("date: "))
 						msg.date = line.substring(6);
 					else if (line.toLowerCase().startsWith("subject: ")) {
 						String subText = line.substring(9);
-						String subEncode = subText.substring(subText
-								.indexOf("=?") + 2, subText.indexOf("?B?"));
-						String sub = subText.substring(
-								subText.indexOf("?B?") + 3, subText
-										.indexOf("?="));
-						msg.subject = new String(Base64Coder.decode(sub),
-								subEncode);
+						msg.subject = cplxStringDecode(subText);
 					} else if (line.toLowerCase().startsWith("content-type: "))
 						msg.contentType = line.substring(14);
+					else if (line.toLowerCase().startsWith(
+							"content-transfer-encoding: "))
+						msg.contentTransferEncoding = line.substring(27);
 					else if (line.equals(""))
 						isHeader = false;
 				} else {
-					contentBuf.append(line + "\n");
+					contentBuf.append(line);
 				}
-				msg.content = contentBuf.toString();
 			}
+			// 正文是纯文本，目前只支持纯文本
+			if ("text/plain".equalsIgnoreCase(msg.contentType.substring(0,
+					msg.contentType.indexOf(";")))) {
+				if ("base64".equalsIgnoreCase(msg.contentTransferEncoding)) {
+					// 获得正文编码
+					String cEncode = msg.contentType.substring(msg.contentType
+							.indexOf("charset=") + 8);
+
+					// Android不支持GBK，使用GB2312代替
+					if ("GBK".equalsIgnoreCase(cEncode))
+						cEncode = "GB2312";
+
+					// Base64解码
+					msg.content = new String(Base64Coder.decode(contentBuf
+							.toString()), cEncode);
+				}
+			}
+
 		} catch (IOException e) {
 			Log.e("XYZPIM", e.getMessage());
 		}
@@ -158,25 +171,65 @@ public class POP3Session extends Session {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+		try {
+			String cmd = "quit" + CRLF;
+			out.write(cmd);
+			log(C, cmd);
+			pop3Socket.close();
+		} catch (IOException e) {
+
+		}
 
 	}
 
 	/**
-	 * 解析诸如“=?GB2312?B?xPHIyw==?=”的字符串
+	 * 解析诸如“=?GB2312?B?xPHIyw==?=”的字符串 主要出现在To: From: Subject: 字段
 	 */
-	private String cplxStringDecode(String cplxString) {
-		String reg = "=\\?[0-9|a-z|A-Z]*\\?=";
-		String regEncode = "=??B?";
-		String regContent = "?B??=";
-		Pattern p = Pattern.compile(reg);
-		Matcher m = p.matcher(cplxString);
-		if (!m.find()) // 不是复杂字符
-			return cplxString;
-		for (int index = 0; index < m.groupCount(); ++index) {
-			Log.i("XYZPIM", m.group(index));
+	private static String cplxStringDecode(String cplxString) {
+		// 找出这种类型的字符串
+		Matcher m = Pattern.compile("=\\?[A-Z|a-z|0-9|=|+|/|\\-|\\?]*\\?=")
+				.matcher(cplxString);
+		while (m.find()) {
+			String entry = m.group();
+
+			String encode = null;
+			String content = null;
+
+			// 找出字符集编码
+			Matcher mEncode = Pattern.compile(
+					"=\\?[A-Z|a-z|0-9|=|+|/|\\-|\\?]*\\?B\\?").matcher(entry);
+			if (mEncode.find()) {
+				encode = mEncode.group();
+				encode = encode.substring(2, encode.length() - 3);
+			}
+
+			// 找出被BASE64编码的内容
+			Matcher mContent = Pattern.compile(
+					"\\?B\\?[A-Z|a-z|0-9|=|+|/|\\-|\\?]*\\?=").matcher(entry);
+			if (mContent.find()) {
+				content = mContent.group();
+				content = content.substring(3, content.length() - 2);
+				try {
+					if (null != encode) {
+
+						// Android不支持GBK
+						if ("GBK".equalsIgnoreCase(encode))
+							encode = "GB2312";
+
+						// BASE64解码
+						content = new String(Base64Coder.decode(content),
+								encode);
+					}
+
+				} catch (UnsupportedEncodingException e) {
+					Log.e("XYZPIM", e.getMessage());
+				}
+			}
+
+			// 最后替换为解析出的正常字符串
+			cplxString = cplxString.replace(entry, content);
 		}
-		return null;
+		return cplxString;
 	}
 
 	private void log(String CS, String info) {
