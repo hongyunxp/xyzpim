@@ -32,12 +32,12 @@
 		android:layout_width="fill_parent"
 		android:layout_height="?android:attr/listPreferredItemHeight"
 		android:textAppearance="?android:attr/textAppearanceLargeInverse"
-		android:textColor="?android:attr/textColorDim" />
+		android:textColor="#000000" />
 	<TextView android:id="@+id/rss_article_date_lable"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceSmallInverse"
-		android:textColor="?android:attr/textColorDim" />
+		android:textColor="#000000" />
 	<WebView android:id="@+id/rss_article_description_content"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
