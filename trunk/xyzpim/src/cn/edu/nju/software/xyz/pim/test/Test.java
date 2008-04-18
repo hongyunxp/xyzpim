@@ -23,12 +23,17 @@
  */
 package cn.edu.nju.software.xyz.pim.test;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.email.EmailException;
 import cn.edu.nju.software.xyz.pim.email.Message;
 import cn.edu.nju.software.xyz.pim.email.POP3Session;
 
@@ -55,20 +60,30 @@ public class Test extends Activity implements OnClickListener {
 		dateText = (TextView) findViewById(R.id.mail_date);
 		contentText = (TextView) findViewById(R.id.mail_content);
 
-		POP3Session s = POP3Session.getInstance();
-		s.host = "pop3.163.com";
-		s.port = 110;
-		s.username = "xmxsuperstar";
-		s.password = "test123456";
-		s.open();
-		Message m = s.getMsg(2);
-		s.close();
+		try {
+			POP3Session s = POP3Session.getInstance();
+			s.host = "pop.gmail.com";
+			s.port = 995;
+			s.username = "xyzpim";
+			s.password = "xyzpimtest";
+			s.isShowLog = true;
+			s.open(true);
+			Message m = s.getMsg(1);
+			s.close();
 
-		subjectText.setText(m.subject);
-		reciverText.setText(m.to);
-		senderText.setText(m.from);
-		dateText.setText(m.date);
-		contentText.setText(m.content);
+			subjectText.setText(m.subject);
+			reciverText.setText(m.to);
+			senderText.setText(m.from);
+			dateText.setText(m.date);
+			contentText.setText(m.content);
+		} catch (UnknownHostException e) {
+			Log.e("XYZPIM", e.getMessage());
+		} catch (IOException e) {
+			Log.e("XYZPIM", e.getMessage());
+		} catch (EmailException e) {
+			Log.e("XYZPIM", e.getMessage());
+		}
+
 	}
 
 	@Override

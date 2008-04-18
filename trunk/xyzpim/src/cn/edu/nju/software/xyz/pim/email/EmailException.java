@@ -23,39 +23,24 @@
  */
 package cn.edu.nju.software.xyz.pim.email;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
-import android.util.Log;
-
 /**
- * @author xmx 2008-4-14 下午07:57:26
+ * @author zxs 2008-4-18 下午07:45:22
  * 
  */
-public abstract class Session {
-	public boolean isShowLog = false;
+public class EmailException extends Exception {
 
-	protected String C = "C: ";
-	protected String S = "S: ";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public String host;
-	public int port;
-	public String username;
-	public String password;
-
-	protected static String CRLF = "\r\n";
-
-	public abstract void open() throws UnknownHostException, IOException,
-			EmailException;
-
-	public abstract void open(boolean isSSL) throws UnknownHostException,
-			IOException, EmailException;
-
-	public abstract void close() throws IOException;
-
-	// 测试用，显示客户端和服务器的详细的会话过程
-	protected void log(String CS, String info) {
-		if (isShowLog)
-			Log.i("XYZPIM", CS + info);
+	public EmailException(String line) {
+		super(line);
 	}
+
+	@Override
+	public String getMessage() {
+		return "EmailException: " + super.getMessage();
+	}
+
 }
