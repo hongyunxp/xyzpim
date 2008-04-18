@@ -61,7 +61,7 @@ public class Test extends Activity implements OnClickListener {
 		s.username = "xmxsuperstar";
 		s.password = "test123456";
 		s.open();
-		Message m = s.getMsg(1);
+		Message m = s.getMsg(2);
 		s.close();
 
 		subjectText.setText(m.subject);

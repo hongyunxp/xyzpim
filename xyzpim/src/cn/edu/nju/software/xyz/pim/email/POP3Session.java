@@ -34,6 +34,8 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import android.util.Log;
 
 /**
@@ -41,7 +43,7 @@ import android.util.Log;
  * 
  */
 public class POP3Session extends Session {
-	public boolean isShowLog = false;
+	public boolean isShowLog = true;
 
 	private String C = "C: ";
 	private String S = "S: ";
@@ -63,8 +65,32 @@ public class POP3Session extends Session {
 
 	@Override
 	public void open() {
+		open(false);
+	}
+
+	public void open(boolean isSSL) {
+		if (!isSSL)
+			try {
+				pop3Socket = new Socket(host, port);
+			} catch (UnknownHostException e) {
+				Log.e("XYZPIM", e.getMessage());
+			} catch (IOException e) {
+				Log.e("XYZPIM", e.getMessage());
+			}
+		else {
+			try {
+				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
+						.getDefault();
+				pop3Socket = factory.createSocket(host, port);
+			} catch (UnknownHostException e) {
+				Log.e("XYZPIM", e.getMessage());
+			} catch (IOException e) {
+				Log.e("XYZPIM", e.getMessage());
+			}
+
+		}
+
 		try {
-			pop3Socket = new Socket(host, port);
 			in = new BufferedReader(new InputStreamReader(pop3Socket
 					.getInputStream()));
 
@@ -86,12 +112,9 @@ public class POP3Session extends Session {
 			out.write(cmd);
 			out.flush();
 			log(S, in.readLine());
-		} catch (UnknownHostException e) {
-			Log.e("XYZPIM", e.getMessage());
 		} catch (IOException e) {
 			Log.e("XYZPIM", e.getMessage());
 		}
-
 	}
 
 	public Message getMsg(int index) {
@@ -113,30 +136,43 @@ public class POP3Session extends Session {
 				log(S, line);
 				if (isHeader) {
 					if (line.toLowerCase().startsWith("message-id: "))
+						// 去掉message-id: 以及<>
 						msg.id = line.substring(13, line.length() - 1);
 					else if (line.toLowerCase().startsWith("from: ")) {
+						// 去掉from:
 						String fromText = line.substring(6).trim();
 						msg.from = cplxStringDecode(fromText);
+						// 还有发件人
 						while (fromText.endsWith(",")) {
-							fromText = in.readLine().trim();
+							line = in.readLine();
+							log(S, line);
+							fromText = line.trim();
 							msg.from = msg.from + cplxStringDecode(fromText);
 						}
 					} else if (line.toLowerCase().startsWith("to: ")) {
+						// 去掉to:
 						String toText = line.substring(4).trim();
 						msg.to = cplxStringDecode(toText);
+						// 还有发件人
 						while (toText.endsWith(",")) {
-							toText = in.readLine().trim();
+							line = in.readLine();
+							log(S, line);
+							toText = line.trim();
 							msg.to = msg.to + cplxStringDecode(toText);
 						}
 					} else if (line.toLowerCase().startsWith("date: "))
+						// 去掉date:
 						msg.date = line.substring(6);
 					else if (line.toLowerCase().startsWith("subject: ")) {
+						// 去掉subject:
 						String subText = line.substring(9);
 						msg.subject = cplxStringDecode(subText);
 					} else if (line.toLowerCase().startsWith("content-type: "))
+						// 去掉content-type:
 						msg.contentType = line.substring(14);
 					else if (line.toLowerCase().startsWith(
 							"content-transfer-encoding: "))
+						// 去掉content-transfer-encoding:
 						msg.contentTransferEncoding = line.substring(27);
 					else if (line.equals(""))
 						isHeader = false;
@@ -197,18 +233,18 @@ public class POP3Session extends Session {
 
 			// 找出字符集编码
 			Matcher mEncode = Pattern.compile(
-					"=\\?[A-Z|a-z|0-9|=|+|/|\\-|\\?]*\\?B\\?").matcher(entry);
+					"=\\?([A-Z|a-z|0-9|=|+|/|\\-|\\?]*)\\?B\\?").matcher(entry);
 			if (mEncode.find()) {
-				encode = mEncode.group();
-				encode = encode.substring(2, encode.length() - 3);
+				encode = mEncode.group(1);
+				// encode = encode.substring(2, encode.length() - 3);
 			}
 
 			// 找出被BASE64编码的内容
 			Matcher mContent = Pattern.compile(
-					"\\?B\\?[A-Z|a-z|0-9|=|+|/|\\-|\\?]*\\?=").matcher(entry);
+					"\\?B\\?([A-Z|a-z|0-9|=|+|/|\\-|\\?]*)\\?=").matcher(entry);
 			if (mContent.find()) {
-				content = mContent.group();
-				content = content.substring(3, content.length() - 2);
+				content = mContent.group(1);
+				// content = content.substring(3, content.length() - 2);
 				try {
 					if (null != encode) {
 
