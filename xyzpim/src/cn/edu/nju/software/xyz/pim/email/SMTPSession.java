@@ -23,10 +23,35 @@
  */
 package cn.edu.nju.software.xyz.pim.email;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 /**
  * @author xmx 2008-4-14 下午07:57:37
  * 
  */
-public class SMTPSession {
+public class SMTPSession extends Session {
 
+	@Override
+	public void open() throws UnknownHostException, IOException, EmailException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void open(boolean isSSL) throws UnknownHostException, IOException,
+			EmailException {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void sendMsg(Message msg) {
+
+	}
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+
+	}
 }
