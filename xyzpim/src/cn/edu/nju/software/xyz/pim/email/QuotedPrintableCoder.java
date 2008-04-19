@@ -45,10 +45,11 @@ public class QuotedPrintableCoder {
 		StringBuffer outBuf = new StringBuffer();
 		for (int index = 0; index < in.length; ++index) {
 			byte b = in[index];
-			// ASCII 33-60, 62-126原样输出，其余的需编码
+			// ASCII 33-60, 62-126原样输出
 			if (b >= '!' && b <= '~' && b != '=') {
 				outBuf.append((char) b);
 			} else {
+				// 编码
 				outBuf.append('=');
 				String s = Integer.toHexString(b & 0xFF).toUpperCase();
 				if (s.length() % 2 != 0) {
@@ -67,7 +68,7 @@ public class QuotedPrintableCoder {
 		ByteArrayOutputStream outBuf = new ByteArrayOutputStream();
 		for (int index = 0; index < in.length; ++index) {
 			char c = in[index];
-			if (c == '=') {
+			if (c == '=') { // 需要解码
 				int u = Character.digit((char) in[++index], 16);
 				int l = Character.digit((char) in[++index], 16);
 				if (u == -1 || l == -1) {
@@ -75,7 +76,7 @@ public class QuotedPrintableCoder {
 				}
 				outBuf.write((char) ((u << 4) + l));
 			} else {
-				outBuf.write((byte) c);
+				outBuf.write((byte) c); // 直接输出
 			}
 		}
 		return outBuf.toByteArray();
