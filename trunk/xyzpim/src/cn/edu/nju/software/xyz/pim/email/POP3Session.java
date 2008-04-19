@@ -31,8 +31,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +43,11 @@ import android.util.Log;
  * 
  */
 public class POP3Session extends Session {
+	public boolean isShowLog = true;
+
+	private String C = "C: ";
+	private String S = "S: ";
+
 	private Socket pop3Socket;
 	private BufferedReader in;
 	private BufferedWriter out;
@@ -54,7 +57,6 @@ public class POP3Session extends Session {
 	private POP3Session() {
 	}
 
-	// Singleton!!
 	public static POP3Session getInstance() {
 		if (null == ins)
 			ins = new POP3Session();
@@ -62,70 +64,60 @@ public class POP3Session extends Session {
 	}
 
 	@Override
-	public void open() throws UnknownHostException, IOException, EmailException {
+	public void open() {
 		open(false);
 	}
 
-	public void open(boolean isSSL) throws UnknownHostException, IOException,
-			EmailException {
+	public void open(boolean isSSL) {
 		if (!isSSL)
-			pop3Socket = new Socket(host, port);
+			try {
+				pop3Socket = new Socket(host, port);
+			} catch (UnknownHostException e) {
+				Log.e("XYZPIM", e.getMessage());
+			} catch (IOException e) {
+				Log.e("XYZPIM", e.getMessage());
+			}
 		else {
-			// 打开SSL连接，gmail必须！！！
-			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
-					.getDefault();
-			pop3Socket = factory.createSocket(host, port);
+			try {
+				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
+						.getDefault();
+				pop3Socket = factory.createSocket(host, port);
+			} catch (UnknownHostException e) {
+				Log.e("XYZPIM", e.getMessage());
+			} catch (IOException e) {
+				Log.e("XYZPIM", e.getMessage());
+			}
+
 		}
-		in = new BufferedReader(new InputStreamReader(pop3Socket
-				.getInputStream()));
 
-		out = new BufferedWriter(new OutputStreamWriter(pop3Socket
-				.getOutputStream()));
+		try {
+			in = new BufferedReader(new InputStreamReader(pop3Socket
+					.getInputStream()));
 
-		String cmd; // 发给服务器的命令
-		String line; // 从服务器收到的一行回应
+			out = new BufferedWriter(new OutputStreamWriter(pop3Socket
+					.getOutputStream()));
 
-		log(S, in.readLine());
+			String cmd;
 
-		cmd = "user " + username + CRLF;
-		log(C, cmd);
-		out.write(cmd);
-		out.flush();
-		line = in.readLine();
-		log(S, line);
-		if (line.startsWith("-")) // "-"是服务器的出错返回前缀
-			throw new EmailException(line);
+			log(S, in.readLine());
 
-		cmd = "pass " + password + CRLF;
-		log(C, cmd);
-		out.write(cmd);
-		out.flush();
-		line = in.readLine();
-		log(S, line);
-		if (line.startsWith("-"))// "-"是服务器的出错返回前缀
-			throw new EmailException(line);
+			cmd = "user " + username + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			log(S, in.readLine());
+
+			cmd = "pass " + password + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			log(S, in.readLine());
+		} catch (IOException e) {
+			Log.e("XYZPIM", e.getMessage());
+		}
 	}
 
-	public int getMsgCount() throws IOException, EmailException {
-		int result = 0;
-
-		String cmd = "stat" + CRLF;
-		log(C, cmd);
-		out.write(cmd);
-		out.flush();
-		String line = in.readLine();
-		log(S, line);
-		if (line.startsWith("-"))// "-"是服务器的出错返回前缀
-			throw new EmailException(line);
-
-		Matcher m = Pattern.compile("\\b([1-9]\\d*)\\b").matcher(line);
-		if (m.find())
-			result = Integer.parseInt(m.group(1));
-
-		return result;
-	}
-
-	public Message getMsg(int index) throws EmailException {
+	public Message getMsg(int index) {
 		Message msg = new Message();
 		try {
 			String cmd;
@@ -137,84 +129,57 @@ public class POP3Session extends Session {
 			out.flush();
 
 			String line;
-
-			// 先读第一行回应，确定是否有指定的message
-			line = in.readLine();
-			log(S, line);
-			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
-				throw new EmailException(line);
-
 			StringBuffer contentBuf = new StringBuffer();
-			StringBuffer headerBuf = new StringBuffer();
 
 			boolean isHeader = true;
 			while (!(line = in.readLine()).equals(".")) {
 				log(S, line);
 				if (isHeader) {
-					if (line.equals(""))
-						// 遇到邮件头与正文间的空行，设置标记变量isHeader为假，表示正文开始，头部结束
+					if (line.toLowerCase().startsWith("message-id: "))
+						// 去掉message-id: 以及<>
+						msg.id = line.substring(13, line.length() - 1);
+					else if (line.toLowerCase().startsWith("from: ")) {
+						// 去掉from:
+						String fromText = line.substring(6).trim();
+						msg.from = cplxStringDecode(fromText);
+						// 还有发件人
+						while (fromText.endsWith(",")) {
+							line = in.readLine();
+							log(S, line);
+							fromText = line.trim();
+							msg.from = msg.from + cplxStringDecode(fromText);
+						}
+					} else if (line.toLowerCase().startsWith("to: ")) {
+						// 去掉to:
+						String toText = line.substring(4).trim();
+						msg.to = cplxStringDecode(toText);
+						// 还有发件人
+						while (toText.endsWith(",")) {
+							line = in.readLine();
+							log(S, line);
+							toText = line.trim();
+							msg.to = msg.to + cplxStringDecode(toText);
+						}
+					} else if (line.toLowerCase().startsWith("date: "))
+						// 去掉date:
+						msg.date = line.substring(6);
+					else if (line.toLowerCase().startsWith("subject: ")) {
+						// 去掉subject:
+						String subText = line.substring(9);
+						msg.subject = cplxStringDecode(subText);
+					} else if (line.toLowerCase().startsWith("content-type: "))
+						// 去掉content-type:
+						msg.contentType = line.substring(14);
+					else if (line.toLowerCase().startsWith(
+							"content-transfer-encoding: "))
+						// 去掉content-transfer-encoding:
+						msg.contentTransferEncoding = line.substring(27);
+					else if (line.equals(""))
 						isHeader = false;
-
-					// 遇到新的header条目或者头部结束
-					Matcher m = Pattern.compile("([a-z|A-Z|-]+):\\s(.+)")
-							.matcher(line);
-					if (m.find() || line.equals("")) {
-						// 先将前一个条目的内容放进msg相应域变量
-						{
-							String entry = headerBuf.toString();
-							Matcher mEntry = Pattern.compile(
-									"([a-z|A-Z|-]+):\\s(.+)").matcher(entry);
-
-							// 头部第一行会出现这种情况
-							if (!mEntry.find()) {
-								headerBuf.append(line.trim());
-								continue;
-							}
-
-							String entryName = mEntry.group(1);
-							String entryValue = mEntry.group(2);
-
-							if (entryName.equalsIgnoreCase("message-id"))
-								// 去掉message-id: 以及<>
-								msg.id = entryValue.substring(1, entryValue
-										.length() - 1);
-							else if (entryName.equalsIgnoreCase("from")) {
-								// 去掉from:
-								msg.from = cplxStringDecode(entryValue);
-							} else if (entryName.equalsIgnoreCase("to")) {
-								// 去掉to:
-								msg.to = cplxStringDecode(entryValue);
-							} else if (entryName.equalsIgnoreCase("date"))
-								// 去掉date:
-								msg.date = entryValue;
-							else if (entryName.equalsIgnoreCase("subject")) {
-								// 去掉subject:
-								msg.subject = cplxStringDecode(entryValue);
-							} else if (entryName
-									.equalsIgnoreCase("content-type"))
-								// 去掉content-type:
-								msg.contentType = entryValue;
-							else if (entryName
-									.equalsIgnoreCase("content-transfer-encoding"))
-								// 去掉content-transfer-encoding:
-								msg.contentTransferEncoding = entryValue;
-						} // / 完成将原先条目的内容放进msg相应域变量
-
-						// 清除headerBuf中的内容
-						headerBuf.delete(0, headerBuf.length());
-						// 将新header条目中的第一行加入headerBuf
-						headerBuf.append(line);
-					} else {
-						// 加入一个具有多行的头部条目的后续行
-						headerBuf.append(line.trim());
-					}
 				} else {
-					// 正文
 					contentBuf.append(line);
 				}
 			}
-			log(S, line);
-
 			// 正文是纯文本，目前只支持纯文本
 			if ("text/plain".equalsIgnoreCase(msg.contentType.substring(0,
 					msg.contentType.indexOf(";")))) {
@@ -231,8 +196,6 @@ public class POP3Session extends Session {
 					msg.content = new String(Base64Coder.decode(contentBuf
 							.toString()), cEncode);
 				}
-			} else {
-				msg.content = contentBuf.toString();
 			}
 
 		} catch (IOException e) {
@@ -242,24 +205,17 @@ public class POP3Session extends Session {
 		return msg;
 	}
 
-	public List<Message> getAllMsg() throws IOException, EmailException {
-		List<Message> msgs = new ArrayList<Message>();
-		int msgCount = getMsgCount();
-		for (int index = 1; index <= msgCount; ++index) {
-			msgs.add(getMsg(index));
-		}
-		return msgs;
-	}
-
 	@Override
-	public void close() throws IOException {
-		String cmd = "quit" + CRLF;
-		out.write(cmd);
-		log(C, cmd);
+	public void close() {
+		try {
+			String cmd = "quit" + CRLF;
+			out.write(cmd);
+			log(C, cmd);
+			pop3Socket.close();
+		} catch (IOException e) {
 
-		// in.close();
-		// out.close();
-		pop3Socket.close();
+		}
+
 	}
 
 	/**
@@ -279,7 +235,7 @@ public class POP3Session extends Session {
 			Matcher mEncode = Pattern.compile(
 					"=\\?([A-Z|a-z|0-9|=|+|/|\\-|\\?]*)\\?B\\?").matcher(entry);
 			if (mEncode.find()) {
-				encode = mEncode.group(1); // "=?"与"?="之间的字串
+				encode = mEncode.group(1);
 				// encode = encode.substring(2, encode.length() - 3);
 			}
 
@@ -287,7 +243,7 @@ public class POP3Session extends Session {
 			Matcher mContent = Pattern.compile(
 					"\\?B\\?([A-Z|a-z|0-9|=|+|/|\\-|\\?]*)\\?=").matcher(entry);
 			if (mContent.find()) {
-				content = mContent.group(1); // "?B?"与"?="之间的字串
+				content = mContent.group(1);
 				// content = content.substring(3, content.length() - 2);
 				try {
 					if (null != encode) {
@@ -311,4 +267,10 @@ public class POP3Session extends Session {
 		}
 		return cplxString;
 	}
+
+	private void log(String CS, String info) {
+		if (isShowLog)
+			Log.i("XYZPIM", CS + info);
+	}
+
 }
