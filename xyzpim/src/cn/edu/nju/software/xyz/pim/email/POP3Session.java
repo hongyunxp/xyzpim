@@ -213,7 +213,7 @@ public class POP3Session extends Session {
 						headerBuf.append(line);
 					} else {
 						// 加入一个具有多行的头部条目的后续行
-						headerBuf.append(line.trim());
+						headerBuf.append(" " + line.trim());
 					}
 				} else {
 					// 正文
