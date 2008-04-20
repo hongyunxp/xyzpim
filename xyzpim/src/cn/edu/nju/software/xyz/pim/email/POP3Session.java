@@ -38,8 +38,6 @@ import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import android.util.Log;
-
 /**
  * @author xmx 2008-4-14 下午08:03:46
  * 
@@ -62,65 +60,74 @@ public class POP3Session extends Session {
 	}
 
 	@Override
-	public void open() throws UnknownHostException, IOException, EmailException {
+	public void open() throws EmailException {
 		open(false);
 	}
 
-	public void open(boolean isSSL) throws UnknownHostException, IOException,
-			EmailException {
-		if (!isSSL)
-			pop3Socket = new Socket(host, port);
-		else {
-			// 打开SSL连接，gmail必须！！！
-			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
-					.getDefault();
-			pop3Socket = factory.createSocket(host, port);
+	@Override
+	public void open(boolean isSSL) throws EmailException {
+		try {
+			if (!isSSL)
+				pop3Socket = new Socket(host, port);
+			else {
+				// 打开SSL连接，gmail必须！！！
+				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
+						.getDefault();
+				pop3Socket = factory.createSocket(host, port);
+			}
+			in = new BufferedReader(new InputStreamReader(pop3Socket
+					.getInputStream()));
+
+			out = new BufferedWriter(new OutputStreamWriter(pop3Socket
+					.getOutputStream()));
+
+			String cmd; // 发给服务器的命令
+			String line; // 从服务器收到的一行回应
+
+			log(S, in.readLine());
+
+			cmd = "user " + username + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			line = in.readLine();
+			log(S, line);
+			if (line.startsWith("-")) // "-"是服务器的出错返回前缀
+				throw new EmailException(line);
+
+			cmd = "pass " + password + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			line = in.readLine();
+			log(S, line);
+			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
+				throw new EmailException(line);
+		} catch (UnknownHostException e) {
+			throw new EmailException(e.getMessage());
+		} catch (IOException e) {
+			throw new EmailException(e.getMessage());
 		}
-		in = new BufferedReader(new InputStreamReader(pop3Socket
-				.getInputStream()));
-
-		out = new BufferedWriter(new OutputStreamWriter(pop3Socket
-				.getOutputStream()));
-
-		String cmd; // 发给服务器的命令
-		String line; // 从服务器收到的一行回应
-
-		log(S, in.readLine());
-
-		cmd = "user " + username + CRLF;
-		log(C, cmd);
-		out.write(cmd);
-		out.flush();
-		line = in.readLine();
-		log(S, line);
-		if (line.startsWith("-")) // "-"是服务器的出错返回前缀
-			throw new EmailException(line);
-
-		cmd = "pass " + password + CRLF;
-		log(C, cmd);
-		out.write(cmd);
-		out.flush();
-		line = in.readLine();
-		log(S, line);
-		if (line.startsWith("-"))// "-"是服务器的出错返回前缀
-			throw new EmailException(line);
 	}
 
-	public int getMsgCount() throws IOException, EmailException {
+	public int getMsgCount() throws EmailException {
 		int result = 0;
 
-		String cmd = "stat" + CRLF;
-		log(C, cmd);
-		out.write(cmd);
-		out.flush();
-		String line = in.readLine();
-		log(S, line);
-		if (line.startsWith("-"))// "-"是服务器的出错返回前缀
-			throw new EmailException(line);
-
-		Matcher m = Pattern.compile("\\b([1-9]\\d*)\\b").matcher(line);
-		if (m.find())
-			result = Integer.parseInt(m.group(1));
+		try {
+			String cmd = "stat" + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			String line = in.readLine();
+			log(S, line);
+			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
+				throw new EmailException(line);
+			Matcher m = Pattern.compile("\\b([1-9]\\d*)\\b").matcher(line);
+			if (m.find())
+				result = Integer.parseInt(m.group(1));
+		} catch (IOException e) {
+			throw new EmailException(e.getMessage());
+		}
 
 		return result;
 	}
@@ -220,29 +227,29 @@ public class POP3Session extends Session {
 					msg.contentType.indexOf(";")))) {
 				if ("base64".equalsIgnoreCase(msg.contentTransferEncoding)) {
 					// 获得正文编码
-					String cEncode = msg.contentType.substring(msg.contentType
+					String charset = msg.contentType.substring(msg.contentType
 							.indexOf("charset=") + 8);
 
 					// Android不支持GBK，使用GB2312代替
-					if ("GBK".equalsIgnoreCase(cEncode))
-						cEncode = "GB2312";
+					if (charset.toUpperCase().startsWith("GB"))
+						charset = "GB2312"; // Android对中文简体字符集只支持GB2312
 
 					// Base64解码
 					msg.content = new String(Base64Coder.decode(contentBuf
-							.toString()), cEncode);
+							.toString()), charset);
 				}
 			} else {
 				msg.content = contentBuf.toString();
 			}
 
 		} catch (IOException e) {
-			Log.e("XYZPIM", e.getMessage());
+			throw new EmailException(e.getMessage());
 		}
 
 		return msg;
 	}
 
-	public List<Message> getAllMsg() throws IOException, EmailException {
+	public List<Message> getAllMsg() throws EmailException {
 		List<Message> msgs = new ArrayList<Message>();
 		int msgCount = getMsgCount();
 		for (int index = 1; index <= msgCount; ++index) {
@@ -252,62 +259,59 @@ public class POP3Session extends Session {
 	}
 
 	@Override
-	public void close() throws IOException {
-		String cmd = "quit" + CRLF;
-		out.write(cmd);
-		log(C, cmd);
+	public void close() throws EmailException {
+		try {
+			String cmd = "quit" + CRLF;
+			out.write(cmd);
+			log(C, cmd);
 
-		// in.close();
-		// out.close();
-		pop3Socket.close();
+			// in.close();
+			// out.close();
+			pop3Socket.close();
+		} catch (IOException e) {
+			throw new EmailException(e.getMessage());
+		}
+
 	}
 
 	/**
 	 * 解析诸如“=?GB2312?B?xPHIyw==?=”的字符串 主要出现在To: From: Subject: 字段
+	 * 
+	 * @throws EmailException
 	 */
-	private static String cplxStringDecode(String cplxString) {
+	private static String cplxStringDecode(String cplxString)
+			throws EmailException {
 		// 找出这种类型的字符串
-		Matcher m = Pattern.compile("=\\?[A-Z|a-z|0-9|=|+|/|\\-|\\?]*\\?=")
-				.matcher(cplxString);
+		String reg = "=\\?" + "([a-z|A-Z|0-9|\\-]*)" + "\\?" + "([Q|B]{1})"
+				+ "\\?" + "([a-z|A-Z|0-9|=|+|/|\\-|\\?]*)" + "\\?=";
+		Matcher m = Pattern.compile(reg).matcher(cplxString);
 		while (m.find()) {
-			String entry = m.group();
+			if (m.groupCount() == 3) {
+				String entry = m.group(0);
 
-			String encode = null;
-			String content = null;
+				String charset = m.group(1);
+				String encode = m.group(2); // base64 or quated-printable
+				String content = m.group(3);
 
-			// 找出字符集编码
-			Matcher mEncode = Pattern.compile(
-					"=\\?([A-Z|a-z|0-9|=|+|/|\\-|\\?]*)\\?B\\?").matcher(entry);
-			if (mEncode.find()) {
-				encode = mEncode.group(1); // "=?"与"?="之间的字串
-				// encode = encode.substring(2, encode.length() - 3);
-			}
+				if (charset.toUpperCase().startsWith("GB"))
+					charset = "GB2312"; // Android对中文简体字符集只支持GB2312
 
-			// 找出被BASE64编码的内容
-			Matcher mContent = Pattern.compile(
-					"\\?B\\?([A-Z|a-z|0-9|=|+|/|\\-|\\?]*)\\?=").matcher(entry);
-			if (mContent.find()) {
-				content = mContent.group(1); // "?B?"与"?="之间的字串
-				// content = content.substring(3, content.length() - 2);
 				try {
-					if (null != encode) {
-
-						// Android不支持GBK
-						if ("GBK".equalsIgnoreCase(encode))
-							encode = "GB2312";
-
-						// BASE64解码
+					if ("B".equalsIgnoreCase(encode))
 						content = new String(Base64Coder.decode(content),
-								encode);
-					}
-
+								charset);
+					else if ("Q".equals(encode))
+						content = new String(QuotedPrintableCoder
+								.decode(content), charset);
+					else
+						throw new EmailException(
+								"Unsupported content transfer encoding");
 				} catch (UnsupportedEncodingException e) {
-					Log.e("XYZPIM", e.getMessage());
+					throw new EmailException(e.getMessage());
 				}
+				// 最后替换为解析出的正常字符串
+				cplxString = cplxString.replace(entry, content);
 			}
-
-			// 最后替换为解析出的正常字符串
-			cplxString = cplxString.replace(entry, content);
 		}
 		return cplxString;
 	}

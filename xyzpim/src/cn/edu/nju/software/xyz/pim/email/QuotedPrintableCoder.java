@@ -69,8 +69,8 @@ public class QuotedPrintableCoder {
 		for (int index = 0; index < in.length; ++index) {
 			char c = in[index];
 			if (c == '=') { // 需要解码
-				int u = Character.digit((char) in[++index], 16);
-				int l = Character.digit((char) in[++index], 16);
+				int u = Character.digit(in[++index], 16);
+				int l = Character.digit(in[++index], 16);
 				if (u == -1 || l == -1) {
 					continue;
 				}
@@ -84,5 +84,9 @@ public class QuotedPrintableCoder {
 
 	public static String decodeString(String in) {
 		return new String(decode(in.toCharArray()));
+	}
+
+	public static byte[] decode(String in) {
+		return decode(in.toCharArray());
 	}
 }

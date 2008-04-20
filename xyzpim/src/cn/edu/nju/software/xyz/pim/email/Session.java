@@ -23,9 +23,6 @@
  */
 package cn.edu.nju.software.xyz.pim.email;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
 import android.util.Log;
 
 /**
@@ -45,13 +42,11 @@ public abstract class Session {
 
 	protected static String CRLF = "\r\n";
 
-	public abstract void open() throws UnknownHostException, IOException,
-			EmailException;
+	public abstract void open() throws EmailException;
 
-	public abstract void open(boolean isSSL) throws UnknownHostException,
-			IOException, EmailException;
+	public abstract void open(boolean isSSL) throws EmailException;
 
-	public abstract void close() throws IOException;
+	public abstract void close() throws EmailException;
 
 	// 测试用，显示客户端和服务器的详细的会话过程
 	protected void log(String CS, String info) {
