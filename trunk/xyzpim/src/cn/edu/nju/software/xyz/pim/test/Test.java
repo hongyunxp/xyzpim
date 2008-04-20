@@ -23,9 +23,6 @@
  */
 package cn.edu.nju.software.xyz.pim.test;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,10 +73,6 @@ public class Test extends Activity implements OnClickListener {
 			senderText.setText(m.from);
 			dateText.setText(m.date);
 			contentText.setText(m.content);
-		} catch (UnknownHostException e) {
-			Log.e("XYZPIM", e.getMessage());
-		} catch (IOException e) {
-			Log.e("XYZPIM", e.getMessage());
 		} catch (EmailException e) {
 			Log.e("XYZPIM", e.getMessage());
 		}
