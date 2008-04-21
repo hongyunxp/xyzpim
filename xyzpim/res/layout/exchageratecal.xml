@@ -34,7 +34,8 @@
 			<Spinner android:id="@+id/money1type"
 				android:drawSelectorOnTop="true" />
 			<TextView android:text="@string/colon" />
-			<EditText android:id="@+id/money1amount" />
+			<EditText android:id="@+id/money1amount"
+				android:digits="1234567890." />
 		</TableRow>
 		<TableRow>
 			<TextView />
@@ -45,7 +46,8 @@
 			<Spinner android:id="@+id/money2type"
 				android:drawSelectorOnTop="true" />
 			<TextView android:text="@string/colon" />
-			<EditText android:id="@+id/money2amount" />
+			<EditText android:id="@+id/money2amount"
+				android:digits="1234567890." />
 		</TableRow>
 	</TableLayout>
 	<TableLayout android:layout_width="fill_parent"

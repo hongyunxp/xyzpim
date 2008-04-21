@@ -30,8 +30,8 @@ package cn.edu.nju.software.xyz.pim.fair;
 public class Meeting {
 	public long MeetId;
 	public String Title;
-	public String StartTime;
-	public String EndTime;
+	public String StartDateTime;
+	public String EndDateTime;
 	public int IsNotify;
 	public String Place;
 }

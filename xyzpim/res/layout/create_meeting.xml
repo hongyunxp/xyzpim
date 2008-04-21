@@ -36,11 +36,29 @@
 		</TableRow>
 		<TableRow>
 			<TextView android:text="@string/starttime" />
-			<EditText android:id="@+id/meeting_start_time" />
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:orientation="horizontal">
+				<Button android:id="@+id/meeting_start_date"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent" />
+				<Button android:id="@+id/meeting_start_time"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent" />
+			</LinearLayout>
 		</TableRow>
 		<TableRow>
 			<TextView android:text="@string/endtime" />
-			<EditText android:id="@+id/meeting_end_time" />
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:orientation="horizontal">
+				<Button android:id="@+id/meeting_end_date"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent" />
+				<Button android:id="@+id/meeting_end_time"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent" />
+			</LinearLayout>
 		</TableRow>
 		<TableRow>
 			<TextView android:text="@string/notify" />

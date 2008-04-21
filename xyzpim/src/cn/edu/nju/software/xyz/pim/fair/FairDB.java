@@ -214,8 +214,8 @@ public class FairDB {
 				Meeting meeting = new Meeting();
 				meeting.MeetId = c.getLong(0);
 				meeting.Title = c.getString(1);
-				meeting.StartTime = c.getString(2);
-				meeting.EndTime = c.getString(3);
+				meeting.StartDateTime = c.getString(2);
+				meeting.EndDateTime = c.getString(3);
 				meeting.IsNotify = c.getInt(4);
 				meeting.Place = c.getString(5);
 				meetings.add(meeting);
@@ -242,8 +242,8 @@ public class FairDB {
 			c.first();
 			meeting.MeetId = c.getLong(0);
 			meeting.Title = c.getString(1);
-			meeting.StartTime = c.getString(2);
-			meeting.EndTime = c.getString(3);
+			meeting.StartDateTime = c.getString(2);
+			meeting.EndDateTime = c.getString(3);
 			meeting.IsNotify = c.getInt(4);
 			meeting.Place = c.getString(5);
 		} catch (SQLException e) {
