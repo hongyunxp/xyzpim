@@ -28,8 +28,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.email.ContentPart;
 import cn.edu.nju.software.xyz.pim.email.EmailException;
 import cn.edu.nju.software.xyz.pim.email.Message;
 import cn.edu.nju.software.xyz.pim.email.POP3Session;
@@ -44,7 +46,7 @@ public class Test extends Activity implements OnClickListener {
 	private TextView reciverText;
 	private TextView senderText;
 	private TextView dateText;
-	private TextView contentText;
+	private WebView contentText;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -55,7 +57,7 @@ public class Test extends Activity implements OnClickListener {
 		reciverText = (TextView) findViewById(R.id.mail_reciver);
 		senderText = (TextView) findViewById(R.id.mail_sender);
 		dateText = (TextView) findViewById(R.id.mail_date);
-		contentText = (TextView) findViewById(R.id.mail_content);
+		contentText = (WebView) findViewById(R.id.mail_content);
 
 		try {
 			POP3Session s = POP3Session.getInstance();
@@ -65,14 +67,16 @@ public class Test extends Activity implements OnClickListener {
 			s.password = "xyzpimtest";
 			s.isShowLog = true;
 			s.open(true);
-			Message m = s.getMsg(1);
+			Message m = s.getMsg(5);
 			s.close();
 
 			subjectText.setText(m.subject);
 			reciverText.setText(m.to);
 			senderText.setText(m.from);
 			dateText.setText(m.date);
-			contentText.setText(m.content);
+			ContentPart content = m.content.getSubContentPart().get(1);
+			contentText.loadData(content.getContentString(), content
+					.getMIMEType(), "UTF-8");
 		} catch (EmailException e) {
 			Log.e("XYZPIM", e.getMessage());
 		}

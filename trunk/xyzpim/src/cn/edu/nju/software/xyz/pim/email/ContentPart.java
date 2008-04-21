@@ -23,6 +23,7 @@
  */
 package cn.edu.nju.software.xyz.pim.email;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -45,8 +46,9 @@ public class ContentPart {
 	 * 当contentType中指定mime类型为text/html, text/plain该方法有效
 	 * 
 	 * @return 本content part中的解析后的文本，不包含子content part
+	 * @throws EmailException
 	 */
-	public String getContentString() {
+	public String getContentString() throws EmailException {
 		String mime = getMIMEType();
 		String charset = getCharSetName();
 		StringBuilder buf = new StringBuilder();
@@ -67,10 +69,20 @@ public class ContentPart {
 					buf.append(line.substring(0, line.length() - 1));
 			}
 			if ("base64".equalsIgnoreCase(contentTransferEncoding))
-				re = Base64Coder.decodeString(buf.toString());
+				try {
+					re = new String(Base64Coder.decode(buf.toString()), charset);
+				} catch (UnsupportedEncodingException e) {
+					throw new EmailException(e.getMessage());
+				}
 			else if ("quoted-printable"
 					.equalsIgnoreCase(contentTransferEncoding))
-				re = QuotedPrintableCoder.decodeString(buf.toString());
+				try {
+					re = new String(
+							QuotedPrintableCoder.decode(buf.toString()),
+							charset);
+				} catch (UnsupportedEncodingException e) {
+					throw new EmailException(e.getMessage());
+				}
 		} else {
 
 		}
