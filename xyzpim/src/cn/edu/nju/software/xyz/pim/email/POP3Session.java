@@ -28,11 +28,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,6 +132,88 @@ public class POP3Session extends Session {
 		return result;
 	}
 
+	/**
+	 * 收取指定邮件的头部
+	 * 
+	 * @param index
+	 *            邮件在服务器上的索引
+	 * @return 只有头部没有正文的邮件
+	 * @throws EmailException
+	 */
+	public Message getMsgHeader(int index) throws EmailException {
+		Message msg = new Message();
+		try {
+			String cmd;
+
+			// 发送取回命令
+			cmd = "top " + index + " 0" + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+
+			String line;
+
+			// 先读第一行回应，确定是否有指定的message
+			line = in.readLine();
+			log(S, line);
+			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
+				throw new EmailException(line);
+
+			List<String> headerLines = new ArrayList<String>();
+			while (!(line = in.readLine()).equals("")) {
+				log(S, line);
+				headerLines.add(line);
+			}
+
+			Map<String, String> headerMap = HeaderUtil
+					.decodeHeader(headerLines);
+
+			setMsgHeader(msg, headerMap);
+
+		} catch (IOException e) {
+			throw new EmailException(e.getMessage());
+		}
+		return msg;
+	}
+
+	private void setMsgHeader(Message msg, Map<String, String> headerMap)
+			throws EmailException {
+		String entryValue = null;
+		if (null != (entryValue = headerMap.get("message-id"))) {
+			msg.id = entryValue.substring(1, entryValue.length() - 1);
+		}
+		if (null != (entryValue = headerMap.get("from"))) {
+			msg.from = HeaderUtil.cplxStringDecode(entryValue);
+		}
+		if (null != (entryValue = headerMap.get("to"))) {
+			msg.to = HeaderUtil.cplxStringDecode(entryValue);
+		}
+		if (null != (entryValue = headerMap.get("date"))) {
+			msg.date = entryValue;
+		}
+		if (null != (entryValue = headerMap.get("subject"))) {
+			msg.subject = HeaderUtil.cplxStringDecode(entryValue);
+		}
+		if (null != (entryValue = headerMap.get("content-type"))) {
+			msg.content.contentType = entryValue;
+		}
+		if (null != (entryValue = headerMap.get("content-transfer-encoding"))) {
+			msg.content.contentTransferEncoding = entryValue;
+		}
+		if (null != (entryValue = headerMap.get("content-dispotion"))) {
+			msg.content.contentDisposition = entryValue;
+		}
+
+	}
+
+	/**
+	 * 收取制定邮件的头部和正文
+	 * 
+	 * @param index
+	 *            邮件在服务器上的索引
+	 * @return 收到的指定的邮件
+	 * @throws EmailException
+	 */
 	public Message getMsg(int index) throws EmailException {
 		Message msg = new Message();
 		try {
@@ -151,97 +233,23 @@ public class POP3Session extends Session {
 			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
 				throw new EmailException(line);
 
-			StringBuffer contentBuf = new StringBuffer();
-			StringBuffer headerBuf = new StringBuffer();
-
-			boolean isHeader = true;
+			// boolean isHeader = true;
+			List<String> headerLines = new ArrayList<String>();
+			while (!(line = in.readLine()).equals("")) {
+				log(S, line);
+				headerLines.add(line);
+			}
+			log(S, line);
 			while (!(line = in.readLine()).equals(".")) {
 				log(S, line);
-				if (isHeader) {
-					if (line.equals(""))
-						// 遇到邮件头与正文间的空行，设置标记变量isHeader为假，表示正文开始，头部结束
-						isHeader = false;
-
-					// 遇到新的header条目或者头部结束
-					Matcher m = Pattern.compile("([a-z|A-Z|-]+):\\s(.+)")
-							.matcher(line);
-					if (m.find() || line.equals("")) {
-						// 先将前一个条目的内容放进msg相应域变量
-						{
-							String entry = headerBuf.toString();
-							Matcher mEntry = Pattern.compile(
-									"([a-z|A-Z|-]+):\\s(.+)").matcher(entry);
-
-							// 头部第一行会出现这种情况
-							if (!mEntry.find()) {
-								headerBuf.append(line.trim());
-								continue;
-							}
-
-							String entryName = mEntry.group(1);
-							String entryValue = mEntry.group(2);
-
-							if (entryName.equalsIgnoreCase("message-id"))
-								// 去掉message-id: 以及<>
-								msg.id = entryValue.substring(1, entryValue
-										.length() - 1);
-							else if (entryName.equalsIgnoreCase("from")) {
-								// 去掉from:
-								msg.from = cplxStringDecode(entryValue);
-							} else if (entryName.equalsIgnoreCase("to")) {
-								// 去掉to:
-								msg.to = cplxStringDecode(entryValue);
-							} else if (entryName.equalsIgnoreCase("date"))
-								// 去掉date:
-								msg.date = entryValue;
-							else if (entryName.equalsIgnoreCase("subject")) {
-								// 去掉subject:
-								msg.subject = cplxStringDecode(entryValue);
-							} else if (entryName
-									.equalsIgnoreCase("content-type"))
-								// 去掉content-type:
-								msg.contentType = entryValue;
-							else if (entryName
-									.equalsIgnoreCase("content-transfer-encoding"))
-								// 去掉content-transfer-encoding:
-								msg.contentTransferEncoding = entryValue;
-						} // / 完成将原先条目的内容放进msg相应域变量
-
-						// 清除headerBuf中的内容
-						headerBuf.delete(0, headerBuf.length());
-						// 将新header条目中的第一行加入headerBuf
-						headerBuf.append(line);
-					} else {
-						// 加入一个具有多行的头部条目的后续行
-						headerBuf.append(" " + line.trim());
-					}
-				} else {
-					// 正文
-					contentBuf.append(line);
-				}
+				msg.content.rawContent.add(line);
 			}
 			log(S, line);
 
-			// 正文是纯文本，目前只支持纯文本
-			if ("text/plain".equalsIgnoreCase(msg.contentType.substring(0,
-					msg.contentType.indexOf(";")))) {
-				if ("base64".equalsIgnoreCase(msg.contentTransferEncoding)) {
-					// 获得正文编码
-					String charset = msg.contentType.substring(msg.contentType
-							.indexOf("charset=") + 8);
+			Map<String, String> headerMap = HeaderUtil
+					.decodeHeader(headerLines);
 
-					// Android不支持GBK，使用GB2312代替
-					if (charset.toUpperCase().startsWith("GB"))
-						charset = "GB2312"; // Android对中文简体字符集只支持GB2312
-
-					// Base64解码
-					msg.content = new String(Base64Coder.decode(contentBuf
-							.toString()), charset);
-				}
-			} else {
-				msg.content = contentBuf.toString();
-			}
-
+			setMsgHeader(msg, headerMap);
 		} catch (IOException e) {
 			throw new EmailException(e.getMessage());
 		}
@@ -274,45 +282,4 @@ public class POP3Session extends Session {
 
 	}
 
-	/**
-	 * 解析诸如“=?GB2312?B?xPHIyw==?=”的字符串 主要出现在To: From: Subject: 字段
-	 * 
-	 * @throws EmailException
-	 */
-	private static String cplxStringDecode(String cplxString)
-			throws EmailException {
-		// 找出这种类型的字符串
-		String reg = "=\\?" + "([a-z|A-Z|0-9|\\-]*)" + "\\?" + "([Q|B]{1})"
-				+ "\\?" + "([a-z|A-Z|0-9|=|+|/|\\-|\\?]*)" + "\\?=";
-		Matcher m = Pattern.compile(reg).matcher(cplxString);
-		while (m.find()) {
-			if (m.groupCount() == 3) {
-				String entry = m.group(0);
-
-				String charset = m.group(1);
-				String encode = m.group(2); // base64 or quated-printable
-				String content = m.group(3);
-
-				if (charset.toUpperCase().startsWith("GB"))
-					charset = "GB2312"; // Android对中文简体字符集只支持GB2312
-
-				try {
-					if ("B".equalsIgnoreCase(encode))
-						content = new String(Base64Coder.decode(content),
-								charset);
-					else if ("Q".equals(encode))
-						content = new String(QuotedPrintableCoder
-								.decode(content), charset);
-					else
-						throw new EmailException(
-								"Unsupported content transfer encoding");
-				} catch (UnsupportedEncodingException e) {
-					throw new EmailException(e.getMessage());
-				}
-				// 最后替换为解析出的正常字符串
-				cplxString = cplxString.replace(entry, content);
-			}
-		}
-		return cplxString;
-	}
 }
