@@ -39,6 +39,7 @@ public class RSSDescriptionView extends Activity {
 
 	private static final int RETURN_M_ID = 0;
 
+	private long articleId;
 	private Article article;
 	private TextView titleText;
 	private TextView dateText;
@@ -56,17 +57,20 @@ public class RSSDescriptionView extends Activity {
 		Bundle extras = getIntent().getExtras();
 
 		if (extras != null) {
-			long articleId = extras.getLong("ARTICLEID");
-			NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
-			article = rssDbAdp.getArticle(articleId);
+			articleId = extras.getLong("ARTICLEID");
+
 		}
+
 		fillData();
 	}
 
 	private void fillData() {
+		NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
+		article = rssDbAdp.getArticle(articleId);
 		titleText.setText(article.Title);
 		dateText.setText(article.date);
 		descriptionWebView.loadData(article.Discription, "text/html", "UTF-8");
+		// Log.i("XYZPIM", article.Discription);
 
 	}
 
