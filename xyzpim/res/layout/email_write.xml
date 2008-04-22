@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:animationCache="false" android:clipToPadding="false"
+	android:padding="12dip" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:stretchColumns="1">
+
+	<TableRow>
+		<TextView android:textAlign="end" android:text="@string/reciver" />
+		<EditText android:id="@+id/email_reciver_text"/>
+	</TableRow>
+	<TableRow>
+		<TextView android:textAlign="end" android:text="@string/subject" />
+		<EditText android:id="@+id/email_subject_text"/>
+	</TableRow>
+
+	
+		<EditText android:layout_height="fill_parent"
+					android:id="@+id/email_content_text"/>
+</TableLayout>
