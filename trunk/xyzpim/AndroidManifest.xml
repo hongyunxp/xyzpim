@@ -13,7 +13,8 @@
 		<activity android:label="@string/fair"
 			android:icon="@drawable/fair" android:name=".fair.Fair">
 		</activity>
-		<activity android:label="@string/newtask" android:name=".fair.CreateNewTask">
+		<activity android:label="@string/newtask"
+			android:name=".fair.CreateNewTask">
 		</activity>
 		<activity android:name=".account.Account"
 			android:label="@string/account">
@@ -46,15 +47,27 @@
 		<activity android:name=".rss.RSSDescriptionView"
 			android:label="Read Article">
 		</activity>
-	<activity android:name=".fair.CreateMeeting">
-</activity><activity android:name=".fair.TaskView">
-</activity><activity android:name=".fair.NoteView">
-</activity><activity android:name=".fair.EditNote">
-</activity><activity android:name=".fair.CreateNote">
-</activity><activity android:name=".fair.MeetingView">
-</activity><activity android:name=".fair.EditMeeting">
-</activity><activity android:name=".fair.EditTask">
-</activity></application>
+		<activity android:name=".fair.CreateMeeting"
+			android:label="@string/meeting">
+		</activity>
+		<activity android:name=".fair.TaskView"></activity>
+		<activity android:name=".fair.NoteView"
+			android:label="@string/note">
+		</activity>
+		<activity android:name=".fair.EditNote"
+			android:label="@string/note">
+		</activity>
+		<activity android:name=".fair.CreateNote"
+			android:label="@string/note">
+		</activity>
+		<activity android:name=".fair.MeetingView"
+			android:label="@string/meeting">
+		</activity>
+		<activity android:name=".fair.EditMeeting"
+			android:label="@string/meeting">
+		</activity>
+		<activity android:name=".fair.EditTask"></activity>
+	</application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>

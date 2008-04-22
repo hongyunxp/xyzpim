@@ -57,14 +57,14 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 		money1AmmountEditText = (EditText) findViewById(R.id.money1amount);
 		money2AmmountEditText = (EditText) findViewById(R.id.money2amount);
 
-		money1Spinner = (Spinner) this.findViewById(R.id.money1type);
+		money1Spinner = (Spinner) findViewById(R.id.money1type);
 		ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
 				this, R.array.money_type, android.R.layout.simple_spinner_item);
 		adapter1
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		money1Spinner.setAdapter(adapter1);
 
-		money2Spinner = (Spinner) this.findViewById(R.id.money2type);
+		money2Spinner = (Spinner) findViewById(R.id.money2type);
 		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
 				this, R.array.money_type, android.R.layout.simple_spinner_item);
 		adapter2
@@ -83,6 +83,11 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		if (null != arg0) {
 			if (arg0 == calButton) {
+				if (""
+						.equals(money1AmmountEditText.getText().toString()
+								.trim()))
+					return;
+
 				int x = money1Spinner.getSelectedItemPosition();
 				int y = money2Spinner.getSelectedItemPosition();
 				double ammount = Double.parseDouble(money1AmmountEditText

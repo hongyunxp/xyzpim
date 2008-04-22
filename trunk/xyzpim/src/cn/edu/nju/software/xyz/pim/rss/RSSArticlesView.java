@@ -67,7 +67,7 @@ public class RSSArticlesView extends ListActivity {
 
 		articleTitle = new ArrayList<String>();
 		articleAdapter = new ArrayAdapter(this, R.layout.rss_article_row,
-				articleTitle);
+				R.id.rss_row_text, articleTitle);
 		setListAdapter(articleAdapter);
 
 		fillData();
@@ -86,7 +86,8 @@ public class RSSArticlesView extends ListActivity {
 			public void run() {
 
 				articleAdapter = new ArrayAdapter(RSSArticlesView.this,
-						R.layout.rss_article_row, articleTitle);
+						R.layout.rss_article_row, R.id.rss_row_text,
+						articleTitle);
 				setListAdapter(articleAdapter);
 				pb.dismiss();
 			}
@@ -102,9 +103,8 @@ public class RSSArticlesView extends ListActivity {
 
 				articleTitle.clear();
 				for (int index = 0; index < count; ++index) {
-					Integer INT = new Integer(index + 1);
-					articleTitle.add(INT.toString() + "."
-							+ articleList.get(index).Title);
+					// Integer INT = new Integer(index + 1);
+					articleTitle.add(articleList.get(index).Title);
 				}
 				handler.post(dissMiss);
 			}
