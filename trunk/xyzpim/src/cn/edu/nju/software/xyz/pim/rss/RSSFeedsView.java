@@ -29,8 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -52,14 +54,21 @@ public class RSSFeedsView extends ListActivity {
 	private static final int DEL_M_ID = 3;
 
 	private List<Feed> rssList;
+	private List<String> feedTitle;
+	@SuppressWarnings("unchecked")
+	private ArrayAdapter feedsAdapter;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.rss_list);
-		NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
-		rssList = new ArrayList<Feed>();
-		rssList = rssDbAdp.getFeeds();
+
+		feedTitle = new ArrayList<String>();
+		feedsAdapter = new ArrayAdapter(RSSFeedsView.this, R.layout.rss_row,
+				feedTitle);
+		setListAdapter(feedsAdapter);
+
 		fillData();
 
 	}
@@ -69,15 +78,37 @@ public class RSSFeedsView extends ListActivity {
 	 * 向界面填充数据
 	 */
 	private void fillData() {
-		// 创建适配器
-		int count = rssList.size();
-		List<String> feedTitle = new ArrayList<String>(count);
-		for (int index = 0; index < count; ++index) {
-			feedTitle.add(rssList.get(index).Title);
-		}
-		ArrayAdapter feedsAdapter = new ArrayAdapter(this, R.layout.rss_row,
-				feedTitle);
-		this.setListAdapter(feedsAdapter);
+		final ProgressDialog pb = ProgressDialog.show(this, "Getting Feeds",
+				"", true, false);
+
+		final Handler handler = new Handler();
+		final Runnable dissMiss = new Runnable() {
+			public void run() {
+				feedsAdapter = new ArrayAdapter(RSSFeedsView.this,
+						R.layout.rss_row, feedTitle);
+				setListAdapter(feedsAdapter);
+				pb.dismiss();
+			}
+		};
+		Thread getFeedsThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				NewsDroidDB rssDbAdp = NewsDroidDB
+						.getInstance(RSSFeedsView.this);
+				// rssList = new ArrayList<Feed>();
+				rssList = rssDbAdp.getFeeds();
+				// 创建适配器
+				int count = rssList.size();
+				feedTitle.clear();
+				for (int index = 0; index < count; ++index) {
+					feedTitle.add(rssList.get(index).Title);
+				}
+				handler.post(dissMiss);
+			}
+
+		});
+		getFeedsThread.start();
 	}
 
 	@Override
@@ -107,7 +138,7 @@ public class RSSFeedsView extends ListActivity {
 			fillData();
 			return true;
 		case OPEN_M_ID:
-			openFeed((int) this.getListView().getSelectedItemId());
+			openFeed((int) getListView().getSelectedItemId());
 			return true;
 		case RETURN_M_ID:
 			finish();

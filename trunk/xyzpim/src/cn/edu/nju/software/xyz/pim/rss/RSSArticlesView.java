@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.view.Menu.Item;
@@ -48,9 +50,12 @@ public class RSSArticlesView extends ListActivity {
 
 	private long feedId;
 	private List<Article> articleList;
+	private List<String> articleTitle;
 
-	// /private List<String> articleTitle;
+	@SuppressWarnings("unchecked")
+	private ArrayAdapter articleAdapter;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -59,6 +64,12 @@ public class RSSArticlesView extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
 			feedId = extras.getLong("FEEDID");
+
+		articleTitle = new ArrayList<String>();
+		articleAdapter = new ArrayAdapter(this, R.layout.rss_article_row,
+				articleTitle);
+		setListAdapter(articleAdapter);
+
 		fillData();
 	}
 
@@ -67,20 +78,39 @@ public class RSSArticlesView extends ListActivity {
 	 * 向界面填充数据
 	 */
 	private void fillData() {
-		articleList = NewsDroidDB.getInstance(this).getArticles(feedId);
-		List<String> articleTitle = new ArrayList<String>(articleList.size());
-		int count = articleList.size();
+		final ProgressDialog pb = ProgressDialog.show(this, "Getting Articles",
+				"", true, false);
 
-		articleTitle.clear();
-		for (int index = 0; index < count; ++index) {
-			Integer INT = new Integer(index + 1);
-			articleTitle.add(INT.toString() + "."
-					+ articleList.get(index).Title);
-		}
+		final Handler handler = new Handler();
+		final Runnable dissMiss = new Runnable() {
+			public void run() {
 
-		ArrayAdapter feedsAdapter = new ArrayAdapter(this,
-				R.layout.rss_article_row, articleTitle);
-		this.setListAdapter(feedsAdapter);
+				articleAdapter = new ArrayAdapter(RSSArticlesView.this,
+						R.layout.rss_article_row, articleTitle);
+				setListAdapter(articleAdapter);
+				pb.dismiss();
+			}
+		};
+		Thread getArticlesThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				articleList = NewsDroidDB.getInstance(RSSArticlesView.this)
+						.getArticles(feedId);
+
+				int count = articleList.size();
+
+				articleTitle.clear();
+				for (int index = 0; index < count; ++index) {
+					Integer INT = new Integer(index + 1);
+					articleTitle.add(INT.toString() + "."
+							+ articleList.get(index).Title);
+				}
+				handler.post(dissMiss);
+			}
+
+		});
+		getArticlesThread.start();
 	}
 
 	@Override
@@ -95,15 +125,44 @@ public class RSSArticlesView extends ListActivity {
 	public boolean onMenuItemSelected(int featureId, Item item) {
 		switch (item.getId()) {
 		case REFRESH_M_ID:
-			RSSHandler.getInstance().updateArticles(this,
-					NewsDroidDB.getInstance(this).getFeed(feedId));
-			fillData();
+			refreshArticles();
+			// fillData();
 			break;
 		case RETURN_M_ID:
 			finish();
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	private void refreshArticles() {
+		final ProgressDialog pb = ProgressDialog.show(this, "Refreshing", "",
+				true, false);
+
+		final Handler handler = new Handler();
+		final Runnable dissMiss = new Runnable() {
+
+			@Override
+			public void run() {
+				pb.dismiss();
+				fillData();
+			}
+
+		};
+
+		Thread getArticlesThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				RSSHandler.getInstance().updateArticles(
+						RSSArticlesView.this,
+						NewsDroidDB.getInstance(RSSArticlesView.this).getFeed(
+								feedId));
+				handler.post(dissMiss);
+			}
+
+		});
+		getArticlesThread.start();
 	}
 
 	@Override
