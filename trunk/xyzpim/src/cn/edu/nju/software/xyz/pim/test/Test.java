@@ -25,16 +25,9 @@ package cn.edu.nju.software.xyz.pim.test;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
-import cn.edu.nju.software.xyz.pim.email.ContentPart;
-import cn.edu.nju.software.xyz.pim.email.EmailException;
-import cn.edu.nju.software.xyz.pim.email.Message;
-import cn.edu.nju.software.xyz.pim.email.POP3Session;
 
 /**
  * @author xmx 2008-3-18 下午10:39:33
@@ -42,44 +35,44 @@ import cn.edu.nju.software.xyz.pim.email.POP3Session;
  */
 public class Test extends Activity implements OnClickListener {
 
-	private TextView subjectText;
+	/*private TextView subjectText;
 	private TextView reciverText;
 	private TextView senderText;
 	private TextView dateText;
-	private WebView contentText;
+	private WebView contentText;*/
 
 	@Override
 	protected void onCreate(Bundle icicle) {
-		setContentView(R.layout.test);
+		setContentView(R.layout.email_read);
 		super.onCreate(icicle);
 
-		subjectText = (TextView) findViewById(R.id.mail_subject);
-		reciverText = (TextView) findViewById(R.id.mail_reciver);
-		senderText = (TextView) findViewById(R.id.mail_sender);
-		dateText = (TextView) findViewById(R.id.mail_date);
-		contentText = (WebView) findViewById(R.id.mail_content);
-
-		try {
-			POP3Session s = POP3Session.getInstance();
-			s.host = "pop.gmail.com";
-			s.port = 995;
-			s.username = "xyzpim";
-			s.password = "xyzpimtest";
-			s.isShowLog = true;
-			s.open(true);
-			Message m = s.getMsg(5);
-			s.close();
-
-			subjectText.setText(m.subject);
-			reciverText.setText(m.to);
-			senderText.setText(m.from);
-			dateText.setText(m.date);
-			ContentPart content = m.content.getSubContentPart().get(1);
-			contentText.loadData(content.getContentString(), content
-					.getMIMEType(), "UTF-8");
-		} catch (EmailException e) {
-			Log.e("XYZPIM", e.getMessage());
-		}
+		// subjectText = (TextView) findViewById(R.id.mail_subject);
+		// reciverText = (TextView) findViewById(R.id.mail_reciver);
+		// senderText = (TextView) findViewById(R.id.mail_sender);
+		// dateText = (TextView) findViewById(R.id.mail_date);
+		// contentText = (WebView) findViewById(R.id.mail_content);
+		//
+		// try {
+		// POP3Session s = POP3Session.getInstance();
+		// s.host = "pop.gmail.com";
+		// s.port = 995;
+		// s.username = "xyzpim";
+		// s.password = "xyzpimtest";
+		// s.isShowLog = true;
+		// s.open(true);
+		// Message m = s.getMsg(5);
+		// s.close();
+		//
+		// subjectText.setText(m.subject);
+		// reciverText.setText(m.to);
+		// senderText.setText(m.from);
+		// dateText.setText(m.date);
+		// ContentPart content = m.content.getSubContentPart().get(1);
+		// contentText.loadData(content.getContentString(), content
+		// .getMIMEType(), "UTF-8");
+		// } catch (EmailException e) {
+		// Log.e("XYZPIM", e.getMessage());
+		// }
 
 	}
 

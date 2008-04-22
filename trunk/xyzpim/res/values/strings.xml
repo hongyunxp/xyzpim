@@ -76,6 +76,14 @@
 	<string name="reciver">收信人</string>
 	<string name="date">日期</string>
 	
+	<string name="emailSetting">邮件设置</string>
+	<string name="smtp">SMTP</string>
+	<string name="ftp">服务器</string>
+	<string name="port">端口</string>
+	<string name="pop3">POP3</string>
+	<string name="username">用户名</string>
+	<string name="key">密码</string>
+	
 	<string name="group_list">Group List</string>
 	<string name="group">Group</string>
 	
