@@ -70,8 +70,6 @@ public class RSSDescriptionView extends Activity {
 		titleText.setText(article.Title);
 		dateText.setText(article.date);
 		descriptionWebView.loadData(article.Discription, "text/html", "UTF-8");
-		// Log.i("XYZPIM", article.Discription);
-
 	}
 
 	@Override

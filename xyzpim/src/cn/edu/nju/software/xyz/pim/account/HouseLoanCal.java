@@ -53,18 +53,18 @@ public class HouseLoanCal extends Activity implements OnClickListener,
 	protected void onCreate(Bundle icicle) {
 		setContentView(R.layout.housecal);
 
-		loanTypeSppiner = (Spinner) this.findViewById(R.id.loan_type);
+		loanTypeSppiner = (Spinner) findViewById(R.id.loan_type);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				this, R.array.loan_type, android.R.layout.simple_spinner_item);
 		adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		loanTypeSppiner.setAdapter(adapter);
 		loanTypeSppiner.setOnItemSelectedListener(this);
-		loanAmountText = (EditText) this.findViewById(R.id.loan_amount);
-		loanMonthText = (EditText) this.findViewById(R.id.loan_month);
-		loanRateText = (EditText) this.findViewById(R.id.loan_rate);
+		loanAmountText = (EditText) findViewById(R.id.loan_amount);
+		loanMonthText = (EditText) findViewById(R.id.loan_month);
+		loanRateText = (EditText) findViewById(R.id.loan_rate);
 		// loanResultText = (TextView) this.findViewById(R.id.loan_result);
-		calculateButton = (Button) this.findViewById(R.id.house_calculate);
+		calculateButton = (Button) findViewById(R.id.house_calculate);
 		calculateButton.setOnClickListener(this);
 
 		super.onCreate(icicle);
@@ -75,6 +75,11 @@ public class HouseLoanCal extends Activity implements OnClickListener,
 		if (null != arg0) {
 			// 处理计算事件
 			if (arg0 == calculateButton) {
+				if ("".equals(loanAmountText.getText().toString().trim())
+						|| "".equals(loanMonthText.getText().toString().trim())
+						|| "".equals(loanRateText.getText().toString().trim()))
+					return;
+
 				// 构造房贷计算输入信息
 				Martgage m = new Martgage();
 				m.loan = Double

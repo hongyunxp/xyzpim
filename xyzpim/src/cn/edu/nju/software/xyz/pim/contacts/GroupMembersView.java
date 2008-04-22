@@ -24,11 +24,22 @@
 package cn.edu.nju.software.xyz.pim.contacts;
 
 import android.app.ListActivity;
+import android.os.Bundle;
+import cn.edu.nju.software.xyz.pim.R;
 
 /**
  * @author xmx 2008-4-5 下午09:35:41
  * 
  */
 public class GroupMembersView extends ListActivity {
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
+		this.setContentView(R.layout.group_members_list);
+	}
 
 }
