@@ -43,18 +43,20 @@ public class GroupsDbAdapter {
 	/**
 	 * Database creation sql statement
 	 */
-	private static final String TABLE_CREATE = "create table groups (_id integer primary key autoincrement, "
+	private static final String TABLE_GROUPS = "create table groups (_id integer primary key autoincrement, "
 			+ "gname text not null);";
+	private static final String TABLE_GROUPMEM = "create table groupmembers (_id integer primary key autoincrement, gid integer not null, curi text not null);";
 
 	private static final String DATABASE_NAME = "contacts";
-	private static final String DATABASE_TABLE = "groups";
+	private static final String DATABASE_GROUPS_TABLE = "groups";
+	// private static final String DATABASE_GROUPMEM_TABLE = "groupmembers";
 	private static final int DATABASE_VERSION = 2;
 
 	private SQLiteDatabase mDb;
 	private final Context mCtx;
 
 	public GroupsDbAdapter(Context ctx) {
-		this.mCtx = ctx;
+		mCtx = ctx;
 	}
 
 	public GroupsDbAdapter open() throws SQLException {
@@ -64,8 +66,10 @@ public class GroupsDbAdapter {
 			try {
 				mDb = mCtx.createDatabase(DATABASE_NAME, DATABASE_VERSION, 0,
 						null);
-				mDb.execSQL(TABLE_CREATE);
-				mDb.execSQL("insert into groups (gname) values(\"Friends\")");
+				mDb.execSQL(TABLE_GROUPS);
+				mDb.execSQL(TABLE_GROUPMEM);
+				// mDb.execSQL("insert into groups (gname)
+				// values(\"Friends\")");
 			} catch (FileNotFoundException e1) {
 				throw new SQLException("Could not create database");
 			}
@@ -80,20 +84,20 @@ public class GroupsDbAdapter {
 	public long createGroup(String name) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(COL_NAME, name);
-		return mDb.insert(DATABASE_TABLE, null, initialValues);
+		return mDb.insert(DATABASE_GROUPS_TABLE, null, initialValues);
 	}
 
 	public boolean deleteGroup(long rowId) {
-		return mDb.delete(DATABASE_TABLE, COL_ROWID + "=" + rowId, null) > 0;
+		return mDb.delete(DATABASE_GROUPS_TABLE, COL_ROWID + "=" + rowId, null) > 0;
 	}
 
 	public Cursor fetchAllGroups() {
-		return mDb.query(DATABASE_TABLE, new String[] { COL_ROWID, COL_NAME },
-				null, null, null, null, null);
+		return mDb.query(DATABASE_GROUPS_TABLE, new String[] { COL_ROWID,
+				COL_NAME }, null, null, null, null, null);
 	}
 
 	public Cursor fetchGroup(long rowId) throws SQLException {
-		Cursor result = mDb.query(true, DATABASE_TABLE, new String[] {
+		Cursor result = mDb.query(true, DATABASE_GROUPS_TABLE, new String[] {
 				COL_ROWID, COL_NAME }, COL_NAME + "=" + rowId, null, null,
 				null, null);
 		if ((result.count() == 0) || !result.first()) {
@@ -105,6 +109,7 @@ public class GroupsDbAdapter {
 	public boolean updateNote(long rowId, String name) {
 		ContentValues args = new ContentValues();
 		args.put(COL_NAME, name);
-		return mDb.update(DATABASE_TABLE, args, COL_ROWID + "=" + rowId, null) > 0;
+		return mDb.update(DATABASE_GROUPS_TABLE, args, COL_ROWID + "=" + rowId,
+				null) > 0;
 	}
 }

@@ -13,9 +13,6 @@
 		<activity android:label="@string/fair"
 			android:icon="@drawable/fair" android:name=".fair.Fair">
 		</activity>
-		<activity android:label="@string/newtask"
-			android:name=".fair.CreateNewTask">
-		</activity>
 		<activity android:name=".account.Account"
 			android:label="@string/account">
 		</activity>
@@ -33,7 +30,7 @@
 			android:label="@string/group_list">
 		</activity>
 		<activity android:name=".contacts.GroupNameEdit"
-			android:label="@string/group">
+			android:label="@string/group" android:theme="@android:style/Theme.Dialog">
 		</activity>
 		<activity android:name=".rss.RSSFeedsView"
 			android:label="RSS Feeds">
@@ -46,6 +43,9 @@
 		</activity>
 		<activity android:name=".rss.RSSDescriptionView"
 			android:label="Read Article">
+		</activity>
+		<activity android:label="@string/newtask"
+			android:name=".fair.CreateNewTask">
 		</activity>
 		<activity android:name=".fair.CreateMeeting"
 			android:label="@string/meeting">
@@ -67,7 +67,8 @@
 			android:label="@string/meeting">
 		</activity>
 		<activity android:name=".fair.EditTask"></activity>
-	</application>
+	<activity android:name=".contacts.GroupMembersView" android:label="组成员视图">
+</activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>

@@ -42,12 +42,14 @@ public class GroupsView extends ListActivity {
 
 	private static final int ACTIVITY_CREATE = 1;
 	private static final int ACTIVITY_EDIT = 2;
+	private static final int ACTIVITY_OPEN = 3;
 
 	private static final int NEW_M_ID = 0;
 	private static final int DEL_M_ID = 1;
 	private static final int RENAME_M_ID = 2;
 	private static final int OPEN_M_ID = 3;
-	private static final int RETURN_M_ID = 4;
+	private static final int GROUPMAIL_M_ID = 4;
+	private static final int RETURN_M_ID = 5;
 
 	private GroupsDbAdapter mGroupDbAdp;
 	private Cursor groupsCursor;
@@ -109,7 +111,10 @@ public class GroupsView extends ListActivity {
 			editGroupName(getSelectedItemPosition());
 			return true;
 		case OPEN_M_ID:
-
+			openGroup(getSelectedItemPosition());
+			return true;
+		case GROUPMAIL_M_ID:
+			// TODO: 群发邮件！！！！
 			return true;
 		case RETURN_M_ID:
 			finish();
@@ -123,7 +128,7 @@ public class GroupsView extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		editGroupName(position);
+		openGroup(position);
 	}
 
 	private void createGroup() {
@@ -137,11 +142,20 @@ public class GroupsView extends ListActivity {
 		Cursor c = groupsCursor;
 		c.moveTo(position);
 		Intent i = new Intent(this, GroupNameEdit.class);
-		i.putExtra(GroupsDbAdapter.COL_ROWID, c.getLong(c
+		i.putExtra(GroupsDbAdapter.COL_ROWID, c.getInt(c
 				.getColumnIndex(GroupsDbAdapter.COL_ROWID)));
 		i.putExtra(GroupsDbAdapter.COL_NAME, c.getString(c
 				.getColumnIndex(GroupsDbAdapter.COL_NAME)));
 		startSubActivity(i, ACTIVITY_EDIT);
+	}
+
+	private void openGroup(int position) {
+		Cursor c = groupsCursor;
+		c.moveTo(position);
+		Intent i = new Intent(this, GroupMembersView.class);
+		i.putExtra(GroupsDbAdapter.COL_ROWID, c.getInt(c
+				.getColumnIndex(GroupsDbAdapter.COL_ROWID)));
+		startSubActivity(i, ACTIVITY_OPEN);
 	}
 
 	@Override
