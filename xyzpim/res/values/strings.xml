@@ -29,6 +29,7 @@
 	<string name="app_welcome">By Team XYZ Version Alpha</string>
 	
 	<string name="ok">确定</string>
+	<string name="add">添加</string>
 	<string name="create">新建</string>
 	<string name="del">删除</string>
 	<string name="edit">修改</string>

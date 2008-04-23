@@ -42,7 +42,7 @@ public class GroupNameEdit extends Activity implements OnClickListener {
 	private Button cancelButton;
 
 	private String groupName;
-	private Long rowId;
+	private Integer rowId;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -62,7 +62,7 @@ public class GroupNameEdit extends Activity implements OnClickListener {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			groupName = extras.getString(GroupsDbAdapter.COL_NAME);
-			rowId = extras.getLong(GroupsDbAdapter.COL_ROWID);
+			rowId = extras.getInt(GroupsDbAdapter.COL_ROWID);
 			nameText.setText(groupName);
 		}
 
