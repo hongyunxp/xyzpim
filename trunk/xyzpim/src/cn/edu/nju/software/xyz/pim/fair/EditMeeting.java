@@ -59,12 +59,12 @@ public class EditMeeting extends Activity {
 	private CheckBox notifyText;
 	private EditText placeText;
 
-	private long meetingId;
+	private Long meetingId;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.create_meeting);
+		setContentView(R.layout.meeting_edit);
 		titleText = (EditText) findViewById(R.id.meeting_title);
 		startDateButton = (Button) findViewById(R.id.meeting_start_date);
 		startTimeButton = (Button) findViewById(R.id.meeting_start_time);
@@ -77,16 +77,18 @@ public class EditMeeting extends Activity {
 			@Override
 			public void onClick(View v) {
 				int year = 2008, month = 1, day = 1;
+				if (null != meetingId) {
+					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
+					Meeting meeting = fairDbAdp.getMeeting(meetingId);
 
-				FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-				Meeting meeting = fairDbAdp.getMeeting(meetingId);
-
-				String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
-				Matcher m = Pattern.compile(reg).matcher(meeting.StartDateTime);
-				if (m.find()) {
-					year = Integer.parseInt(m.group(1));
-					month = Integer.parseInt(m.group(2));
-					day = Integer.parseInt(m.group(3));
+					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
+					Matcher m = Pattern.compile(reg).matcher(
+							meeting.StartDateTime);
+					if (m.find()) {
+						year = Integer.parseInt(m.group(1));
+						month = Integer.parseInt(m.group(2));
+						day = Integer.parseInt(m.group(3));
+					}
 				}
 				new DatePickerDialog(EditMeeting.this, startDateListener, year,
 						month, day, Calendar.SUNDAY).show();
@@ -97,15 +99,17 @@ public class EditMeeting extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
+				if (null != meetingId) {
+					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
+					Meeting meeting = fairDbAdp.getMeeting(meetingId);
 
-				FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-				Meeting meeting = fairDbAdp.getMeeting(meetingId);
-
-				String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
-				Matcher m = Pattern.compile(reg).matcher(meeting.StartDateTime);
-				if (m.find()) {
-					hour = Integer.parseInt(m.group(4));
-					minute = Integer.parseInt(m.group(5));
+					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
+					Matcher m = Pattern.compile(reg).matcher(
+							meeting.StartDateTime);
+					if (m.find()) {
+						hour = Integer.parseInt(m.group(4));
+						minute = Integer.parseInt(m.group(5));
+					}
 				}
 				new TimePickerDialog(EditMeeting.this, startTimeListener,
 						"Set", hour, minute, true).show();
@@ -116,16 +120,18 @@ public class EditMeeting extends Activity {
 			@Override
 			public void onClick(View v) {
 				int year = 2008, month = 1, day = 1;
+				if (null != meetingId) {
+					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
+					Meeting meeting = fairDbAdp.getMeeting(meetingId);
 
-				FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-				Meeting meeting = fairDbAdp.getMeeting(meetingId);
-
-				String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
-				Matcher m = Pattern.compile(reg).matcher(meeting.EndDateTime);
-				if (m.find()) {
-					year = Integer.parseInt(m.group(1));
-					month = Integer.parseInt(m.group(2));
-					day = Integer.parseInt(m.group(3));
+					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
+					Matcher m = Pattern.compile(reg).matcher(
+							meeting.EndDateTime);
+					if (m.find()) {
+						year = Integer.parseInt(m.group(1));
+						month = Integer.parseInt(m.group(2));
+						day = Integer.parseInt(m.group(3));
+					}
 				}
 				new DatePickerDialog(EditMeeting.this, endDateListener, year,
 						month, day, Calendar.SUNDAY).show();
@@ -136,15 +142,17 @@ public class EditMeeting extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
+				if (null != meetingId) {
+					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
+					Meeting meeting = fairDbAdp.getMeeting(meetingId);
 
-				FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-				Meeting meeting = fairDbAdp.getMeeting(meetingId);
-
-				String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
-				Matcher m = Pattern.compile(reg).matcher(meeting.EndDateTime);
-				if (m.find()) {
-					hour = Integer.parseInt(m.group(4));
-					minute = Integer.parseInt(m.group(5));
+					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
+					Matcher m = Pattern.compile(reg).matcher(
+							meeting.EndDateTime);
+					if (m.find()) {
+						hour = Integer.parseInt(m.group(4));
+						minute = Integer.parseInt(m.group(5));
+					}
 				}
 				new TimePickerDialog(EditMeeting.this, endTimeListener, "Set",
 						hour, minute, true).show();
@@ -208,8 +216,13 @@ public class EditMeeting extends Activity {
 			else
 				notify = 0;
 			String place = placeText.getText().toString();
-			FairDbAdp.updateMeeting(meetingId, title, startDateTime,
-					endDateTime, notify, place);
+			if (null != meetingId) {
+				FairDbAdp.updateMeeting(meetingId, title, startDateTime,
+						endDateTime, notify, place);
+			} else {
+				FairDbAdp.insertMeeting(title, startDateTime, endDateTime,
+						notify, place);
+			}
 			finish();
 			return true;
 		case RETURN_M_ID:

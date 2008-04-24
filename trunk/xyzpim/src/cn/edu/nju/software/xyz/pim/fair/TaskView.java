@@ -75,7 +75,7 @@ public class TaskView extends ListActivity {
 		}
 		ArrayAdapter notesAdapter = new ArrayAdapter(this, R.layout.task_row,
 				noteTitle);
-		this.setListAdapter(notesAdapter);
+		setListAdapter(notesAdapter);
 	}
 
 	@Override
@@ -93,18 +93,18 @@ public class TaskView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
-			Intent newURLIntent = new Intent(this, CreateNewTask.class);
+			Intent newURLIntent = new Intent(this, EditTask.class);
 			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
 			FairDB FairDbAdp = FairDB.getInstance(this);
-			FairDbAdp.deleteMeeting(taskList.get((int) getListView()
+			FairDbAdp.deleteTask(taskList.get((int) getListView()
 					.getSelectedItemId()).TaskId);
 			taskList = FairDbAdp.getTasks();
 			fillData();
 			return true;
 		case OPEN_M_ID:
-			openTask((int) this.getListView().getSelectedItemId());
+			openTask((int) getListView().getSelectedItemId());
 			return true;
 		case RETURN_M_ID:
 			finish();
