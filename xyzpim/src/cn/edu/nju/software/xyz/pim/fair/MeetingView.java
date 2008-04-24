@@ -75,7 +75,7 @@ public class MeetingView extends ListActivity {
 		}
 		ArrayAdapter notesAdapter = new ArrayAdapter(this,
 				R.layout.meeting_row, noteTitle);
-		this.setListAdapter(notesAdapter);
+		setListAdapter(notesAdapter);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class MeetingView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
-			Intent newURLIntent = new Intent(this, CreateMeeting.class);
+			Intent newURLIntent = new Intent(this, EditMeeting.class);
 			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
@@ -104,7 +104,7 @@ public class MeetingView extends ListActivity {
 			fillData();
 			return true;
 		case OPEN_M_ID:
-			openMeeting((int) this.getListView().getSelectedItemId());
+			openMeeting((int) getListView().getSelectedItemId());
 			return true;
 		case RETURN_M_ID:
 			finish();

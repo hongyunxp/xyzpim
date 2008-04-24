@@ -40,11 +40,12 @@ public class EditNote extends Activity {
 
 	private EditText titleText;
 	private EditText contentText;
-	private long noteId;
+	private Long noteId;
 
+	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.create_note);
+		setContentView(R.layout.note_edit);
 		titleText = (EditText) findViewById(R.id.note_tilte_text);
 		contentText = (EditText) findViewById(R.id.note_content_text);
 
@@ -74,7 +75,10 @@ public class EditNote extends Activity {
 			FairDB FairDbAdp = FairDB.getInstance(this);
 			String title = titleText.getText().toString();
 			String content = contentText.getText().toString();
-			FairDbAdp.updateNote(noteId, title, content);
+			if (null != noteId)
+				FairDbAdp.updateNote(noteId, title, content);
+			else
+				FairDbAdp.insertNote(title, content);
 			finish();
 			return true;
 		case RETURN_M_ID:

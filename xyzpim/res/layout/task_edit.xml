@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+	/*
+	* XYZPIM, A pim on Android Platform
+	*
+	* Copyright (c) 2008, xyz team or third-party contributors as
+	* indicated by the @author tags or express copyright attribution
+	* statements applied by the authors.  All third-party contributions are
+	* distributed under license by xyz team.
+	*
+	* This copyrighted material is made available to anyone wishing to use, modify,
+	* copy, or redistribute it subject to the terms and conditions of the GNU
+	* Lesser General Public License, as published by the Free Software Foundation.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+	* or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+	* for more details.
+	*
+	* You should have received a copy of the GNU Lesser General Public License
+	* along with this distribution; if not, write to:
+	* Free Software Foundation, Inc.
+	* 51 Franklin Street, Fifth Floor
+	* Boston, MA  02110-1301  USA
+	*/
+-->
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:animationCache="false" android:clipToPadding="false"
+	android:padding="12dip" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:stretchColumns="1">
+
+	<TableRow>
+		<TextView android:text="@string/title" />
+		<EditText android:id="@+id/task_title" />
+	</TableRow>
+
+	<TableRow>
+		<TextView android:text="@string/time" />
+		<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:orientation="horizontal">
+				<Button android:id="@+id/task_date"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent" />
+				<Button android:id="@+id/task_time"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent" />
+		</LinearLayout>
+	</TableRow>
+	<TableRow>
+		<TextView android:text="@string/important" />
+		<CheckBox android:id="@+id/important_notify" />
+	</TableRow>
+
+	<TableRow>
+		<TextView android:text="@string/notify" />
+		<CheckBox android:id="@+id/task_notify" />
+	</TableRow>
+	<EditText android:layout_height="fill_parent"
+		android:id="@+id/task_content" />
+</TableLayout>

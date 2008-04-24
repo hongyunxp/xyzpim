@@ -75,7 +75,7 @@ public class NoteView extends ListActivity {
 		}
 		ArrayAdapter notesAdapter = new ArrayAdapter(this, R.layout.note_row,
 				noteTitle);
-		this.setListAdapter(notesAdapter);
+		setListAdapter(notesAdapter);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class NoteView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
-			Intent newURLIntent = new Intent(this, CreateNote.class);
+			Intent newURLIntent = new Intent(this, EditNote.class);
 			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
@@ -104,7 +104,7 @@ public class NoteView extends ListActivity {
 			fillData();
 			return true;
 		case OPEN_M_ID:
-			openNote((int) this.getListView().getSelectedItemId());
+			openNote((int) getListView().getSelectedItemId());
 			return true;
 		case RETURN_M_ID:
 			finish();

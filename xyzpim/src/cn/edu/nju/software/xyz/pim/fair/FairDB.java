@@ -47,12 +47,12 @@ public class FairDB {
 			+ "title text not null, start_time text not null, end_time text not null,is_notify integer not null,place text not null);";
 
 	private static final String CREATE_TABLE_TASKS = "create table tasks (task_id integer primary key autoincrement, "
-			+ "title text not null, date text not null,is_important integer not null,notify text not null,content text not null);";
+			+ "title text not null, date text not null,is_important integer not null,is_notify integer not null,content text not null);";
 
 	private static final String NOTES_TABLE = "notes";
 	private static final String MEETINGS_TABLE = "meetings";
 	private static final String TASKS_TABLE = "tasks";
-	private static final String DATABASE_NAME = "Fairdroid";
+	private static final String DATABASE_NAME = "fairdb";
 	private static final int DATABASE_VERSION = 1;
 
 	private SQLiteDatabase db;
@@ -132,24 +132,24 @@ public class FairDB {
 	}
 
 	public int updateTask(Long taskId, String title, String date,
-			int important, String notify, String content) {
+			int important, int notify, String content) {
 		ContentValues values = new ContentValues();
 		values.put("title", title);
 		values.put("date", date);
 		values.put("is_important", important);
-		values.put("notify", notify);
+		values.put("is_notify", notify);
 		values.put("content", content);
 		return (db.update(TASKS_TABLE, values, "task_id=" + taskId.toString(),
 				null));
 	}
 
 	public boolean insertTask(String title, String date, int important,
-			String notify, String content) {
+			int notify, String content) {
 		ContentValues values = new ContentValues();
 		values.put("title", title);
 		values.put("date", date);
 		values.put("is_important", important);
-		values.put("notify", notify);
+		values.put("is_notify", notify);
 		values.put("content", content);
 		return (db.insert(TASKS_TABLE, null, values) > 0);
 	}
@@ -256,8 +256,8 @@ public class FairDB {
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		try {
 			Cursor c = db.query(TASKS_TABLE, new String[] { "task_id", "title",
-					"date", "is_important", "notify", "content" }, null, null,
-					null, null, null);
+					"date", "is_important", "is_notify", "content" }, null,
+					null, null, null, null);
 
 			int numRows = c.count();
 			c.first();
@@ -267,7 +267,7 @@ public class FairDB {
 				task.Title = c.getString(1);
 				task.Date = c.getString(2);
 				task.IsImportant = c.getInt(3);
-				task.Notify = c.getString(4);
+				task.IsNotify = c.getInt(4);
 				task.Content = c.getString(5);
 				tasks.add(task);
 				c.next();
@@ -282,8 +282,9 @@ public class FairDB {
 		Task task = new Task();
 		try {
 			Cursor c = db.query(TASKS_TABLE, new String[] { "task_id", "title",
-					"date", "is_important", "notify", "content" }, "task_id=?",
-					new String[] { String.valueOf(id) }, null, null, null);
+					"date", "is_important", "is_notify", "content" },
+					"task_id=?", new String[] { String.valueOf(id) }, null,
+					null, null);
 
 			int numRows = c.count();
 			if (numRows != 1) {
@@ -294,7 +295,7 @@ public class FairDB {
 			task.Title = c.getString(1);
 			task.Date = c.getString(2);
 			task.IsImportant = c.getInt(3);
-			task.Notify = c.getString(4);
+			task.IsNotify = c.getInt(4);
 			task.Content = c.getString(5);
 		} catch (SQLException e) {
 			Log.e(e.getMessage());

@@ -32,6 +32,6 @@ public class Task {
 	public String Title;
 	public String Date;
 	public int IsImportant;
-	public String Notify;
+	public int IsNotify;
 	public String Content;
 }
