@@ -32,7 +32,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
  * @author savio 2008-4-15 下午03:21:18
@@ -175,7 +175,7 @@ public class FairDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("FairDB", e.toString());
+			Log.e(e.getMessage());
 		}
 		return notes;
 	}
@@ -189,14 +189,14 @@ public class FairDB {
 
 			int numRows = c.count();
 			if (numRows != 1) {
-				Log.e("XYZPIM", "newRows=" + String.valueOf(numRows));
+				Log.e("newRows=" + String.valueOf(numRows));
 			}
 			c.first();
 			note.NoteId = c.getLong(0);
 			note.Title = c.getString(1);
 			note.Content = c.getString(2);
 		} catch (SQLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		}
 		return note;
 	}
@@ -222,7 +222,7 @@ public class FairDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("FairDB", e.toString());
+			Log.e(e.getMessage());
 		}
 		return meetings;
 	}
@@ -237,7 +237,7 @@ public class FairDB {
 
 			int numRows = c.count();
 			if (numRows != 1) {
-				Log.e("XYZPIM", "newRows=" + String.valueOf(numRows));
+				Log.e("newRows=" + String.valueOf(numRows));
 			}
 			c.first();
 			meeting.MeetId = c.getLong(0);
@@ -247,7 +247,7 @@ public class FairDB {
 			meeting.IsNotify = c.getInt(4);
 			meeting.Place = c.getString(5);
 		} catch (SQLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		}
 		return meeting;
 	}
@@ -273,7 +273,7 @@ public class FairDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("FairDB", e.toString());
+			Log.e(e.getMessage());
 		}
 		return tasks;
 	}
@@ -287,7 +287,7 @@ public class FairDB {
 
 			int numRows = c.count();
 			if (numRows != 1) {
-				Log.e("XYZPIM", "newRows=" + String.valueOf(numRows));
+				Log.e("newRows=" + String.valueOf(numRows));
 			}
 			c.first();
 			task.TaskId = c.getLong(0);
@@ -297,7 +297,7 @@ public class FairDB {
 			task.Notify = c.getString(4);
 			task.Content = c.getString(5);
 		} catch (SQLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		}
 		return task;
 	}

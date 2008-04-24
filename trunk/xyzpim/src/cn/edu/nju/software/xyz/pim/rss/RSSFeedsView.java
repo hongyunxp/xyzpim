@@ -33,20 +33,22 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Menu.Item;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.util.InputDialog;
+import cn.edu.nju.software.xyz.pim.util.Log;
+import cn.edu.nju.software.xyz.pim.util.OnInputOKListener;
 
 /**
  * @author savio 2008-4-9 下午02:59:17
  * 
  */
 public class RSSFeedsView extends ListActivity {
-	private static final int ACTIVITY_CREATE = 1;
+	private static final int ACTIVITY_OPEN = 1;
 
 	private static final int NEW_M_ID = 0;
 	private static final int OPEN_M_ID = 1;
@@ -126,8 +128,27 @@ public class RSSFeedsView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
-			Intent newURLIntent = new Intent(this, RSSURLEdit.class);
-			startSubActivity(newURLIntent, ACTIVITY_CREATE);
+			InputDialog rssURLDialog = new InputDialog(this,
+					new OnInputOKListener() {
+						@Override
+						public void onInputOK(String inputString) {
+							String rssURLString = inputString;
+							URL url = null;
+							try {
+								url = new URL(rssURLString);
+							} catch (MalformedURLException e) {
+								Log.e(e.getMessage());
+							}
+							RSSHandler rh = RSSHandler.getInstance();
+							rh.createFeed(RSSFeedsView.this, url);
+							NewsDroidDB rssDbAdp = NewsDroidDB
+									.getInstance(RSSFeedsView.this);
+							rssList = rssDbAdp.getFeeds();
+							fillData();
+
+						}
+					});
+			rssURLDialog.show("Create a Feed", "Input the feed URL", "http://");
 			return true;
 		case DEL_M_ID:
 			NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
@@ -160,7 +181,7 @@ public class RSSFeedsView extends ListActivity {
 		openIntent.putExtra("FEEDID", rssList.get(position).FeedId);
 		/*RSSHandler rh = RSSHandler.getInstance();
 		rh.updateArticles(this, rssList.get(position));*/
-		startSubActivity(openIntent, ACTIVITY_CREATE);
+		startSubActivity(openIntent, ACTIVITY_OPEN);
 	}
 
 	@Override
@@ -168,22 +189,7 @@ public class RSSFeedsView extends ListActivity {
 			String data, Bundle extras) {
 		super.onActivityResult(requestCode, resultCode, data, extras);
 		switch (requestCode) {
-		case ACTIVITY_CREATE:
-			if (resultCode == RESULT_OK && null != extras) {
-				String rssURLString = extras.getString("RSSURL");
-				URL url = null;
-				try {
-					url = new URL(rssURLString);
-				} catch (MalformedURLException e) {
-					Log.e("XYZPIM", e.getLocalizedMessage(), e);
-				}
-				RSSHandler rh = RSSHandler.getInstance();
-				rh.createFeed(this, url);
-				NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
-				rssList = rssDbAdp.getFeeds();
-				fillData();
-			}
-			break;
+
 		}
 	}
 }

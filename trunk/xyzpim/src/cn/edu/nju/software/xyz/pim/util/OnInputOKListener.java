@@ -21,36 +21,12 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.email;
-
-import cn.edu.nju.software.xyz.pim.util.Log;
+package cn.edu.nju.software.xyz.pim.util;
 
 /**
- * @author xmx 2008-4-14 下午07:57:26
+ * @author xmx 2008-4-24 下午02:57:00
  * 
  */
-public abstract class Session {
-	public boolean isShowLog = false;
-
-	protected String C = "C: ";
-	protected String S = "S: ";
-
-	public String host;
-	public int port;
-	public String username;
-	public String password;
-
-	protected static String CRLF = "\r\n";
-
-	public abstract void open() throws EmailException;
-
-	public abstract void open(boolean isSSL) throws EmailException;
-
-	public abstract void close() throws EmailException;
-
-	// 测试用，显示客户端和服务器的详细的会话过程
-	protected void log(String CS, String info) {
-		if (isShowLog)
-			Log.i(CS + info);
-	}
+public interface OnInputOKListener {
+	public void onInputOK(String inputString);
 }

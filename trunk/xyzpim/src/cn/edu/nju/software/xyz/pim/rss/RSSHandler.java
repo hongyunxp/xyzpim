@@ -38,7 +38,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.Context;
-import android.util.Log;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
  * @author savio 2008-4-8 下午09:39:13 Parses RSS feed and saves what we need from
@@ -53,7 +53,7 @@ public class RSSHandler extends DefaultHandler {
 	private boolean inPubdate = false;
 
 	// Feed and Article objects to use for temporary storage
-	private Article currentArticle = new Article();
+	private final Article currentArticle = new Article();
 	private Feed currentFeed = new Feed();
 
 	// Number of articles added so far
@@ -97,6 +97,7 @@ public class RSSHandler extends DefaultHandler {
 			inDiscription = true;
 	}
 
+	@Override
 	public void endElement(String uri, String name, String qName)
 			throws SAXException {
 		if (name.trim().equals("title"))
@@ -116,8 +117,8 @@ public class RSSHandler extends DefaultHandler {
 
 			// We know everything we need to know, so insert feed and exit
 			droidDB.insertFeed(currentFeed.Title, currentFeed.Url);
-			Log.i("XYZPIM", currentFeed.Title);
-			Log.i("XYZPIM", currentFeed.Url.toString());
+			Log.i(currentFeed.Title);
+			Log.i(currentFeed.Url.toString());
 			throw new SAXException();
 		}
 
@@ -140,6 +141,7 @@ public class RSSHandler extends DefaultHandler {
 		}
 	}
 
+	@Override
 	public void characters(char ch[], int start, int length) {
 
 		String chars = (new String(ch).substring(start, start + length));
@@ -162,7 +164,7 @@ public class RSSHandler extends DefaultHandler {
 					currentArticle.Discription = chars;
 			}
 		} catch (MalformedURLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		}
 	}
 
@@ -179,11 +181,11 @@ public class RSSHandler extends DefaultHandler {
 			xr.parse(new InputSource(url.openStream()));
 
 		} catch (IOException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		} catch (SAXException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		} catch (ParserConfigurationException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		}
 	}
 
@@ -202,11 +204,11 @@ public class RSSHandler extends DefaultHandler {
 			xr.parse(new InputSource(currentFeed.Url.openStream()));
 
 		} catch (IOException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		} catch (SAXException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		} catch (ParserConfigurationException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		}
 	}
 }
