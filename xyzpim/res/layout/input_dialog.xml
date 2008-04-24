@@ -32,9 +32,9 @@
 	<!--
 		TextView goes at the top left by default .
 	-->
-	<TextView android:id="@+id/group_name_label"
+	<TextView android:id="@+id/input_message"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="组名" />
+		android:layout_height="wrap_content" />
 
 	<!--
 		Put the EditText field under the TextView
@@ -43,11 +43,11 @@
 		means it is system resource rather than
 		an application resource.
 	-->
-	<EditText android:id="@+id/group_name_text"
+	<EditText android:id="@+id/input_text"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:background="@android:drawable/editbox_background"
-		android:layout_below="@id/group_name_label" />
+		android:layout_below="@id/input_message" />
 
 	<!--
 		The OK button goes below the EditText field.
@@ -56,10 +56,10 @@
 		The OK button comes first so the Cancel button
 		can be specified relative to the OK button.
 	-->
-	<Button android:id="@+id/group_name_ok"
+	<Button android:id="@+id/input_ok"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/group_name_text"
+		android:layout_below="@id/input_text"
 		android:layout_alignParentRight="true"
 		android:layout_marginLeft="10dip" android:text="@string/ok" />
 
@@ -69,12 +69,11 @@
 		Since the OK button has a left margin of 10, there
 		is some space between the two buttons.
 	-->
-	<Button android:id="@+id/group_name_cancel"
+	<Button android:id="@+id/input_cancel"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_toLeft="@id/group_name_ok"
-		android:layout_alignTop="@id/group_name_ok"
+		android:layout_toLeft="@id/input_ok"
+		android:layout_alignTop="@id/input_ok"
 		android:text="@string/cancel" />
 
 </RelativeLayout>
-

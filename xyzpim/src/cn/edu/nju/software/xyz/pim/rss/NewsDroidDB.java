@@ -34,7 +34,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
  * @author savio 2008-4-8 下午09:09:47 Handles all the SQL Lite database work
@@ -89,7 +89,9 @@ public class NewsDroidDB {
 	}
 
 	public boolean deleteFeed(Long feedId) {
-		return (db.delete(FEEDS_TABLE, "feed_id=" + feedId.toString(), null) > 0);
+		return (db.delete(FEEDS_TABLE, "feed_id=" + feedId.toString(), null) > 0)
+				&& (db.delete(ARTICLES_TABLE, "feed_id=" + feedId.toString(),
+						null) >= 0);
 	}
 
 	public boolean insertArticle(Long feedId, String title, URL url,
@@ -124,9 +126,9 @@ public class NewsDroidDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		} catch (MalformedURLException e) {
-			Log.e("NewsDroid", e.toString());
+			Log.e(e.getMessage());
 		}
 		return feeds;
 	}
@@ -140,16 +142,16 @@ public class NewsDroidDB {
 
 			int numRows = c.count();
 			if (numRows != 1) {
-				Log.e("XYZPIM", "newRows=" + String.valueOf(numRows));
+				Log.e("newRows=" + String.valueOf(numRows));
 			}
 			c.first();
 			feed.FeedId = c.getLong(0);
 			feed.Title = c.getString(1);
 			feed.Url = new URL(c.getString(2));
 		} catch (SQLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		} catch (MalformedURLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		}
 		return feed;
 	}
@@ -175,9 +177,9 @@ public class NewsDroidDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		} catch (MalformedURLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		}
 		return articles;
 	}
@@ -203,9 +205,9 @@ public class NewsDroidDB {
 				c.next();
 			}
 		} catch (SQLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		} catch (MalformedURLException e) {
-			Log.e("XYZPIM", e.toString());
+			Log.e(e.getMessage());
 		}
 		return article;
 	}

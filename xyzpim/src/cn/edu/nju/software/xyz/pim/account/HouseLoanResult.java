@@ -25,7 +25,6 @@ package cn.edu.nju.software.xyz.pim.account;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import cn.edu.nju.software.xyz.pim.R;
 
@@ -62,7 +61,8 @@ public class HouseLoanResult extends Activity {
 		repayPerMonthText.setText(""
 				+ getIntent().getExtras().getDouble("repay_per_month"));
 
-		Log.i("XYZPIM", "" + getIntent().getExtras().getString("loan_amount"));
+		// Log.i("XYZPIM", "" +
+		// getIntent().getExtras().getString("loan_amount"));
 
 		super.onCreate(icicle);
 	}

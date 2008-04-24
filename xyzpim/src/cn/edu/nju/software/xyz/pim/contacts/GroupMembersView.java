@@ -32,7 +32,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Menu.Item;
@@ -68,7 +67,7 @@ public class GroupMembersView extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			gid = extras.getInt(GroupsDbAdapter.COL_ROWID);
-			Log.i("XYZPIM", "" + gid);
+			// Log.i("XYZPIM", "" + gid);
 		}
 
 		fillData();
@@ -149,7 +148,7 @@ public class GroupMembersView extends ListActivity {
 		super.onActivityResult(requestCode, resultCode, data, extras);
 		switch (requestCode) {
 		case REQ_CODE_PICKCONTACT:
-			Log.i("XYZPIM", data);
+			// Log.i("XYZPIM", data);
 			GroupMemberDbAdapter memDB = GroupMemberDbAdapter.getInstance(this);
 			memDB.addMember(gid, data);
 			fillData();

@@ -33,6 +33,8 @@ import android.view.Menu.Item;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.util.InputDialog;
+import cn.edu.nju.software.xyz.pim.util.OnInputOKListener;
 
 /**
  * @author xmx 2008-4-4 下午10:06:20
@@ -40,8 +42,6 @@ import cn.edu.nju.software.xyz.pim.R;
  */
 public class GroupsView extends ListActivity {
 
-	private static final int ACTIVITY_CREATE = 1;
-	private static final int ACTIVITY_EDIT = 2;
 	private static final int ACTIVITY_OPEN = 3;
 
 	private static final int NEW_M_ID = 0;
@@ -132,8 +132,19 @@ public class GroupsView extends ListActivity {
 	}
 
 	private void createGroup() {
-		Intent i = new Intent(this, GroupNameEdit.class);
-		startSubActivity(i, ACTIVITY_CREATE);
+		/*Intent i = new Intent(this, GroupNameEdit.class);
+		startSubActivity(i, ACTIVITY_CREATE);*/
+		InputDialog groupNameDialog = new InputDialog(this,
+				new OnInputOKListener() {
+					@Override
+					public void onInputOK(String inputString) {
+						String groupName = inputString;
+						mGroupDbAdp.createGroup(groupName);
+						fillData();
+
+					}
+				});
+		groupNameDialog.show("Create a Group", "Input the group name");
 	}
 
 	private void editGroupName(int position) {
@@ -141,12 +152,23 @@ public class GroupsView extends ListActivity {
 			return;
 		Cursor c = groupsCursor;
 		c.moveTo(position);
-		Intent i = new Intent(this, GroupNameEdit.class);
-		i.putExtra(GroupsDbAdapter.COL_ROWID, c.getInt(c
-				.getColumnIndex(GroupsDbAdapter.COL_ROWID)));
-		i.putExtra(GroupsDbAdapter.COL_NAME, c.getString(c
-				.getColumnIndex(GroupsDbAdapter.COL_NAME)));
-		startSubActivity(i, ACTIVITY_EDIT);
+		String currentGroupName = c.getString(c
+				.getColumnIndex(GroupsDbAdapter.COL_NAME));
+		final long rowId = c.getLong(c
+				.getColumnIndex(GroupsDbAdapter.COL_ROWID));
+		InputDialog groupNameDialog = new InputDialog(this,
+				new OnInputOKListener() {
+					@Override
+					public void onInputOK(String inputString) {
+						String groupName = inputString;
+						mGroupDbAdp.updateNote(rowId, groupName);
+
+						fillData();
+
+					}
+				});
+		groupNameDialog.show("Edit Group Name", "Input the group name",
+				currentGroupName);
 	}
 
 	private void openGroup(int position) {
@@ -164,21 +186,7 @@ public class GroupsView extends ListActivity {
 		super.onActivityResult(requestCode, resultCode, data, extras);
 		// String groupName = extras.getString(GroupsDbAdapter.COL_NAME);
 		switch (requestCode) {
-		case ACTIVITY_CREATE:
-			if (null != extras) {
-				mGroupDbAdp.createGroup(extras
-						.getString(GroupsDbAdapter.COL_NAME));
-				fillData();
-			}
-			break;
-		case ACTIVITY_EDIT:
-			if (null != extras) {
-				Long rowId = extras.getLong(GroupsDbAdapter.COL_ROWID);
-				mGroupDbAdp.updateNote(rowId, extras
-						.getString(GroupsDbAdapter.COL_NAME));
-			}
-			fillData();
-			break;
+
 		}
 	}
 }

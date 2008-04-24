@@ -84,13 +84,27 @@ public class Main extends Activity implements OnClickListener {
 						cn.edu.nju.software.xyz.pim.rss.RSSFeedsView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == testButton) {
+				/*String str = null;
+				Log.i(str);*/
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.test.Test.class);
 				startSubActivity(i, 0);
+				/*InputDialog id = new InputDialog(this, new OnInputListener() {
+
+					@Override
+					public void onInput(String inputString) {
+						Log.i(inputString);
+
+					}
+
+				});
+				id.show("Input", "Input your name!");
+				Log.i("good");*/
 			}
 		}
 	}
 
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			String data, Bundle extras) {
 
