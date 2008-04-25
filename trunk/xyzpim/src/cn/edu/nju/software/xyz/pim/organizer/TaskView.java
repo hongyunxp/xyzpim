@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +55,9 @@ public class TaskView extends ListActivity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.task_list);
-		FairDB fairDbAdp = FairDB.getInstance(this);
+		OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
 		taskList = new ArrayList<Task>();
-		taskList = fairDbAdp.getTasks();
+		taskList = organizerDbAdp.getTasks();
 		fillData();
 
 	}
@@ -97,10 +97,10 @@ public class TaskView extends ListActivity {
 			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
-			FairDB FairDbAdp = FairDB.getInstance(this);
-			FairDbAdp.deleteTask(taskList.get((int) getListView()
+			OrganizerDB OrganizerDbAdp = OrganizerDB.getInstance(this);
+			OrganizerDbAdp.deleteTask(taskList.get((int) getListView()
 					.getSelectedItemId()).TaskId);
-			taskList = FairDbAdp.getTasks();
+			taskList = OrganizerDbAdp.getTasks();
 			fillData();
 			return true;
 		case OPEN_M_ID:
@@ -134,9 +134,9 @@ public class TaskView extends ListActivity {
 		switch (requestCode) {
 		case ACTIVITY_CREATE:
 		case ACTIVITY_EDIT:
-			FairDB fairDbAdp = FairDB.getInstance(this);
+			OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
 			taskList = new ArrayList<Task>();
-			taskList = fairDbAdp.getTasks();
+			taskList = organizerDbAdp.getTasks();
 			fillData();
 		}
 	}

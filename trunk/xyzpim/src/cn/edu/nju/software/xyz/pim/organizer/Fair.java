@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,7 +35,7 @@ import cn.edu.nju.software.xyz.pim.R;
  * @author xmx 2008-3-12 下午03:12:07
  * 
  */
-public class Fair extends Activity implements OnClickListener {
+public class Organizer extends Activity implements OnClickListener {
 
 	private ImageButton scheduleButton;
 	private ImageButton meetingButton;
@@ -44,7 +44,7 @@ public class Fair extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.fair);
+		setContentView(R.layout.organizer);
 		scheduleButton = (ImageButton) this.findViewById(R.id.schedule);
 		scheduleButton.setOnClickListener(this);
 
@@ -60,15 +60,15 @@ public class Fair extends Activity implements OnClickListener {
 		if (null != arg0) {
 			if (arg0 == scheduleButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.TaskView.class);
+						cn.edu.nju.software.xyz.pim.organizer.TaskView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == meetingButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.MeetingView.class);
+						cn.edu.nju.software.xyz.pim.organizer.MeetingView.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == noteButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.NoteView.class);
+						cn.edu.nju.software.xyz.pim.organizer.NoteView.class);
 				startSubActivity(i, 0);
 			}
 		}

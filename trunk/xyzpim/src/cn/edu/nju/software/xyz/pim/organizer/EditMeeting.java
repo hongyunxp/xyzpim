@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -78,8 +78,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View v) {
 				int year = 2008, month = 1, day = 1;
 				if (null != meetingId) {
-					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-					Meeting meeting = fairDbAdp.getMeeting(meetingId);
+					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
 					Matcher m = Pattern.compile(reg).matcher(
@@ -100,8 +100,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
 				if (null != meetingId) {
-					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-					Meeting meeting = fairDbAdp.getMeeting(meetingId);
+					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
 					Matcher m = Pattern.compile(reg).matcher(
@@ -121,8 +121,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View v) {
 				int year = 2008, month = 1, day = 1;
 				if (null != meetingId) {
-					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-					Meeting meeting = fairDbAdp.getMeeting(meetingId);
+					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
 					Matcher m = Pattern.compile(reg).matcher(
@@ -143,8 +143,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
 				if (null != meetingId) {
-					FairDB fairDbAdp = FairDB.getInstance(EditMeeting.this);
-					Meeting meeting = fairDbAdp.getMeeting(meetingId);
+					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
 					Matcher m = Pattern.compile(reg).matcher(
@@ -162,8 +162,8 @@ public class EditMeeting extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			meetingId = extras.getLong("MeetingId");
-			FairDB fairDbAdp = FairDB.getInstance(this);
-			Meeting meeting = fairDbAdp.getMeeting(meetingId);
+			OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
+			Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 			titleText.setText(meeting.Title);
 
 			String reg = "(\\d{4}-\\d{1,2}-\\d{1,2})\\s(\\d{1,2}:\\d{1,2})";
@@ -205,7 +205,7 @@ public class EditMeeting extends Activity {
 
 		case FINISH_M_ID:
 			int notify;
-			FairDB FairDbAdp = FairDB.getInstance(this);
+			OrganizerDB OrganizerDbAdp = OrganizerDB.getInstance(this);
 			String title = titleText.getText().toString();
 			String startDateTime = startDateButton.getText().toString() + " "
 					+ startTimeButton.getText().toString();
@@ -217,10 +217,10 @@ public class EditMeeting extends Activity {
 				notify = 0;
 			String place = placeText.getText().toString();
 			if (null != meetingId) {
-				FairDbAdp.updateMeeting(meetingId, title, startDateTime,
+				OrganizerDbAdp.updateMeeting(meetingId, title, startDateTime,
 						endDateTime, notify, place);
 			} else {
-				FairDbAdp.insertMeeting(title, startDateTime, endDateTime,
+				OrganizerDbAdp.insertMeeting(title, startDateTime, endDateTime,
 						notify, place);
 			}
 			finish();
