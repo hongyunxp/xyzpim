@@ -50,7 +50,7 @@ public class NewsDroidDB {
 
 	private static final String FEEDS_TABLE = "feeds";
 	private static final String ARTICLES_TABLE = "articles";
-	private static final String DATABASE_NAME = "newdroid";
+	private static final String DATABASE_NAME = "newdroiddb";
 	private static final int DATABASE_VERSION = 1;
 
 	private SQLiteDatabase db;

@@ -47,7 +47,7 @@ public class GroupsDbAdapter {
 			+ "gname text not null);";
 	private static final String TABLE_GROUPMEM = "create table groupmembers (_id integer primary key autoincrement, gid integer not null, curi text not null);";
 
-	private static final String DATABASE_NAME = "contacts";
+	private static final String DATABASE_NAME = "contactsdb";
 	private static final String DATABASE_GROUPS_TABLE = "groups";
 	// private static final String DATABASE_GROUPMEM_TABLE = "groupmembers";
 	private static final int DATABASE_VERSION = 2;

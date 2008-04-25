@@ -78,7 +78,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View v) {
 				int year = 2008, month = 1, day = 1;
 				if (null != meetingId) {
-					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					OrganizerDB organizerDbAdp = OrganizerDB
+							.getInstance(EditMeeting.this);
 					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
@@ -91,7 +92,7 @@ public class EditMeeting extends Activity {
 					}
 				}
 				new DatePickerDialog(EditMeeting.this, startDateListener, year,
-						month, day, Calendar.SUNDAY).show();
+						month - 1, day, Calendar.SUNDAY).show();
 			}
 		});
 
@@ -100,7 +101,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
 				if (null != meetingId) {
-					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					OrganizerDB organizerDbAdp = OrganizerDB
+							.getInstance(EditMeeting.this);
 					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
@@ -121,7 +123,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View v) {
 				int year = 2008, month = 1, day = 1;
 				if (null != meetingId) {
-					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					OrganizerDB organizerDbAdp = OrganizerDB
+							.getInstance(EditMeeting.this);
 					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
@@ -134,7 +137,7 @@ public class EditMeeting extends Activity {
 					}
 				}
 				new DatePickerDialog(EditMeeting.this, endDateListener, year,
-						month, day, Calendar.SUNDAY).show();
+						month - 1, day, Calendar.SUNDAY).show();
 			}
 		});
 
@@ -143,7 +146,8 @@ public class EditMeeting extends Activity {
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
 				if (null != meetingId) {
-					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditMeeting.this);
+					OrganizerDB organizerDbAdp = OrganizerDB
+							.getInstance(EditMeeting.this);
 					Meeting meeting = organizerDbAdp.getMeeting(meetingId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
@@ -238,7 +242,7 @@ public class EditMeeting extends Activity {
 			StringBuilder buf = new StringBuilder();
 			buf.append(String.valueOf(year));
 			buf.append('-');
-			buf.append(String.valueOf(monthOfYear));
+			buf.append(String.valueOf(monthOfYear + 1));
 			buf.append('-');
 			buf.append(String.valueOf(dayOfMonth));
 
@@ -265,7 +269,7 @@ public class EditMeeting extends Activity {
 			StringBuilder buf = new StringBuilder();
 			buf.append(String.valueOf(year));
 			buf.append('-');
-			buf.append(String.valueOf(monthOfYear));
+			buf.append(String.valueOf(monthOfYear + 1));
 			buf.append('-');
 			buf.append(String.valueOf(dayOfMonth));
 
