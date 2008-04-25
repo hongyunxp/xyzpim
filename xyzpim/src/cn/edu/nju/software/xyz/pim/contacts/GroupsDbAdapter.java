@@ -88,6 +88,7 @@ public class GroupsDbAdapter {
 	}
 
 	public boolean deleteGroup(long rowId) {
+		// TODO: 风险！ rowId与sql定义语句中integer类型不符
 		return mDb.delete(DATABASE_GROUPS_TABLE, COL_ROWID + "=" + rowId, null) > 0;
 	}
 
@@ -106,7 +107,7 @@ public class GroupsDbAdapter {
 		return result;
 	}
 
-	public boolean updateNote(long rowId, String name) {
+	public boolean updateGroup(long rowId, String name) {
 		ContentValues args = new ContentValues();
 		args.put(COL_NAME, name);
 		return mDb.update(DATABASE_GROUPS_TABLE, args, COL_ROWID + "=" + rowId,

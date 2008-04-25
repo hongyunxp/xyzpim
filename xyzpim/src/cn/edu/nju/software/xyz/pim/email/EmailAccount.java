@@ -24,21 +24,16 @@
 package cn.edu.nju.software.xyz.pim.email;
 
 /**
- * @author xmx 2008-4-14 下午07:57:16
+ * @author xmx 2008-4-25 下午03:38:14
  * 
  */
-public class Message {
-	public String id;// <message-id>
-	public String from;
-	public String to;
-	public String date;
-	public String subject;
-	public String uid;
-	// public String reply_to;
-	/*
-	public String contentType;
-	public String contentTransferEncoding;
-	public String content;
-	*/
-	public ContentPart content = new ContentPart();
+public class EmailAccount {
+	public long id;
+	public String name;
+	public String smtpHost;
+	public int smtpPort;
+	public String popHost;
+	public int popPort;
+	public String user;
+	public String password;
 }

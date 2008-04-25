@@ -246,4 +246,12 @@ public class ContentPart {
 		return re;
 	}
 
+	public String getRawContentText() {
+		StringBuilder buf = new StringBuilder();
+		for (int index = 0; index < rawContent.size(); ++index) {
+			buf.append(rawContent.get(index));
+			buf.append(Session.CRLF);
+		}
+		return buf.toString();
+	}
 }
