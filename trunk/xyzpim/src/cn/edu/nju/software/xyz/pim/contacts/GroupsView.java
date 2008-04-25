@@ -161,7 +161,7 @@ public class GroupsView extends ListActivity {
 					@Override
 					public void onInputOK(String inputString) {
 						String groupName = inputString;
-						mGroupDbAdp.updateNote(rowId, groupName);
+						mGroupDbAdp.updateGroup(rowId, groupName);
 
 						fillData();
 

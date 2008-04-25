@@ -132,6 +132,29 @@ public class POP3Session extends Session {
 		return result;
 	}
 
+	public String getMsgUID(int index) throws EmailException {
+		String result = null;
+
+		try {
+			String cmd = "uidl" + " " + index + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			String line = in.readLine();
+			log(S, line);
+			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
+				throw new EmailException(line);
+			Matcher m = Pattern.compile("\\+[o|O][k|K]\\s\\d*\\s(.*)").matcher(
+					line);
+			if (m.find())
+				result = m.group(1);
+		} catch (IOException e) {
+			throw new EmailException(e.getMessage());
+		}
+
+		return result;
+	}
+
 	/**
 	 * 收取指定邮件的头部
 	 * 
@@ -254,6 +277,7 @@ public class POP3Session extends Session {
 			throw new EmailException(e.getMessage());
 		}
 
+		msg.uid = getMsgUID(index);
 		return msg;
 	}
 
