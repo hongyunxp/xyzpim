@@ -37,7 +37,7 @@ import android.widget.ImageButton;
 public class Main extends Activity implements OnClickListener {
 
 	private ImageButton contactsButton;
-	private ImageButton fairButton;
+	private ImageButton organizerButton;
 	private ImageButton emailButton;
 	private ImageButton accountButton;
 	private ImageButton rssButton;
@@ -49,13 +49,13 @@ public class Main extends Activity implements OnClickListener {
 		super.onCreate(icicle);
 		setContentView(R.layout.main);
 		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
-		fairButton = (ImageButton) findViewById(R.id.fairButton);
+		organizerButton = (ImageButton) findViewById(R.id.organizerButton);
 		emailButton = (ImageButton) findViewById(R.id.emailButton);
 		accountButton = (ImageButton) findViewById(R.id.accountButton);
 		rssButton = (ImageButton) findViewById(R.id.rssButton);
 		testButton = (ImageButton) findViewById(R.id.testButton);
 		contactsButton.setOnClickListener(this);
-		fairButton.setOnClickListener(this);
+		organizerButton.setOnClickListener(this);
 		emailButton.setOnClickListener(this);
 		accountButton.setOnClickListener(this);
 		rssButton.setOnClickListener(this);
@@ -69,9 +69,9 @@ public class Main extends Activity implements OnClickListener {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.contacts.GroupsView.class);
 				startSubActivity(i, 0);
-			} else if (arg0 == fairButton) {
+			} else if (arg0 == organizerButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.fair.Fair.class);
+						cn.edu.nju.software.xyz.pim.organizer.Organizer.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == emailButton) {
 

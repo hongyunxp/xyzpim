@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -52,8 +52,8 @@ public class EditNote extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			noteId = extras.getLong("NoteId");
-			FairDB fairDbAdp = FairDB.getInstance(this);
-			Note note = fairDbAdp.getNote(noteId);
+			OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
+			Note note = organizerDbAdp.getNote(noteId);
 			titleText.setText(note.Title);
 			contentText.setText(note.Content);
 		}
@@ -72,13 +72,13 @@ public class EditNote extends Activity {
 		switch (item.getId()) {
 
 		case FINISH_M_ID:
-			FairDB FairDbAdp = FairDB.getInstance(this);
+			OrganizerDB OrganizerDbAdp = OrganizerDB.getInstance(this);
 			String title = titleText.getText().toString();
 			String content = contentText.getText().toString();
 			if (null != noteId)
-				FairDbAdp.updateNote(noteId, title, content);
+				OrganizerDbAdp.updateNote(noteId, title, content);
 			else
-				FairDbAdp.insertNote(title, content);
+				OrganizerDbAdp.insertNote(title, content);
 			finish();
 			return true;
 		case RETURN_M_ID:

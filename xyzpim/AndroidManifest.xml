@@ -10,8 +10,8 @@
 					android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:label="@string/fair"
-			android:icon="@drawable/fair" android:name=".fair.Fair">
+		<activity android:label="@string/organizer"
+			android:icon="@drawable/organizer" android:name=".organizer.Organizer">
 		</activity>
 		<activity android:name=".account.Account"
 			android:label="@string/account">
@@ -45,28 +45,28 @@
 			android:label="Read Article">
 		</activity>
 		<activity android:label="@string/newtask"
-			android:name=".fair.CreateNewTask">
+			android:name=".organizer.CreateNewTask">
 		</activity>
-		<activity android:name=".fair.CreateMeeting"
+		<activity android:name=".organizer.CreateMeeting"
 			android:label="@string/meeting">
 		</activity>
-		<activity android:name=".fair.TaskView"></activity>
-		<activity android:name=".fair.NoteView"
+		<activity android:name=".organizer.TaskView"></activity>
+		<activity android:name=".organizer.NoteView"
 			android:label="@string/note">
 		</activity>
-		<activity android:name=".fair.EditNote"
+		<activity android:name=".organizer.EditNote"
 			android:label="@string/note">
 		</activity>
-		<activity android:name=".fair.CreateNote"
+		<activity android:name=".organizer.CreateNote"
 			android:label="@string/note">
 		</activity>
-		<activity android:name=".fair.MeetingView"
+		<activity android:name=".organizer.MeetingView"
 			android:label="@string/meeting">
 		</activity>
-		<activity android:name=".fair.EditMeeting"
+		<activity android:name=".organizer.EditMeeting"
 			android:label="@string/meeting">
 		</activity>
-		<activity android:name=".fair.EditTask"></activity>
+		<activity android:name=".organizer.EditTask"></activity>
 	<activity android:name=".contacts.GroupMembersView" android:label="组成员视图">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">

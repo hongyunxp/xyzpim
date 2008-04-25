@@ -41,9 +41,9 @@
 			</TableRow>
 			<TableRow android:gravity="center">
 				<TextView android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:text="@string/fair" />
-				<ImageButton android:id="@+id/fairButton"
-					android:src="@drawable/fair" />
+					android:layout_height="wrap_content" android:text="@string/organizer" />
+				<ImageButton android:id="@+id/organizerButton"
+					android:src="@drawable/organizer" />
 			</TableRow>
 			<TableRow android:gravity="center">
 				<TextView android:layout_width="fill_parent"

@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +37,10 @@ import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author savio 2008-4-15 下午03:19:02
+ * @author savio 2008-4-15 下午03:08:00
  * 
  */
-public class MeetingView extends ListActivity {
+public class NoteView extends ListActivity {
 	private static final int ACTIVITY_CREATE = 1;
 	private static final int ACTIVITY_EDIT = 2;
 
@@ -49,15 +49,15 @@ public class MeetingView extends ListActivity {
 	private static final int RETURN_M_ID = 2;
 	private static final int DEL_M_ID = 3;
 
-	private List<Meeting> meetingList;
+	private List<Note> noteList;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.meeting_list);
-		FairDB fairDbAdp = FairDB.getInstance(this);
-		meetingList = new ArrayList<Meeting>();
-		meetingList = fairDbAdp.getMeetings();
+		setContentView(R.layout.note_list);
+		OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
+		noteList = new ArrayList<Note>();
+		noteList = organizerDbAdp.getNotes();
 		fillData();
 
 	}
@@ -68,13 +68,13 @@ public class MeetingView extends ListActivity {
 	 */
 	private void fillData() {
 		// 创建适配器
-		int count = meetingList.size();
+		int count = noteList.size();
 		List<String> noteTitle = new ArrayList<String>(count);
 		for (int index = 0; index < count; ++index) {
-			noteTitle.add(meetingList.get(index).Title);
+			noteTitle.add(noteList.get(index).Title);
 		}
-		ArrayAdapter notesAdapter = new ArrayAdapter(this,
-				R.layout.meeting_row, noteTitle);
+		ArrayAdapter notesAdapter = new ArrayAdapter(this, R.layout.note_row,
+				noteTitle);
 		setListAdapter(notesAdapter);
 	}
 
@@ -93,18 +93,18 @@ public class MeetingView extends ListActivity {
 		switch (item.getId()) {
 
 		case NEW_M_ID:
-			Intent newURLIntent = new Intent(this, EditMeeting.class);
+			Intent newURLIntent = new Intent(this, EditNote.class);
 			startSubActivity(newURLIntent, ACTIVITY_CREATE);
 			return true;
 		case DEL_M_ID:
-			FairDB FairDbAdp = FairDB.getInstance(this);
-			FairDbAdp.deleteMeeting(meetingList.get((int) getListView()
-					.getSelectedItemId()).MeetId);
-			meetingList = FairDbAdp.getMeetings();
+			OrganizerDB OrganizerDbAdp = OrganizerDB.getInstance(this);
+			OrganizerDbAdp.deleteNote(noteList.get((int) getListView()
+					.getSelectedItemId()).NoteId);
+			noteList = OrganizerDbAdp.getNotes();
 			fillData();
 			return true;
 		case OPEN_M_ID:
-			openMeeting((int) getListView().getSelectedItemId());
+			openNote((int) getListView().getSelectedItemId());
 			return true;
 		case RETURN_M_ID:
 			finish();
@@ -118,12 +118,12 @@ public class MeetingView extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		openMeeting(position);
+		openNote(position);
 	}
 
-	private void openMeeting(int position) {
-		Intent openIntent = new Intent(this, EditMeeting.class);
-		openIntent.putExtra("MeetingId", meetingList.get(position).MeetId);
+	private void openNote(int position) {
+		Intent openIntent = new Intent(this, EditNote.class);
+		openIntent.putExtra("NoteId", noteList.get(position).NoteId);
 		startSubActivity(openIntent, ACTIVITY_EDIT);
 	}
 
@@ -134,9 +134,9 @@ public class MeetingView extends ListActivity {
 		switch (requestCode) {
 		case ACTIVITY_CREATE:
 		case ACTIVITY_EDIT:
-			FairDB fairDbAdp = FairDB.getInstance(this);
-			meetingList = new ArrayList<Meeting>();
-			meetingList = fairDbAdp.getMeetings();
+			OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
+			noteList = new ArrayList<Note>();
+			noteList = organizerDbAdp.getNotes();
 			fillData();
 		}
 	}

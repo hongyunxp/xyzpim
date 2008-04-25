@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -78,8 +78,8 @@ public class EditTask extends Activity {
 				int year = 2008, month = 1, day = 1;
 
 				if (null != TaskId) {
-					FairDB fairDbAdp = FairDB.getInstance(EditTask.this);
-					Task task = fairDbAdp.getTask(TaskId);
+					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditTask.this);
+					Task task = organizerDbAdp.getTask(TaskId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
 					Matcher m = Pattern.compile(reg).matcher(task.Date);
@@ -102,8 +102,8 @@ public class EditTask extends Activity {
 				int hour = 0, minute = 0;
 
 				if (null != TaskId) {
-					FairDB fairDbAdp = FairDB.getInstance(EditTask.this);
-					Task task = fairDbAdp.getTask(TaskId);
+					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditTask.this);
+					Task task = organizerDbAdp.getTask(TaskId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
 					Matcher m = Pattern.compile(reg).matcher(task.Date);
@@ -121,8 +121,8 @@ public class EditTask extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			TaskId = extras.getLong("TaskId");
-			FairDB fairDbAdp = FairDB.getInstance(this);
-			Task task = fairDbAdp.getTask(TaskId);
+			OrganizerDB organizerDbAdp = OrganizerDB.getInstance(this);
+			Task task = organizerDbAdp.getTask(TaskId);
 			titleText.setText(task.Title);
 
 			String reg = "(\\d{4}-\\d{1,2}-\\d{1,2})\\s(\\d{1,2}:\\d{1,2})";
@@ -188,7 +188,7 @@ public class EditTask extends Activity {
 		case FINISH_M_ID:
 			int im,
 			in;
-			FairDB FairDbAdp = FairDB.getInstance(this);
+			OrganizerDB OrganizerDbAdp = OrganizerDB.getInstance(this);
 			String title = titleText.getText().toString();
 			String dateTime = dateButton.getText().toString() + " "
 					+ timeButton.getText().toString();
@@ -203,9 +203,9 @@ public class EditTask extends Activity {
 				im = 0;
 			String content = contentText.getText().toString();
 			if (null == TaskId)
-				FairDbAdp.insertTask(title, dateTime, im, in, content);
+				OrganizerDbAdp.insertTask(title, dateTime, im, in, content);
 			else
-				FairDbAdp.updateTask(TaskId, title, dateTime, im, in, content);
+				OrganizerDbAdp.updateTask(TaskId, title, dateTime, im, in, content);
 			finish();
 			return true;
 		case RETURN_M_ID:

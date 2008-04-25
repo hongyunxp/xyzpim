@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.fair;
+package cn.edu.nju.software.xyz.pim.organizer;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import cn.edu.nju.software.xyz.pim.util.Log;
  * @author savio 2008-4-15 下午03:21:18
  * 
  */
-public class FairDB {
+public class OrganizerDB {
 
 	private static final String CREATE_TABLE_NOTES = "create table notes (note_id integer primary key autoincrement, "
 			+ "title text not null, content text not null);";
@@ -52,17 +52,17 @@ public class FairDB {
 	private static final String NOTES_TABLE = "notes";
 	private static final String MEETINGS_TABLE = "meetings";
 	private static final String TASKS_TABLE = "tasks";
-	private static final String DATABASE_NAME = "fairdb";
+	private static final String DATABASE_NAME = "organizerdb";
 	private static final int DATABASE_VERSION = 1;
 
 	private SQLiteDatabase db;
 
-	private static FairDB ins;
+	private static OrganizerDB ins;
 
-	private FairDB() {
+	private OrganizerDB() {
 	}
 
-	private FairDB(Context ctx) {
+	private OrganizerDB(Context ctx) {
 		try {
 			db = ctx.openDatabase(DATABASE_NAME, null);
 		} catch (FileNotFoundException e) {
@@ -78,9 +78,9 @@ public class FairDB {
 		}
 	}
 
-	public synchronized static FairDB getInstance(Context ctx) {
+	public synchronized static OrganizerDB getInstance(Context ctx) {
 		if (null == ins)
-			ins = new FairDB(ctx);
+			ins = new OrganizerDB(ctx);
 		return ins;
 	}
 
