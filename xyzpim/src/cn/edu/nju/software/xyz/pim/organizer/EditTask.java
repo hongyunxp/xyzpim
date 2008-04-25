@@ -78,7 +78,8 @@ public class EditTask extends Activity {
 				int year = 2008, month = 1, day = 1;
 
 				if (null != TaskId) {
-					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditTask.this);
+					OrganizerDB organizerDbAdp = OrganizerDB
+							.getInstance(EditTask.this);
 					Task task = organizerDbAdp.getTask(TaskId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
@@ -91,7 +92,7 @@ public class EditTask extends Activity {
 				}
 
 				new DatePickerDialog(EditTask.this, dateButtonListener, year,
-						month, day, Calendar.SUNDAY).show();
+						month - 1, day, Calendar.SUNDAY).show();
 			}
 
 		});
@@ -102,7 +103,8 @@ public class EditTask extends Activity {
 				int hour = 0, minute = 0;
 
 				if (null != TaskId) {
-					OrganizerDB organizerDbAdp = OrganizerDB.getInstance(EditTask.this);
+					OrganizerDB organizerDbAdp = OrganizerDB
+							.getInstance(EditTask.this);
 					Task task = organizerDbAdp.getTask(TaskId);
 
 					String reg = "(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2})";
@@ -153,7 +155,8 @@ public class EditTask extends Activity {
 			StringBuilder buf = new StringBuilder();
 			buf.append(String.valueOf(year));
 			buf.append('-');
-			buf.append(String.valueOf(monthOfYear));
+			// Log.i(monthOfYear);
+			buf.append(String.valueOf(monthOfYear + 1));
 			buf.append('-');
 			buf.append(String.valueOf(dayOfMonth));
 
@@ -205,7 +208,8 @@ public class EditTask extends Activity {
 			if (null == TaskId)
 				OrganizerDbAdp.insertTask(title, dateTime, im, in, content);
 			else
-				OrganizerDbAdp.updateTask(TaskId, title, dateTime, im, in, content);
+				OrganizerDbAdp.updateTask(TaskId, title, dateTime, im, in,
+						content);
 			finish();
 			return true;
 		case RETURN_M_ID:
