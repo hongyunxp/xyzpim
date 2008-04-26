@@ -30,6 +30,11 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.email.Base64Coder;
+import cn.edu.nju.software.xyz.pim.email.EmailException;
+import cn.edu.nju.software.xyz.pim.email.Message;
+import cn.edu.nju.software.xyz.pim.email.SMTPSession;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
  * @author xmx 2008-3-18 下午10:39:33
@@ -49,5 +54,40 @@ public class Test extends ListActivity {
 				R.layout.rss_row, feedTitle);
 		setListAdapter(feedsAdapter);
 
+		try {
+			Message msg = new Message();
+			msg.date = "Sat, 26 Apr 2008 22:47:18 +0800";
+			msg.from = "<xyzpim@gmail.com>";
+			msg.to = "\"yhtch\"<xmxsuperstar@gmail.com>, \"joel\"<xmxjoel@163.com>";
+			msg.subject = "Go to your home";
+			String content = "I will go to your home\n Please let me know";
+			String encodedContent = Base64Coder.encodeString(content);
+			// System.out.println(buf.toString());
+			StringBuilder buf = new StringBuilder();
+			for (int index = 0; index < encodedContent.length(); ++index) {
+				// if(index)
+				buf.append(encodedContent.charAt(index));
+				if ((index + 1) % 80 == 0
+						|| index == encodedContent.length() - 1) {
+					msg.content.rawContent.add(buf.toString());
+					buf.delete(0, buf.length());
+				}
+			}
+			msg.content.contentDisposition = "inline";
+			msg.content.contentType = "text/plain; charset=\"us-ascii\"";
+			msg.content.contentTransferEncoding = "base64";
+			// msg.content.rawContent;
+			SMTPSession s = SMTPSession.getInstance();
+			s.host = "smtp.gmail.com";
+			s.port = 465;
+			s.isShowLog = true;
+			s.username = "xyzpim";
+			s.password = "xyzpimtest";
+			s.open(true);
+			s.sendMsg(msg);
+			s.close();
+		} catch (EmailException e) {
+			Log.e(e.toString());
+		}
 	}
 }
