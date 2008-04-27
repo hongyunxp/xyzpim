@@ -114,7 +114,7 @@ public class EmailDB {
 		return ins;
 	}
 
-	public long createEmailMessage(Message msg, String folder, int aid) {
+	public long createEmailMessage(Message msg, String folder, long aid) {
 		ContentValues cv = new ContentValues();
 		cv.put(EmailMessageColumns.ID, msg.id);
 		cv.put(EmailMessageColumns.UID, msg.uid);
@@ -131,6 +131,11 @@ public class EmailDB {
 	public boolean deleteEmailMessage(String id) {
 		return db.delete(DATABASE_EMAIL_MESSAGES_TABLE, EmailMessageColumns.ID
 				+ "=" + "\'" + id + "\'", null) > 0;
+	}
+
+	public boolean deletEmailMessageByAccount(long aid) {
+		return db.delete(DATABASE_EMAIL_MESSAGES_TABLE, EmailMessageColumns.AID
+				+ "=" + aid, null) >= 0;
 	}
 
 	public List<Message> fetchEmailMessages(long aid, String folder) {
@@ -155,12 +160,10 @@ public class EmailDB {
 		return re;
 	}
 
-	public Message fetchEmailMessage(long aid, String folder, String id) {
-		Cursor c = db.query(true, DATABASE_EMAIL_ACCOUNTS_TABLE, null,
-				EmailMessageColumns.AID + "=" + aid + " and "
-						+ EmailMessageColumns.FOLDER + "=" + "\'" + folder
-						+ "\'" + " and " + EmailMessageColumns.ID + "=" + "\'"
-						+ id + "\'", null, null, null, null);
+	public Message fetchEmailMessage(String id) {
+		Cursor c = db.query(true, DATABASE_EMAIL_MESSAGES_TABLE, null,
+				EmailMessageColumns.ID + "=" + "\'" + id + "\'", null, null,
+				null, null);
 		if ((c.count() == 0) || !c.first()) {
 			throw new SQLException("No email account matching ID: " + id);
 		}

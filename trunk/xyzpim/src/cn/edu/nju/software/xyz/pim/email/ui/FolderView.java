@@ -60,15 +60,26 @@ public class FolderView extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-
+				Intent inboxIntent = new Intent(
+						FolderView.this,
+						cn.edu.nju.software.xyz.pim.email.ui.EmailMessageList.class);
+				inboxIntent.putExtra(EmailDB.EmailAccountColumns.ID, a_id);
+				inboxIntent.putExtra(EmailDB.EmailMessageColumns.FOLDER,
+						EmailDB.EmailFolder.INBOX);
+				FolderView.this.startSubActivity(inboxIntent, 0);
 			}
 		});
 		outboxButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+				Intent outboxIntent = new Intent(
+						FolderView.this,
+						cn.edu.nju.software.xyz.pim.email.ui.EmailMessageList.class);
+				outboxIntent.putExtra(EmailDB.EmailAccountColumns.ID, a_id);
+				outboxIntent.putExtra(EmailDB.EmailMessageColumns.FOLDER,
+						EmailDB.EmailFolder.OUTBOX);
+				FolderView.this.startSubActivity(outboxIntent, 0);
 
 			}
 		});

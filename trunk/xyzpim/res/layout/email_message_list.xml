@@ -24,10 +24,14 @@
 	* Boston, MA  02110-1301  USA
 	*/
 -->
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:animationCache="false" android:clipToPadding="false"
-	android:padding="12dip" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:stretchColumns="1"
-	android:shrinkColumns="1">
-	<TextView android:text="test" />
-</TableLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
+
+	<ListView android:id="@id/android:list"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent" />
+	<TextView android:id="@id/android:empty"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="No Messages!" />
+</LinearLayout>
