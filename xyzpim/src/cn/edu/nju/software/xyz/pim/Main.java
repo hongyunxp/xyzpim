@@ -74,6 +74,10 @@ public class Main extends Activity implements OnClickListener {
 						cn.edu.nju.software.xyz.pim.organizer.Organizer.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == emailButton) {
+				Intent i = new Intent(
+						this,
+						cn.edu.nju.software.xyz.pim.email.ui.EmailAccountList.class);
+				startSubActivity(i, 0);
 
 			} else if (arg0 == accountButton) {
 				Intent i = new Intent(this,

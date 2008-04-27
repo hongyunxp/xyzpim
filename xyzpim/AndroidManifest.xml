@@ -68,6 +68,9 @@
 		</activity>
 		<activity android:name=".organizer.EditTask"></activity>
 	<activity android:name=".contacts.GroupMembersView" android:label="组成员视图">
+</activity><activity android:name=".email.ui.EmailAccountList">
+</activity><activity android:name=".email.ui.EditSettingsView">
+</activity><activity android:name=".email.ui.FolderView">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>

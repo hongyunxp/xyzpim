@@ -34,17 +34,17 @@
 		<TextView android:id="@+id/mail_subject" />
 	</TableRow>
 	<TableRow>
-		<TextView android:text="@string/reciver" android:textColor="#ffff00"/>
+		<TextView android:text="@string/to" android:textColor="#ffff00"/>
 		<TextView android:id="@+id/mail_reciver"
 			android:layout_width="fill_parent" />
 	</TableRow>
 	<TableRow>
-		<TextView android:text="@string/sender" android:textColor="#ffff00"/>
+		<TextView android:text="@string/from" android:textColor="#ffff00"/>
 		<TextView android:id="@+id/mail_sender"
 			android:layout_width="fill_parent" />
 	</TableRow>
 	<TableRow>
-		<TextView android:text="@string/date" android:textColor="#ffff00"/>
+		<TextView android:text="@string/date_time" android:textColor="#ffff00"/>
 		<TextView android:id="@+id/mail_date" />
 	</TableRow>
 

@@ -21,20 +21,22 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.email;
+package cn.edu.nju.software.xyz.pim.email.ui;
+
+import android.app.Activity;
+import android.os.Bundle;
+import cn.edu.nju.software.xyz.pim.R;
 
 /**
- * @author xmx 2008-4-25 下午03:38:14
+ * @author xmx 2008-4-27 下午01:47:21
  * 
  */
-public class EmailAccount {
-	public long id;
-	public String name;
-	public boolean isSSL;
-	public String smtpHost;
-	public int smtpPort;
-	public String popHost;
-	public int popPort;
-	public String user;
-	public String password;
+public class EmailCompose extends Activity {
+
+	@Override
+	protected void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
+		this.setContentView(R.layout.email_compose);
+	}
+
 }

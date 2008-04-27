@@ -6,15 +6,17 @@
 	android:layout_height="fill_parent" android:stretchColumns="1">
 
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/reciver" />
-		<EditText android:id="@+id/email_reciver_text"/>
+		<TextView android:textAlign="end"
+			android:text="@string/to" />
+		<EditText android:id="@+id/email_reciver_text" />
 	</TableRow>
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/subject" />
-		<EditText android:id="@+id/email_subject_text"/>
+		<TextView android:textAlign="end"
+			android:text="@string/subject" />
+		<EditText android:id="@+id/email_subject_text" />
 	</TableRow>
 
-	
-		<EditText android:layout_height="fill_parent"
-					android:id="@+id/email_content_text"/>
+
+	<EditText android:layout_height="fill_parent"
+		android:id="@+id/email_content_text" />
 </TableLayout>
