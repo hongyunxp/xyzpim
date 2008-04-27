@@ -6,34 +6,46 @@
 	android:layout_height="fill_parent" android:stretchColumns="1">
 
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/emailSetting" />
-		<EditText android:id="@+id/email_emailSetting_text"/>
+		<TextView android:textAlign="end"
+			android:text="@string/account_name" />
+		<EditText android:id="@+id/email_account_name_text" />
 	</TableRow>
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/smtp" />
-		<EditText android:id="@+id/email_smtp_text"/>
-	</TableRow>
-		<TableRow>
-		<TextView android:textAlign="end" android:text="@string/ftp" />
-		<EditText android:id="@+id/email_ftp_text"/>
-	</TableRow>
-		<TableRow>
-		<TextView android:textAlign="end" android:text="@string/port" />
-		<EditText android:id="@+id/email_port_text"/>
-	</TableRow>
-		<TableRow>
-		<TextView android:textAlign="end" android:text="@string/pop3" />
-		<EditText android:id="@+id/email_pop3_text"/>
-	</TableRow>
-		<TableRow>
-		<TextView android:textAlign="end" android:text="@string/username" />
-		<EditText android:id="@+id/email_username_text"/>
+		<TextView android:textAlign="end" android:text="@string/ssl" />
+		<CheckBox android:id="@+id/email_ssl_checkbox" />
 	</TableRow>
 	<TableRow>
-		<TextView android:textAlign="end" android:text="@string/key" />
-		<EditText android:id="@+id/email_key_text"/>
+		<TextView android:textAlign="end"
+			android:text="@string/smtp_host" />
+		<EditText android:id="@+id/email_smtp_host_text" />
+	</TableRow>
+	<TableRow>
+		<TextView android:textAlign="end"
+			android:text="@string/smtp_port" />
+		<EditText android:id="@+id/email_smtp_port_text" />
+	</TableRow>
+	<TableRow>
+		<TextView android:textAlign="end"
+			android:text="@string/pop3_host" />
+		<EditText android:id="@+id/email_pop3_host_text" />
+	</TableRow>
+	<TableRow>
+		<TextView android:textAlign="end"
+			android:text="@string/pop3_port" />
+		<EditText android:id="@+id/email_pop3_port_text" />
+	</TableRow>
+	<TableRow>
+		<TextView android:textAlign="end"
+			android:text="@string/username" />
+		<EditText android:id="@+id/email_username_text" />
+	</TableRow>
+	<TableRow>
+		<TextView android:textAlign="end"
+			android:text="@string/password" />
+		<EditText android:id="@+id/email_password_text"
+			android:password="true" />
 	</TableRow>
 
-	
+
 
 </TableLayout>

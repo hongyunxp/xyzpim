@@ -41,6 +41,7 @@ public class EmailDB {
 	public class EmailAccountColumns {
 		public static final String ID = "a_id";
 		public static final String NAME = "a_name";
+		public static final String SSL = "ssl";
 		public static final String SMTPHOST = "smtp_host";
 		public static final String SMTPPORT = "smtp_port";
 		public static final String POPHOST = "pop_host";
@@ -55,21 +56,27 @@ public class EmailDB {
 		public static final String FOLDER = "folder";
 		public static final String SUBJECT = "subject";
 		public static final String DATE = "date";
-		public static final String FROM = "from";
-		public static final String TO = "to";
+		public static final String FROM = "_from";
+		public static final String TO = "_to";
 		public static final String CONTENT = "content";
 		public static final String AID = "a_id";
+	}
+
+	public class EmailFolder {
+		public static final String INBOX = "inbox";
+		public static final String OUTBOX = "outbox";
 	}
 
 	private static final String CREATE_TABLE_EMAIL_ACCOUNTS = "create table email_accounts "
 			+ "(a_id integer primary key autoincrement, "
 			+ "a_name text not null, smtp_host text, "
+			+ "ssl integet not null, "
 			+ "smtp_port integer, pop_host text, "
 			+ "pop_port integer, user text, password text);";
-	private static final String CREATE_TABLE_EMAIL_MESSAGES = "create talble email_messages "
+	private static final String CREATE_TABLE_EMAIL_MESSAGES = "create table email_messages "
 			+ "(m_id text primary key, uid text, "
 			+ "folder text, subject text, date text, "
-			+ "from text, to text, content text, a_id integer);";
+			+ "_from text, _to text, content text, a_id integer);";
 
 	private static final String DATABASE_NAME = "emaildb";
 
@@ -143,6 +150,7 @@ public class EmailDB {
 			msg.date = c.getString(c.getColumnIndex(EmailMessageColumns.DATE));
 			msg.from = c.getString(c.getColumnIndex(EmailMessageColumns.FROM));
 			msg.to = c.getString(c.getColumnIndex(EmailMessageColumns.TO));
+			re.add(msg);
 		}
 		return re;
 	}
@@ -172,6 +180,10 @@ public class EmailDB {
 	public long createEmailAccount(EmailAccount ea) {
 		ContentValues cv = new ContentValues();
 		cv.put(EmailAccountColumns.NAME, ea.name);
+		if (ea.isSSL)
+			cv.put(EmailAccountColumns.SSL, 1);
+		else
+			cv.put(EmailAccountColumns.SSL, 0);
 		cv.put(EmailAccountColumns.SMTPHOST, ea.smtpHost);
 		cv.put(EmailAccountColumns.SMTPPORT, ea.smtpPort);
 		cv.put(EmailAccountColumns.POPHOST, ea.popHost);
@@ -182,8 +194,10 @@ public class EmailDB {
 	}
 
 	public boolean deleteEmailAccount(long id) {
-		return db.delete(DATABASE_EMAIL_ACCOUNTS_TABLE, EmailAccountColumns.ID
-				+ "=" + id, null) > 0;
+		return (db.delete(DATABASE_EMAIL_MESSAGES_TABLE,
+				EmailMessageColumns.AID + "=" + id, null) >= 0)
+				&& (db.delete(DATABASE_EMAIL_ACCOUNTS_TABLE,
+						EmailAccountColumns.ID + "=" + id, null) > 0);
 	}
 
 	public List<EmailAccount> fetchEmailAccounts() {
@@ -196,6 +210,10 @@ public class EmailDB {
 			EmailAccount ea = new EmailAccount();
 			ea.id = c.getInt(c.getColumnIndex(EmailAccountColumns.ID));
 			ea.name = c.getString(c.getColumnIndex(EmailAccountColumns.NAME));
+			if (c.getInt(c.getColumnIndex(EmailAccountColumns.SSL)) == 1)
+				ea.isSSL = true;
+			else
+				ea.isSSL = false;
 			ea.smtpHost = c.getString(c
 					.getColumnIndex(EmailAccountColumns.SMTPHOST));
 			ea.smtpPort = c.getInt(c
@@ -207,6 +225,7 @@ public class EmailDB {
 			ea.user = c.getString(c.getColumnIndex(EmailAccountColumns.USER));
 			ea.password = c.getString(c
 					.getColumnIndex(EmailAccountColumns.PASSWORD));
+			re.add(ea);
 		}
 		return re;
 	}
@@ -221,6 +240,10 @@ public class EmailDB {
 		EmailAccount re = new EmailAccount();
 		re.id = c.getInt(c.getColumnIndex(EmailAccountColumns.ID));
 		re.name = c.getString(c.getColumnIndex(EmailAccountColumns.NAME));
+		if (c.getInt(c.getColumnIndex(EmailAccountColumns.SSL)) == 1)
+			re.isSSL = true;
+		else
+			re.isSSL = false;
 		re.smtpHost = c.getString(c
 				.getColumnIndex(EmailAccountColumns.SMTPHOST));
 		re.smtpPort = c.getInt(c.getColumnIndex(EmailAccountColumns.SMTPPORT));
@@ -236,6 +259,10 @@ public class EmailDB {
 	public boolean updateEmailAccount(long id, EmailAccount ea) {
 		ContentValues cv = new ContentValues();
 		cv.put(EmailAccountColumns.NAME, ea.name);
+		if (ea.isSSL)
+			cv.put(EmailAccountColumns.SSL, 1);
+		else
+			cv.put(EmailAccountColumns.SSL, 0);
 		cv.put(EmailAccountColumns.SMTPHOST, ea.smtpHost);
 		cv.put(EmailAccountColumns.SMTPPORT, ea.smtpPort);
 		cv.put(EmailAccountColumns.POPHOST, ea.popHost);
