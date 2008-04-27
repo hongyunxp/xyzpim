@@ -93,7 +93,7 @@ public class FolderView extends Activity {
 		switch (item.getId()) {
 		case COMPOSE_M_ID:
 			Intent composeIntent = new Intent(this,
-					cn.edu.nju.software.xyz.pim.email.ui.EditSettingsView.class);
+					cn.edu.nju.software.xyz.pim.email.ui.EmailCompose.class);
 			composeIntent.putExtra(EmailDB.EmailAccountColumns.ID, a_id);
 			startSubActivity(composeIntent, 0);
 			break;
