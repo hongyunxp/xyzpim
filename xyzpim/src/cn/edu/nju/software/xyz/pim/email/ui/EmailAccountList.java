@@ -37,6 +37,7 @@ import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
 import cn.edu.nju.software.xyz.pim.email.EmailAccount;
 import cn.edu.nju.software.xyz.pim.email.EmailDB;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
  * @author xmx 2008-4-27 上午02:14:36
@@ -75,6 +76,7 @@ public class EmailAccountList extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		Log.i(position);
 		openAccount(position);
 	}
 
@@ -122,8 +124,11 @@ public class EmailAccountList extends ListActivity {
 	}
 
 	private void openAccount(int position) {
+		Log.i(position);
 		Intent openIntent = new Intent(this,
 				cn.edu.nju.software.xyz.pim.email.ui.FolderView.class);
+		EmailAccount openEA = accounts.get(position);
+		openIntent.putExtra(EmailDB.EmailAccountColumns.ID, openEA.id);
 		startSubActivity(openIntent, 0);
 	}
 
