@@ -37,55 +37,66 @@ import android.widget.ListView;
 import cn.edu.nju.software.xyz.pim.R;
 import cn.edu.nju.software.xyz.pim.email.EmailAccount;
 import cn.edu.nju.software.xyz.pim.email.EmailDB;
+import cn.edu.nju.software.xyz.pim.email.EmailException;
+import cn.edu.nju.software.xyz.pim.email.Message;
+import cn.edu.nju.software.xyz.pim.email.POP3Session;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
- * @author xmx 2008-4-27 上午02:14:36
+ * @author xmx 2008-4-27 下午04:23:28
  * 
  */
-public class EmailAccountList extends ListActivity {
+public class EmailMessageList extends ListActivity {
 
-	private static final int NEW_M_ID = 0;
-	private static final int EDIT_M_ID = 1;
+	private static final int REFRESH_M_ID = 0;
+	private static final int OPEN_M_ID = 1;
 	private static final int DEL_M_ID = 2;
-	private static final int OPEN_M_ID = 3;
-	private static final int RETURN_M_ID = 4;
+	private static final int RETURN_M_ID = 3;
 
-	private List<EmailAccount> accounts;
+	private List<Message> messages;
+	private Long a_id;
+	private String folder;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.email_account_list);
+		setContentView(R.layout.email_message_list);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			a_id = extras.getLong(EmailDB.EmailAccountColumns.ID);
+			folder = extras.getString(EmailDB.EmailMessageColumns.FOLDER);
+		}
+
 		fillData();
 
 	}
 
 	private void fillData() {
-		accounts = EmailDB.getInstance(this).fetchEmailAccounts();
-		int count = accounts.size();
-		List<String> accountNames = new ArrayList<String>(count);
+		messages = EmailDB.getInstance(this).fetchEmailMessages(a_id, folder);
+		int count = messages.size();
+		List<String> messageSubjects = new ArrayList<String>(count);
 		for (int index = 0; index < count; ++index) {
-			accountNames.add(accounts.get(index).name);
+			messageSubjects.add(messages.get(index).subject);
 		}
-		ArrayAdapter<String> accountNamesAdapter = new ArrayAdapter<String>(
-				this, R.layout.email_account_row, accountNames);
-		setListAdapter(accountNamesAdapter);
+		ArrayAdapter<String> messageSubjectAdp = new ArrayAdapter<String>(this,
+				R.layout.email_message_row, messageSubjects);
+		setListAdapter(messageSubjectAdp);
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// Log.i(position);
-		openAccount(position);
+		openMessage(position);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, NEW_M_ID, R.string.create);
-		menu.add(0, EDIT_M_ID, R.string.edit);
-		menu.add(0, DEL_M_ID, R.string.del);
+		if (EmailDB.EmailFolder.INBOX.equals(folder))
+			menu.add(0, REFRESH_M_ID, R.string.refresh);
 		menu.add(0, OPEN_M_ID, R.string.open);
+		menu.add(0, DEL_M_ID, R.string.del);
 		menu.add(0, RETURN_M_ID, R.string.back);
 		return true;
 	}
@@ -94,27 +105,14 @@ public class EmailAccountList extends ListActivity {
 	public boolean onMenuItemSelected(int featureId, Item item) {
 		switch (item.getId()) {
 
-		case NEW_M_ID:
-			Intent newIntent = new Intent(this,
-					cn.edu.nju.software.xyz.pim.email.ui.EditSettingsView.class);
-			startSubActivity(newIntent, 0);
-			break;
-		case EDIT_M_ID:
-			EmailAccount editEA = accounts.get(getListView()
-					.getSelectedItemPosition());
-			Intent editIntent = new Intent(this,
-					cn.edu.nju.software.xyz.pim.email.ui.EditSettingsView.class);
-			editIntent.putExtra(EmailDB.EmailAccountColumns.ID, editEA.id);
-			startSubActivity(editIntent, 0);
-			break;
-		case DEL_M_ID:
-			EmailAccount delEA = accounts.get(getListView()
-					.getSelectedItemPosition());
-			EmailDB.getInstance(this).deleteEmailAccount(delEA.id);
+		case REFRESH_M_ID:
+			refresh();
 			fillData();
 			break;
 		case OPEN_M_ID:
-			openAccount(getListView().getSelectedItemPosition());
+			openMessage(getSelectedItemPosition());
+			break;
+		case DEL_M_ID:
 			break;
 		case RETURN_M_ID:
 			finish();
@@ -122,19 +120,34 @@ public class EmailAccountList extends ListActivity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	private void openAccount(int position) {
-		// Log.i(position);
-		Intent openIntent = new Intent(this,
-				cn.edu.nju.software.xyz.pim.email.ui.FolderView.class);
-		EmailAccount openEA = accounts.get(position);
-		openIntent.putExtra(EmailDB.EmailAccountColumns.ID, openEA.id);
-		startSubActivity(openIntent, 0);
+	private void refresh() {
+		EmailDB db = EmailDB.getInstance(this);
+		EmailAccount ea = db.fetchEmailAccount(a_id);
+		db.deletEmailMessageByAccount(a_id);
+		POP3Session ps = POP3Session.getInstance();
+		ps.isShowLog = true;
+		ps.host = ea.popHost;
+		ps.port = ea.popPort;
+		ps.username = ea.user;
+		ps.password = ea.password;
+		try {
+			ps.open(ea.isSSL);
+			messages = ps.getAllMsg();
+			ps.close();
+		} catch (EmailException e) {
+			Log.e(e.getMessage());
+		}
+		int count = messages.size();
+		for (int index = 0; index < count; ++index) {
+			db.createEmailMessage(messages.get(index), folder, a_id);
+		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			String data, Bundle extras) {
-		super.onActivityResult(requestCode, resultCode, data, extras);
-		fillData();
+	private void openMessage(int position) {
+		Message msg = messages.get(position);
+		Intent openIntent = new Intent(this,
+				cn.edu.nju.software.xyz.pim.email.ui.EmailReadView.class);
+		openIntent.putExtra(EmailDB.EmailMessageColumns.ID, msg.id);
+		startSubActivity(openIntent, 0);
 	}
 }

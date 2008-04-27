@@ -72,6 +72,8 @@
 </activity><activity android:name=".email.ui.EditSettingsView">
 </activity><activity android:name=".email.ui.FolderView">
 </activity><activity android:name=".email.ui.EmailCompose">
+</activity><activity android:name=".email.ui.EmailMessageList">
+</activity><activity android:name=".email.ui.EmailReadView">
 </activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
