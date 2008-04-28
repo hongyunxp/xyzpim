@@ -41,6 +41,7 @@ public class EmailDB {
 	public class EmailAccountColumns {
 		public static final String ID = "a_id";
 		public static final String NAME = "a_name";
+		public static final String EMAILADDR = "email_addr";
 		public static final String SSL = "ssl";
 		public static final String SMTPHOST = "smtp_host";
 		public static final String SMTPPORT = "smtp_port";
@@ -72,7 +73,9 @@ public class EmailDB {
 
 	private static final String CREATE_TABLE_EMAIL_ACCOUNTS = "create table email_accounts "
 			+ "(a_id integer primary key autoincrement, "
-			+ "a_name text not null, smtp_host text, "
+			+ "a_name text not null, "
+			+ "email_addr text, "
+			+ "smtp_host text, "
 			+ "ssl integet not null, "
 			+ "smtp_port integer, pop_host text, "
 			+ "pop_port integer, user text, password text);";
@@ -210,6 +213,7 @@ public class EmailDB {
 	public long createEmailAccount(EmailAccount ea) {
 		ContentValues cv = new ContentValues();
 		cv.put(EmailAccountColumns.NAME, ea.name);
+		cv.put(EmailAccountColumns.EMAILADDR, ea.emailAddr);
 		if (ea.isSSL)
 			cv.put(EmailAccountColumns.SSL, 1);
 		else
@@ -240,6 +244,8 @@ public class EmailDB {
 			EmailAccount ea = new EmailAccount();
 			ea.id = c.getInt(c.getColumnIndex(EmailAccountColumns.ID));
 			ea.name = c.getString(c.getColumnIndex(EmailAccountColumns.NAME));
+			ea.emailAddr = c.getString(c
+					.getColumnIndex(EmailAccountColumns.EMAILADDR));
 			if (c.getInt(c.getColumnIndex(EmailAccountColumns.SSL)) == 1)
 				ea.isSSL = true;
 			else
@@ -270,6 +276,8 @@ public class EmailDB {
 		EmailAccount re = new EmailAccount();
 		re.id = c.getInt(c.getColumnIndex(EmailAccountColumns.ID));
 		re.name = c.getString(c.getColumnIndex(EmailAccountColumns.NAME));
+		re.emailAddr = c.getString(c
+				.getColumnIndex(EmailAccountColumns.EMAILADDR));
 		if (c.getInt(c.getColumnIndex(EmailAccountColumns.SSL)) == 1)
 			re.isSSL = true;
 		else
@@ -289,6 +297,7 @@ public class EmailDB {
 	public boolean updateEmailAccount(long id, EmailAccount ea) {
 		ContentValues cv = new ContentValues();
 		cv.put(EmailAccountColumns.NAME, ea.name);
+		cv.put(EmailAccountColumns.EMAILADDR, ea.emailAddr);
 		if (ea.isSSL)
 			cv.put(EmailAccountColumns.SSL, 1);
 		else

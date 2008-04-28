@@ -28,7 +28,7 @@
 	android:animationCache="false" android:clipToPadding="false"
 	android:padding="12dip" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:stretchColumns="1"
-	android:shrinkColumns="1">
+	android:background="#ffffff" android:shrinkColumns="1">
 	<TableRow>
 		<TextView android:text="@string/subject" android:textColor="#ffff00"/>
 		<TextView android:id="@+id/email_read_subject_text" />
