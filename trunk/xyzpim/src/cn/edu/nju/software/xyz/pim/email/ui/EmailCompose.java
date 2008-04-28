@@ -23,9 +23,22 @@
  */
 package cn.edu.nju.software.xyz.pim.email.ui;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.Menu.Item;
+import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.email.Base64Coder;
+import cn.edu.nju.software.xyz.pim.email.EmailAccount;
+import cn.edu.nju.software.xyz.pim.email.EmailDB;
+import cn.edu.nju.software.xyz.pim.email.EmailException;
+import cn.edu.nju.software.xyz.pim.email.Message;
+import cn.edu.nju.software.xyz.pim.email.SMTPSession;
+import cn.edu.nju.software.xyz.pim.util.Log;
 
 /**
  * @author xmx 2008-4-27 下午01:47:21
@@ -33,10 +46,98 @@ import cn.edu.nju.software.xyz.pim.R;
  */
 public class EmailCompose extends Activity {
 
+	private static final int SEND_M_ID = 0;
+	private static final int RETURN_M_ID = 1;
+
+	private EditText SendToText;
+	private EditText SubjectText;
+	private EditText ContentText;
+
+	private long a_id;
+
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		this.setContentView(R.layout.email_compose);
+		SendToText = (EditText) findViewById(R.id.email_compose_to_text);
+		SubjectText = (EditText) findViewById(R.id.email_subject_text);
+		ContentText = (EditText) findViewById(R.id.email_content_text);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			a_id = extras.getLong(EmailDB.EmailAccountColumns.ID);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, SEND_M_ID, R.string.send);
+		menu.add(0, RETURN_M_ID, R.string.back);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, Item item) {
+		switch (item.getId()) {
+
+		case SEND_M_ID:
+			try {
+				Message msg = new Message();
+
+				// msg.date = "Sat, 26 Apr 2008 22:47:18 +0800";
+				Date date = new Date();
+				SimpleDateFormat format = new SimpleDateFormat(
+						"EEE, dd MMM yyyy HH:mm:ss");
+				String msgDate = new String(format.format(date));
+				msgDate = msgDate + " +0800";
+				msg.date = msgDate;
+
+				msg.from = "<xyzpim@gmail.com>";
+				msg.to = "<" + SendToText.getText().toString() + ">";
+				msg.subject = SubjectText.getText().toString().trim();
+
+				String content = ContentText.getText().toString();
+				String encodedContent = Base64Coder.encodeString(content);
+				// System.out.println(buf.toString());
+				StringBuilder buf = new StringBuilder();
+				for (int index = 0; index < encodedContent.length(); ++index) {
+					// if(index)
+					buf.append(encodedContent.charAt(index));
+					if ((index + 1) % 80 == 0
+							|| index == encodedContent.length() - 1) {
+						msg.content.rawContent.add(buf.toString());
+						buf.delete(0, buf.length());
+					}
+				}
+				msg.content.contentDisposition = "inline";
+				msg.content.contentType = "text/plain; charset=\"us-ascii\"";
+				msg.content.contentTransferEncoding = "base64";
+				EmailDB db = EmailDB.getInstance(this);
+				EmailAccount account = db.fetchEmailAccount(a_id);
+
+				SMTPSession s = SMTPSession.getInstance();
+				s.host = account.smtpHost;
+				s.port = account.smtpPort;
+				s.isShowLog = true;
+				s.username = account.name;
+				s.password = account.password;
+				s.open(true);
+				s.sendMsg(msg);
+				s.close();
+
+				db.createEmailMessage(msg, EmailDB.EmailFolder.OUTBOX, a_id);
+			} catch (EmailException e) {
+				Log.e(e.toString());
+			}
+
+			finish();
+			break;
+		case RETURN_M_ID:
+			finish();
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 }

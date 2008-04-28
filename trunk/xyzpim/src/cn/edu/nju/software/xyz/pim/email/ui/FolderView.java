@@ -88,7 +88,6 @@ public class FolderView extends Activity {
 		if (extras != null) {
 			a_id = extras.getLong(EmailDB.EmailAccountColumns.ID);
 		}
-
 	}
 
 	@Override

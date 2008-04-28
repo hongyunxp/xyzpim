@@ -8,7 +8,7 @@
 	<TableRow>
 		<TextView android:textAlign="end"
 			android:text="@string/to" />
-		<EditText android:id="@+id/email_reciver_text" />
+		<EditText android:id="@+id/email_compose_to_text" />
 	</TableRow>
 	<TableRow>
 		<TextView android:textAlign="end"
