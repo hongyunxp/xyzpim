@@ -76,6 +76,7 @@
 	<string name="from">From</string>
 	<string name="to">To</string>
 	<string name="date_time">Date Time</string>
+	<string name="send">发送</string>
 	
 	<string name="account_name">Account Name</string>
 	<string name="ssl">SSL</string>
