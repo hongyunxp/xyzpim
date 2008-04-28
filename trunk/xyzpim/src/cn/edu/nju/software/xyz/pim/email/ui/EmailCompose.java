@@ -94,8 +94,8 @@ public class EmailCompose extends Activity {
 				msg.date = msgDate;
 
 				msg.from = "<xyzpim@gmail.com>";
-				msg.to = "<" + SendToText.getText().toString() + ">";
-				msg.subject = SubjectText.getText().toString().trim();
+				msg.to = "<" + SendToText.getText().toString().trim() + ">";
+				msg.subject = SubjectText.getText().toString();
 
 				String content = ContentText.getText().toString();
 				String encodedContent = Base64Coder.encodeString(content);
@@ -117,10 +117,11 @@ public class EmailCompose extends Activity {
 				EmailAccount account = db.fetchEmailAccount(a_id);
 
 				SMTPSession s = SMTPSession.getInstance();
+				s.isShowLog = true;
 				s.host = account.smtpHost;
 				s.port = account.smtpPort;
 				s.isShowLog = true;
-				s.username = account.name;
+				s.username = account.user;
 				s.password = account.password;
 				s.open(true);
 				s.sendMsg(msg);

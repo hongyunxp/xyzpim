@@ -43,6 +43,7 @@ public class EditSettingsView extends Activity {
 	private static final int RETURN_M_ID = 1;
 
 	private EditText accountNameText;
+	private EditText addrText;
 	private CheckBox sslCheckBox;
 	private EditText smtpHostText;
 	private EditText smtpPortText;
@@ -59,6 +60,7 @@ public class EditSettingsView extends Activity {
 		setContentView(R.layout.email_settings);
 
 		accountNameText = (EditText) findViewById(R.id.email_account_name_text);
+		addrText = (EditText) findViewById(R.id.email_account_addr_text);
 		sslCheckBox = (CheckBox) findViewById(R.id.email_ssl_checkbox);
 		smtpHostText = (EditText) findViewById(R.id.email_smtp_host_text);
 		smtpPortText = (EditText) findViewById(R.id.email_smtp_port_text);
@@ -72,6 +74,7 @@ public class EditSettingsView extends Activity {
 			a_id = extras.getLong(EmailDB.EmailAccountColumns.ID);
 			EmailAccount ea = EmailDB.getInstance(this).fetchEmailAccount(a_id);
 			accountNameText.setText(ea.name);
+			addrText.setText(ea.emailAddr);
 			sslCheckBox.setChecked(ea.isSSL);
 			smtpHostText.setText(ea.smtpHost);
 			smtpPortText.setText(String.valueOf(ea.smtpPort));
@@ -96,6 +99,7 @@ public class EditSettingsView extends Activity {
 
 		case FINISH_M_ID:
 			String accountName = accountNameText.getText().toString();
+			String addr = addrText.getText().toString();
 			boolean isSSL = sslCheckBox.isChecked();
 			String smtpHost = smtpHostText.getText().toString();
 			String smtpPort = smtpPortText.getText().toString();
@@ -105,6 +109,7 @@ public class EditSettingsView extends Activity {
 			String password = passwordText.getText().toString();
 			EmailAccount ea = new EmailAccount();
 			ea.name = accountName;
+			ea.emailAddr = addr;
 			ea.isSSL = isSSL;
 			ea.smtpHost = smtpHost;
 			ea.smtpPort = Integer.parseInt(smtpPort);

@@ -79,6 +79,7 @@
 	<string name="send">发送</string>
 	
 	<string name="account_name">Account Name</string>
+	<string name="email_addr">Email Address</string>
 	<string name="ssl">SSL</string>
 	<string name="smtp_host">SMTP Host</string>
 	<string name="smtp_port">SMTP Port</string>

@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.view.Menu.Item;
@@ -54,6 +56,8 @@ public class EmailMessageList extends ListActivity {
 	private static final int RETURN_M_ID = 3;
 
 	private List<Message> messages;
+	private List<String> messageSubjects;
+
 	private Long a_id;
 	private String folder;
 
@@ -75,7 +79,7 @@ public class EmailMessageList extends ListActivity {
 	private void fillData() {
 		messages = EmailDB.getInstance(this).fetchEmailMessages(a_id, folder);
 		int count = messages.size();
-		List<String> messageSubjects = new ArrayList<String>(count);
+		messageSubjects = new ArrayList<String>(count);
 		for (int index = 0; index < count; ++index) {
 			messageSubjects.add(messages.get(index).subject);
 		}
@@ -107,7 +111,7 @@ public class EmailMessageList extends ListActivity {
 
 		case REFRESH_M_ID:
 			refresh();
-			fillData();
+			// fillData();
 			break;
 		case OPEN_M_ID:
 			openMessage(getSelectedItemPosition());
@@ -121,26 +125,48 @@ public class EmailMessageList extends ListActivity {
 	}
 
 	private void refresh() {
-		EmailDB db = EmailDB.getInstance(this);
-		EmailAccount ea = db.fetchEmailAccount(a_id);
-		db.deletEmailMessageByAccount(a_id);
-		POP3Session ps = POP3Session.getInstance();
-		// ps.isShowLog = true;
-		ps.host = ea.popHost;
-		ps.port = ea.popPort;
-		ps.username = ea.user;
-		ps.password = ea.password;
-		try {
-			ps.open(ea.isSSL);
-			messages = ps.getAllMsg();
-			ps.close();
-		} catch (EmailException e) {
-			Log.e(e.getMessage());
-		}
-		int count = messages.size();
-		for (int index = 0; index < count; ++index) {
-			db.createEmailMessage(messages.get(index), folder, a_id);
-		}
+		final ProgressDialog pb = ProgressDialog.show(this, "Refreshing", "",
+				true, false);
+
+		final Handler handler = new Handler();
+		final Runnable dissMiss = new Runnable() {
+			public void run() {
+				ArrayAdapter<String> messageSubjectAdp = new ArrayAdapter<String>(
+						EmailMessageList.this, R.layout.email_message_row,
+						messageSubjects);
+				setListAdapter(messageSubjectAdp);
+				pb.dismiss();
+				fillData();
+			}
+		};
+		Thread refreshThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				EmailDB db = EmailDB.getInstance(EmailMessageList.this);
+				EmailAccount ea = db.fetchEmailAccount(a_id);
+				db.deletEmailMessageByAccount(a_id);
+				POP3Session ps = POP3Session.getInstance();
+				// ps.isShowLog = true;
+				ps.host = ea.popHost;
+				ps.port = ea.popPort;
+				ps.username = ea.user;
+				ps.password = ea.password;
+				try {
+					ps.open(ea.isSSL);
+					messages = ps.getAllMsg();
+					ps.close();
+				} catch (EmailException e) {
+					Log.e(e.getMessage());
+				}
+				int count = messages.size();
+				for (int index = 0; index < count; ++index) {
+					db.createEmailMessage(messages.get(index), folder, a_id);
+				}
+				handler.post(dissMiss);
+			}
+		});
+		refreshThread.start();
 	}
 
 	private void openMessage(int position) {

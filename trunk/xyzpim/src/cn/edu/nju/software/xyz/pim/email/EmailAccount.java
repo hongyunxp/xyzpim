@@ -30,6 +30,7 @@ package cn.edu.nju.software.xyz.pim.email;
 public class EmailAccount {
 	public long id;
 	public String name;
+	public String emailAddr;
 	public boolean isSSL;
 	public String smtpHost;
 	public int smtpPort;
