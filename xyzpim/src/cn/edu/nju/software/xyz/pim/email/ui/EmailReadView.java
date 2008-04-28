@@ -48,7 +48,7 @@ public class EmailReadView extends Activity {
 	private TextView toText;
 	private WebView contentView;
 
-	private String m_id;
+	private Long m_id;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -63,7 +63,7 @@ public class EmailReadView extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			m_id = extras.getString(EmailDB.EmailMessageColumns.ID);
+			m_id = extras.getLong(EmailDB.EmailMessageColumns.ID);
 		}
 
 		if (null != m_id) {
@@ -77,6 +77,7 @@ public class EmailReadView extends Activity {
 				// contentView.loadData(msg.content.getContentString(),
 				// msg.content.getMIMEType(), "UTF-8");
 				String contentStr = msg.content.getContentString();
+				Log.i(contentStr);
 				if (null != contentStr)
 					contentView.loadData(contentStr, msg.content.getMIMEType(),
 							"UTF-8");
@@ -88,9 +89,9 @@ public class EmailReadView extends Activity {
 								.getSubContentPart().iterator();
 						while (it.hasNext()) {
 							ContentPart subCP = it.next();
-							if ("text/plain".equalsIgnoreCase(subCP
+							if ("text/html".equalsIgnoreCase(subCP
 									.getMIMEType())
-									|| "text/html".equalsIgnoreCase(subCP
+									|| "text/plain".equalsIgnoreCase(subCP
 											.getMIMEType())) {
 								contentView.loadData(subCP.getContentString(),
 										subCP.getMIMEType(), "UTF-8");

@@ -58,6 +58,9 @@ public class EmailDB {
 		public static final String DATE = "date";
 		public static final String FROM = "_from";
 		public static final String TO = "_to";
+		public static final String CONTENT_TYPE = "content_type";
+		public static final String CONTENT_TRANSFER_ENCODING = "content_transfer_encoding";
+		public static final String CONTENT_DISPOSITION = "content_disposition";
 		public static final String CONTENT = "content";
 		public static final String AID = "a_id";
 	}
@@ -74,9 +77,12 @@ public class EmailDB {
 			+ "smtp_port integer, pop_host text, "
 			+ "pop_port integer, user text, password text);";
 	private static final String CREATE_TABLE_EMAIL_MESSAGES = "create table email_messages "
-			+ "(m_id text primary key, uid text, "
+			+ "(m_id integer primary key autoincrement, uid text, "
 			+ "folder text, subject text, date text, "
-			+ "_from text, _to text, content text, a_id integer);";
+			+ "_from text, _to text, content_type text, "
+			+ "content_transfer_encoding text, "
+			+ "content_disposition text, "
+			+ "content text, a_id integer);";
 
 	private static final String DATABASE_NAME = "emaildb";
 
@@ -116,21 +122,26 @@ public class EmailDB {
 
 	public long createEmailMessage(Message msg, String folder, long aid) {
 		ContentValues cv = new ContentValues();
-		cv.put(EmailMessageColumns.ID, msg.id);
+		// cv.put(EmailMessageColumns.ID, msg.id);
 		cv.put(EmailMessageColumns.UID, msg.uid);
 		cv.put(EmailMessageColumns.FOLDER, folder);
 		cv.put(EmailMessageColumns.SUBJECT, msg.subject);
 		cv.put(EmailMessageColumns.DATE, msg.date);
 		cv.put(EmailMessageColumns.FROM, msg.from);
 		cv.put(EmailMessageColumns.TO, msg.to);
+		cv.put(EmailMessageColumns.CONTENT_TYPE, msg.content.contentType);
+		cv.put(EmailMessageColumns.CONTENT_TRANSFER_ENCODING,
+				msg.content.contentTransferEncoding);
+		cv.put(EmailMessageColumns.CONTENT_DISPOSITION,
+				msg.content.contentDisposition);
 		cv.put(EmailMessageColumns.CONTENT, msg.content.getRawContentText());
 		cv.put(EmailMessageColumns.AID, aid);
 		return db.insert(DATABASE_EMAIL_MESSAGES_TABLE, null, cv);
 	}
 
-	public boolean deleteEmailMessage(String id) {
+	public boolean deleteEmailMessage(long id) {
 		return db.delete(DATABASE_EMAIL_MESSAGES_TABLE, EmailMessageColumns.ID
-				+ "=" + "\'" + id + "\'", null) > 0;
+				+ "=" + id, null) > 0;
 	}
 
 	public boolean deletEmailMessageByAccount(long aid) {
@@ -148,34 +159,50 @@ public class EmailDB {
 		for (int index = 0; index < c.count(); ++index) {
 			c.moveTo(index);
 			Message msg = new Message();
-			msg.id = c.getString(c.getColumnIndex(EmailMessageColumns.ID));
+			msg.id = c.getLong(c.getColumnIndex(EmailMessageColumns.ID));
 			msg.uid = c.getString(c.getColumnIndex(EmailMessageColumns.UID));
 			msg.subject = c.getString(c
 					.getColumnIndex(EmailMessageColumns.SUBJECT));
 			msg.date = c.getString(c.getColumnIndex(EmailMessageColumns.DATE));
 			msg.from = c.getString(c.getColumnIndex(EmailMessageColumns.FROM));
 			msg.to = c.getString(c.getColumnIndex(EmailMessageColumns.TO));
+			msg.content.contentType = c.getString(c
+					.getColumnIndex(EmailMessageColumns.CONTENT_TYPE));
+			msg.content.contentTransferEncoding = c
+					.getString(c
+							.getColumnIndex(EmailMessageColumns.CONTENT_TRANSFER_ENCODING));
+			msg.content.contentDisposition = c.getString(c
+					.getColumnIndex(EmailMessageColumns.CONTENT_DISPOSITION));
+			msg.content.setRawContent(c.getString(c
+					.getColumnIndex(EmailMessageColumns.CONTENT)));
 			re.add(msg);
 		}
 		return re;
 	}
 
-	public Message fetchEmailMessage(String id) {
+	public Message fetchEmailMessage(long id) {
 		Cursor c = db.query(true, DATABASE_EMAIL_MESSAGES_TABLE, null,
-				EmailMessageColumns.ID + "=" + "\'" + id + "\'", null, null,
-				null, null);
+				EmailMessageColumns.ID + "=" + id, null, null, null, null);
 		if ((c.count() == 0) || !c.first()) {
 			throw new SQLException("No email account matching ID: " + id);
 		}
 
 		Message msg = new Message();
-		msg.id = c.getString(c.getColumnIndex(EmailMessageColumns.ID));
+		msg.id = c.getLong(c.getColumnIndex(EmailMessageColumns.ID));
 		msg.uid = c.getString(c.getColumnIndex(EmailMessageColumns.UID));
 		msg.subject = c
 				.getString(c.getColumnIndex(EmailMessageColumns.SUBJECT));
 		msg.date = c.getString(c.getColumnIndex(EmailMessageColumns.DATE));
 		msg.from = c.getString(c.getColumnIndex(EmailMessageColumns.FROM));
 		msg.to = c.getString(c.getColumnIndex(EmailMessageColumns.TO));
+		msg.content.contentType = c.getString(c
+				.getColumnIndex(EmailMessageColumns.CONTENT_TYPE));
+		msg.content.contentTransferEncoding = c.getString(c
+				.getColumnIndex(EmailMessageColumns.CONTENT_TRANSFER_ENCODING));
+		msg.content.contentDisposition = c.getString(c
+				.getColumnIndex(EmailMessageColumns.CONTENT_DISPOSITION));
+		msg.content.setRawContent(c.getString(c
+				.getColumnIndex(EmailMessageColumns.CONTENT)));
 
 		return msg;
 	}

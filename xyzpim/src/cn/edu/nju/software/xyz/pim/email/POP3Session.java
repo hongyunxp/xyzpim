@@ -202,9 +202,6 @@ public class POP3Session extends Session {
 	private void setMsgHeader(Message msg, Map<String, String> headerMap)
 			throws EmailException {
 		String entryValue = null;
-		if (null != (entryValue = headerMap.get("message-id"))) {
-			msg.id = entryValue.substring(1, entryValue.length() - 1);
-		}
 		if (null != (entryValue = headerMap.get("from"))) {
 			msg.from = HeaderUtil.cplxStringDecode(entryValue);
 		}
