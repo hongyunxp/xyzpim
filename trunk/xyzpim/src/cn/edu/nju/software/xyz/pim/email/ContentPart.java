@@ -254,4 +254,14 @@ public class ContentPart {
 		}
 		return buf.toString();
 	}
+
+	public void setRawContent(String text) {
+		String reg = "(.*?)\\r\\n";
+		Matcher m = Pattern.compile(reg).matcher(text);
+		while (m.find()) {
+			String line = m.group(1);
+			// Log.i(line);
+			rawContent.add(line);
+		}
+	}
 }

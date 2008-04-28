@@ -125,7 +125,7 @@ public class EmailMessageList extends ListActivity {
 		EmailAccount ea = db.fetchEmailAccount(a_id);
 		db.deletEmailMessageByAccount(a_id);
 		POP3Session ps = POP3Session.getInstance();
-		ps.isShowLog = true;
+		// ps.isShowLog = true;
 		ps.host = ea.popHost;
 		ps.port = ea.popPort;
 		ps.username = ea.user;
