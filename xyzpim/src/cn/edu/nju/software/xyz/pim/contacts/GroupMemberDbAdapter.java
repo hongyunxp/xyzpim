@@ -48,7 +48,7 @@ public class GroupMemberDbAdapter {
 	 * Database creation sql statement
 	 */
 
-	private static final String DATABASE_NAME = "contacts";
+	private static final String DATABASE_NAME = "contactsdb";
 	private static final String DATABASE_TABLE = "groupmembers";
 	// private static final int DATABASE_VERSION = 2;
 
