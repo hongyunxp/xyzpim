@@ -32,12 +32,12 @@
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="@string/houseloancal" />
-			<ImageButton android:id="@+id/houseloanButton" android:src="@drawable/icon"/>
+			<ImageButton android:id="@+id/houseloanButton" android:src="@drawable/house_loan"/>
 		</TableRow>
 		<TableRow android:gravity="center">
 			<TextView android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="@string/exchageratecal" />
-			<ImageButton android:id="@+id/exchangerateButton" android:src="@drawable/icon"/>
+			<ImageButton android:id="@+id/exchangerateButton" android:src="@drawable/exchange_rate"/>
 		</TableRow>
 	</TableLayout>
 </LinearLayout>

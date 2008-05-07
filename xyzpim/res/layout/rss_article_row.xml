@@ -36,7 +36,7 @@
 
 	<TextView android:id="@+id/rss_row_text"
 		android:layout_width="fill_parent"
-		android:layout_height="?android:attr/listPreferredItemHeight"
+		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLargeInverse"
 		android:textColor="?android:attr/textColorDim"
 		android:gravity="center" android:paddingLeft="10px" />
