@@ -54,9 +54,9 @@
 			<TableRow android:gravity="center">
 				<TextView android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:text="@string/account" />
-				<ImageButton android:id="@+id/accountButton"
-					android:src="@drawable/account" />
+					android:text="@string/finance" />
+				<ImageButton android:id="@+id/financeButton"
+					android:src="@drawable/finance" />
 			</TableRow>
 			<TableRow android:gravity="center">
 				<TextView android:layout_width="fill_parent"

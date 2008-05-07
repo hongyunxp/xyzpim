@@ -11,26 +11,27 @@
 			</intent-filter>
 		</activity>
 		<activity android:label="@string/organizer"
-			android:icon="@drawable/organizer" android:name=".organizer.Organizer">
+			android:icon="@drawable/organizer"
+			android:name=".organizer.Organizer">
 		</activity>
-		<activity android:name=".account.Account"
-			android:label="@string/account">
+		<activity android:label="@string/finance"
+			android:name=".finance.Finance">
 		</activity>
-		<activity android:name=".account.HouseLoanCal"
-			android:label="@string/houseloancal">
+		<activity android:label="@string/houseloancal"
+			android:name=".finance.HouseLoanCal">
 		</activity>
-		<activity android:name=".account.ExchangeRateCal"
-			android:label="@string/exchageratecal">
+		<activity android:label="@string/exchageratecal"
+			android:name=".finance.ExchangeRateCal">
 		</activity>
 		<activity android:name=".test.Test"
 			android:label="@string/test">
 		</activity>
-		<activity android:name=".account.HouseLoanResult"></activity>
 		<activity android:name=".contacts.GroupsView"
 			android:label="@string/group_list">
 		</activity>
 		<activity android:name=".contacts.GroupNameEdit"
-			android:label="@string/group" android:theme="@android:style/Theme.Dialog">
+			android:label="@string/group"
+			android:theme="@android:style/Theme.Dialog">
 		</activity>
 		<activity android:name=".rss.RSSFeedsView"
 			android:label="RSS Feeds">
@@ -67,14 +68,16 @@
 			android:label="@string/meeting">
 		</activity>
 		<activity android:name=".organizer.EditTask"></activity>
-	<activity android:name=".contacts.GroupMembersView" android:label="组成员视图">
-</activity><activity android:name=".email.ui.EmailAccountList">
-</activity><activity android:name=".email.ui.EditSettingsView">
-</activity><activity android:name=".email.ui.FolderView">
-</activity><activity android:name=".email.ui.EmailCompose">
-</activity><activity android:name=".email.ui.EmailMessageList">
-</activity><activity android:name=".email.ui.EmailReadView">
-</activity></application>
+		<activity android:name=".contacts.GroupMembersView"
+			android:label="组成员视图">
+		</activity>
+		<activity android:name=".email.ui.EmailAccountList"></activity>
+		<activity android:name=".email.ui.EditSettingsView"></activity>
+		<activity android:name=".email.ui.FolderView"></activity>
+		<activity android:name=".email.ui.EmailCompose"></activity>
+		<activity android:name=".email.ui.EmailMessageList"></activity>
+		<activity android:name=".email.ui.EmailReadView"></activity>
+	</application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>

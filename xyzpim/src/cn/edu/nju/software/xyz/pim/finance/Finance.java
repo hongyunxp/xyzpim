@@ -35,14 +35,14 @@ import cn.edu.nju.software.xyz.pim.R;
  * @author xmx Mar 18, 2008 5:29:22 PM
  * 
  */
-public class Account extends Activity implements OnClickListener {
+public class Finance extends Activity implements OnClickListener {
 	private ImageButton houseloanButton;
 	private ImageButton exchangerateButton;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.account);
+		setContentView(R.layout.finance);
 		houseloanButton = (ImageButton) findViewById(R.id.houseloanButton);
 		exchangerateButton = (ImageButton) findViewById(R.id.exchangerateButton);
 		houseloanButton.setOnClickListener(this);
