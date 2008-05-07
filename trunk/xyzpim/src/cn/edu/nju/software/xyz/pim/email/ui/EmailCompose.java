@@ -111,7 +111,7 @@ public class EmailCompose extends Activity {
 					}
 				}
 				msg.content.contentDisposition = "inline";
-				msg.content.contentType = "text/plain; charset=\"us-ascii\"";
+				msg.content.contentType = "text/plain; charset=us-ascii";
 				msg.content.contentTransferEncoding = "base64";
 				EmailDB db = EmailDB.getInstance(this);
 				EmailAccount account = db.fetchEmailAccount(a_id);
