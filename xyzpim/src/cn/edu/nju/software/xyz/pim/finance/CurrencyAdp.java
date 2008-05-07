@@ -1,4 +1,4 @@
-package cn.edu.nju.software.xyz.pim.account;
+package cn.edu.nju.software.xyz.pim.finance;
 
 import java.io.BufferedReader;
 import java.io.IOException;

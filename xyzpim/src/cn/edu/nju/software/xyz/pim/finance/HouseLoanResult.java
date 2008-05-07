@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.account;
+package cn.edu.nju.software.xyz.pim.finance;
 
 import android.app.Activity;
 import android.os.Bundle;

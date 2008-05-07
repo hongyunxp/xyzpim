@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
-package cn.edu.nju.software.xyz.pim.account;
+package cn.edu.nju.software.xyz.pim.finance;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,12 +54,12 @@ public class Account extends Activity implements OnClickListener {
 		if (null != arg0) {
 			if (arg0 == houseloanButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.account.HouseLoanCal.class);
+						cn.edu.nju.software.xyz.pim.finance.HouseLoanCal.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == exchangerateButton) {
 				Intent i = new Intent(
 						this,
-						cn.edu.nju.software.xyz.pim.account.ExchangeRateCal.class);
+						cn.edu.nju.software.xyz.pim.finance.ExchangeRateCal.class);
 				startSubActivity(i, 0);
 			}
 		}
