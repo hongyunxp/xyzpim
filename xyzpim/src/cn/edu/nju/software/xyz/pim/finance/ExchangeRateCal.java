@@ -28,6 +28,7 @@ import java.io.IOException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -57,7 +58,7 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 	private static final int REFRESH_M_ID = 1;
 	private double rate[][] = null;
 
-	// private Button moreInfoButton;
+	private Button moreInfoButton;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -82,9 +83,10 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 		money2Spinner.setAdapter(adapter2);
 
 		calButton = (Button) findViewById(R.id.exchange_rate_calculate);
-		// moreInfoButton = (Button) findViewById(R.id.exchage_rate_more_info);
+		moreInfoButton = (Button) findViewById(R.id.exchage_rate_more_info);
 
 		calButton.setOnClickListener(this);
+		moreInfoButton.setOnClickListener(this);
 
 		super.onCreate(icicle);
 	}
@@ -103,6 +105,51 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 				double ammount = Double.parseDouble(money1AmmountEditText
 						.getText().toString());
 				money2AmmountEditText.setText("" + excute(x, y, ammount));
+			} else if (arg0 == moreInfoButton) {
+				if (rate == null) {
+					try {
+						rate = CurrencyAdp.getCurrency();
+					} catch (Exception e) {
+						new AlertDialog.Builder(this).setTitle(
+								"Warning: " + e.getMessage())
+								.setNegativeButton(R.string.back,
+										new DialogInterface.OnClickListener() {
+											public void onClick(
+													DialogInterface dialog,
+													int whichButton) {
+
+												/* User clicked Yes so do some stuff */
+											}
+										}).show();
+					}
+				}
+				StringBuilder rateHtml = new StringBuilder();
+				String mTypes[] = getResources().getStringArray(
+						R.array.money_type);
+				rateHtml.append("<html><table>");
+				rateHtml.append("<tr>");
+				rateHtml.append("<td>" + "</td>");
+				for (int i = 0; i < mTypes.length; ++i) {
+					rateHtml.append("<td>" + mTypes[i] + "</td>");
+				}
+				rateHtml.append("</tr>");
+
+				for (int i = 0; i < rate.length; ++i) {
+					rateHtml.append("<tr>");
+					rateHtml.append("<td>" + mTypes[i] + "</td>");
+					for (int j = 0; j < rate[i].length; ++j) {
+						rateHtml.append("<td>" + rate[i][j] + "</td>");
+					}
+					rateHtml.append("</tr>");
+				}
+				rateHtml.append("</table></html>");
+
+				String rateHtmlStr = rateHtml.toString();
+
+				Intent i = new Intent(this,
+						cn.edu.nju.software.xyz.pim.finance.ShowRate.class);
+				i.putExtra("RATEHTML", rateHtmlStr);
+				startSubActivity(i, 0);
 			}
 		}
 
@@ -114,7 +161,7 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 			try {
 				rate = CurrencyAdp.getCurrency();
 				result = ammount * rate[x][y];
-			} catch (IOException e) {
+			} catch (Exception e) {
 				new AlertDialog.Builder(this).setTitle(
 						"Warning: " + e.getMessage()).setNegativeButton(
 						R.string.back, new DialogInterface.OnClickListener() {
@@ -144,6 +191,7 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 		switch (item.getId()) {
 
 		case REFRESH_M_ID:
+
 			try {
 				rate = CurrencyAdp.getCurrency();
 			} catch (IOException e) {
