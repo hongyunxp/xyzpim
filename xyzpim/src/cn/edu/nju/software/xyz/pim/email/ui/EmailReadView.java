@@ -95,6 +95,7 @@ public class EmailReadView extends Activity {
 											.getMIMEType())) {
 								contentView.loadData(subCP.getContentString(),
 										subCP.getMIMEType(), "UTF-8");
+								break;
 							}
 						}
 					}

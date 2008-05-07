@@ -41,7 +41,8 @@ public class Main extends Activity implements OnClickListener {
 	private ImageButton emailButton;
 	private ImageButton financeButton;
 	private ImageButton rssButton;
-	private ImageButton testButton;
+
+	// private ImageButton testButton;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -53,13 +54,13 @@ public class Main extends Activity implements OnClickListener {
 		emailButton = (ImageButton) findViewById(R.id.emailButton);
 		financeButton = (ImageButton) findViewById(R.id.financeButton);
 		rssButton = (ImageButton) findViewById(R.id.rssButton);
-		testButton = (ImageButton) findViewById(R.id.testButton);
+		// testButton = (ImageButton) findViewById(R.id.testButton);
 		contactsButton.setOnClickListener(this);
 		organizerButton.setOnClickListener(this);
 		emailButton.setOnClickListener(this);
 		financeButton.setOnClickListener(this);
 		rssButton.setOnClickListener(this);
-		testButton.setOnClickListener(this);
+		// testButton.setOnClickListener(this);
 	}
 
 	@Override
@@ -87,24 +88,24 @@ public class Main extends Activity implements OnClickListener {
 				Intent i = new Intent(this,
 						cn.edu.nju.software.xyz.pim.rss.RSSFeedsView.class);
 				startSubActivity(i, 0);
-			} else if (arg0 == testButton) {
-				/*String str = null;
-				Log.i(str);*/
-				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.test.Test.class);
-				startSubActivity(i, 0);
-				/*InputDialog id = new InputDialog(this, new OnInputListener() {
+			} /*else if (arg0 == testButton) {
+						String str = null;
+						Log.i(str);
+						Intent i = new Intent(this,
+								cn.edu.nju.software.xyz.pim.test.Test.class);
+						startSubActivity(i, 0);
+						InputDialog id = new InputDialog(this, new OnInputListener() {
 
-					@Override
-					public void onInput(String inputString) {
-						Log.i(inputString);
+							@Override
+							public void onInput(String inputString) {
+								Log.i(inputString);
 
-					}
+							}
 
-				});
-				id.show("Input", "Input your name!");
-				Log.i("good");*/
-			}
+						});
+						id.show("Input", "Input your name!");
+						Log.i("good");
+					}*/
 		}
 	}
 

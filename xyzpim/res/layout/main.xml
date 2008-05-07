@@ -64,12 +64,14 @@
 				<ImageButton android:id="@+id/rssButton"
 					android:src="@drawable/rss" />
 			</TableRow>
+			<!-- 
 			<TableRow android:gravity="center">
 				<TextView android:layout_width="fill_parent"
 					android:layout_height="wrap_content" android:text="@string/test" />
 				<ImageButton android:id="@+id/testButton"
 					android:src="@drawable/icon" />
 			</TableRow>
+			 -->
 		</TableLayout>
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
