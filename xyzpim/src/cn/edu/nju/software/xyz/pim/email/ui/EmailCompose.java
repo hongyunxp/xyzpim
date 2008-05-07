@@ -27,7 +27,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.Menu.Item;
 import android.widget.EditText;
@@ -82,7 +84,31 @@ public class EmailCompose extends Activity {
 		switch (item.getId()) {
 
 		case SEND_M_ID:
-			try {
+			send();
+			break;
+		case RETURN_M_ID:
+			finish();
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	private void send() {
+		final ProgressDialog pb = ProgressDialog.show(this, "Sending", "",
+				true, false);
+
+		final Handler handler = new Handler();
+		final Runnable dissMiss = new Runnable() {
+			public void run() {
+				pb.dismiss();
+				finish();
+			}
+		};
+		Thread sendThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
 				Message msg = new Message();
 
 				// msg.date = "Sat, 26 Apr 2008 22:47:18 +0800";
@@ -113,7 +139,7 @@ public class EmailCompose extends Activity {
 				msg.content.contentDisposition = "inline";
 				msg.content.contentType = "text/plain; charset=us-ascii";
 				msg.content.contentTransferEncoding = "base64";
-				EmailDB db = EmailDB.getInstance(this);
+				EmailDB db = EmailDB.getInstance(EmailCompose.this);
 				EmailAccount account = db.fetchEmailAccount(a_id);
 
 				SMTPSession s = SMTPSession.getInstance();
@@ -123,22 +149,17 @@ public class EmailCompose extends Activity {
 				s.isShowLog = true;
 				s.username = account.user;
 				s.password = account.password;
-				s.open(true);
-				s.sendMsg(msg);
-				s.close();
-
+				try {
+					s.open(true);
+					s.sendMsg(msg);
+					s.close();
+				} catch (EmailException e) {
+					Log.e(e.toString());
+				}
 				db.createEmailMessage(msg, EmailDB.EmailFolder.OUTBOX, a_id);
-			} catch (EmailException e) {
-				Log.e(e.toString());
+				handler.post(dissMiss);
 			}
-
-			finish();
-			break;
-		case RETURN_M_ID:
-			finish();
-			break;
-		}
-		return super.onMenuItemSelected(featureId, item);
+		});
+		sendThread.start();
 	}
-
 }
