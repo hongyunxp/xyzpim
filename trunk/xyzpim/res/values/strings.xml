@@ -96,6 +96,7 @@
 	<string name="compose">Compose</string>
 	<string name="read">Read</string>
 	<string name="content">Content</string>
+	<string name="update_rate">Update Rate</string>
 	
 	<string name="group_list">Group List</string>
 	<string name="group">Group</string>
