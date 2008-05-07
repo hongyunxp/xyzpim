@@ -71,7 +71,8 @@
 		<activity android:name=".email.ui.EmailCompose" android:label="@string/compose"></activity>
 		<activity android:name=".email.ui.EmailMessageList" android:label="@string/email_message_list"></activity>
 		<activity android:name=".email.ui.EmailReadView" android:label="@string/read"></activity>
-	</application>
+	<activity android:name=".finance.HouseLoanResult">
+</activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>
