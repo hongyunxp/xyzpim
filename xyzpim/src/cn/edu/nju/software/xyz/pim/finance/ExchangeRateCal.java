@@ -26,8 +26,12 @@ package cn.edu.nju.software.xyz.pim.finance;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
+import android.view.Menu.Item;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,6 +52,10 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 	private EditText money2AmmountEditText;
 
 	private Button calButton;
+
+	private static final int RETURN_M_ID = 0;
+	private static final int REFRESH_M_ID = 1;
+	private double rate[][] = null;
 
 	// private Button moreInfoButton;
 
@@ -101,13 +109,58 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 	}
 
 	private double excute(int x, int y, double ammount) {
-		double rate[][] = null;
-		try {
-			rate = CurrencyAdp.getCurrency();
-		} catch (IOException e) {
-			// TODO: show a alert dialoge!!!
-		}
-		return ammount * rate[x][y];
+		double result = 0;
+		if (rate == null) {
+			try {
+				rate = CurrencyAdp.getCurrency();
+				result = ammount * rate[x][y];
+			} catch (IOException e) {
+				new AlertDialog.Builder(this).setTitle(
+						"Warning: " + e.getMessage()).setNegativeButton(
+						R.string.back, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								/* User clicked Yes so do some stuff */
+							}
+						}).show();
+			}
+		} else
+			result = ammount * rate[x][y];
+		return result;
+
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, REFRESH_M_ID, R.string.update_rate);
+		menu.add(0, RETURN_M_ID, R.string.back);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, Item item) {
+		switch (item.getId()) {
+
+		case REFRESH_M_ID:
+			try {
+				rate = CurrencyAdp.getCurrency();
+			} catch (IOException e) {
+				new AlertDialog.Builder(this).setTitle(
+						"Warning: " + e.getMessage()).setNegativeButton(
+						R.string.back, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								/* User clicked Yes so do some stuff */
+							}
+						}).show();
+			}
+			return true;
+		case RETURN_M_ID:
+			finish();
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 }
