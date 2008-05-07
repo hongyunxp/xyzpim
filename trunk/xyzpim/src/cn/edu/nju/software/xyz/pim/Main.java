@@ -39,7 +39,7 @@ public class Main extends Activity implements OnClickListener {
 	private ImageButton contactsButton;
 	private ImageButton organizerButton;
 	private ImageButton emailButton;
-	private ImageButton accountButton;
+	private ImageButton financeButton;
 	private ImageButton rssButton;
 	private ImageButton testButton;
 
@@ -51,13 +51,13 @@ public class Main extends Activity implements OnClickListener {
 		contactsButton = (ImageButton) findViewById(R.id.contactsButton);
 		organizerButton = (ImageButton) findViewById(R.id.organizerButton);
 		emailButton = (ImageButton) findViewById(R.id.emailButton);
-		accountButton = (ImageButton) findViewById(R.id.accountButton);
+		financeButton = (ImageButton) findViewById(R.id.financeButton);
 		rssButton = (ImageButton) findViewById(R.id.rssButton);
 		testButton = (ImageButton) findViewById(R.id.testButton);
 		contactsButton.setOnClickListener(this);
 		organizerButton.setOnClickListener(this);
 		emailButton.setOnClickListener(this);
-		accountButton.setOnClickListener(this);
+		financeButton.setOnClickListener(this);
 		rssButton.setOnClickListener(this);
 		testButton.setOnClickListener(this);
 	}
@@ -79,9 +79,9 @@ public class Main extends Activity implements OnClickListener {
 						cn.edu.nju.software.xyz.pim.email.ui.EmailAccountList.class);
 				startSubActivity(i, 0);
 
-			} else if (arg0 == accountButton) {
+			} else if (arg0 == financeButton) {
 				Intent i = new Intent(this,
-						cn.edu.nju.software.xyz.pim.finance.Account.class);
+						cn.edu.nju.software.xyz.pim.finance.Finance.class);
 				startSubActivity(i, 0);
 			} else if (arg0 == rssButton) {
 				Intent i = new Intent(this,
