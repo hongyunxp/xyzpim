@@ -30,25 +30,25 @@
 	android:layout_height="fill_parent" android:stretchColumns="1"
 	android:background="#ffffff" android:shrinkColumns="1">
 	<TableRow>
-		<TextView android:text="@string/subject" android:textColor="#ffff00"/>
+		<TextView android:text="@string/subject" android:textColor="#33CCFF"/>
 		<TextView android:id="@+id/email_read_subject_text" />
 	</TableRow>
 	<TableRow>
-		<TextView android:text="@string/to" android:textColor="#ffff00"/>
+		<TextView android:text="@string/to" android:textColor="#33CCFF"/>
 		<TextView android:id="@+id/email_read_to_text"
 			android:layout_width="fill_parent" />
 	</TableRow>
 	<TableRow>
-		<TextView android:text="@string/from" android:textColor="#ffff00"/>
+		<TextView android:text="@string/from" android:textColor="#33CCFF"/>
 		<TextView android:id="@+id/email_read_from_text"
 			android:layout_width="fill_parent" />
 	</TableRow>
 	<TableRow>
-		<TextView android:text="@string/date_time" android:textColor="#ffff00"/>
+		<TextView android:text="@string/date_time" android:textColor="#33CCFF"/>
 		<TextView android:id="@+id/email_read_date_time_text" />
 	</TableRow>
 
-	<TextView android:text="正文" android:textColor="#ffff00"
+	<TextView android:text="@string/content" android:textColor="#33CCFF"
 		android:layout_height="wrap_content"/>
 	<WebView android:layout_height="fill_parent"
 		android:id="@+id/email_read_content" />

@@ -117,6 +117,8 @@ public class EmailMessageList extends ListActivity {
 			openMessage(getSelectedItemPosition());
 			break;
 		case DEL_M_ID:
+			delMessage(getSelectedItemPosition());
+			// refresh();
 			break;
 		case RETURN_M_ID:
 			finish();
@@ -175,5 +177,12 @@ public class EmailMessageList extends ListActivity {
 				cn.edu.nju.software.xyz.pim.email.ui.EmailReadView.class);
 		openIntent.putExtra(EmailDB.EmailMessageColumns.ID, msg.id);
 		startSubActivity(openIntent, 0);
+	}
+
+	private void delMessage(int position) {
+		Message msg = messages.get(position);
+		EmailDB db = EmailDB.getInstance(EmailMessageList.this);
+		db.deleteEmailMessage(msg.id);
+		fillData();
 	}
 }

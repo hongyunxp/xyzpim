@@ -6,14 +6,15 @@
 	android:layout_height="fill_parent" android:stretchColumns="1">
 
 	<TableRow>
-		<TextView android:textAlign="end"
-			android:text="@string/to" />
-		<EditText android:id="@+id/email_compose_to_text" />
+		<TextView android:textAlign="end" android:text="@string/to" />
+		<EditText android:id="@+id/email_compose_to_text"
+			android:scrollHorizontally="true" />
 	</TableRow>
 	<TableRow>
 		<TextView android:textAlign="end"
 			android:text="@string/subject" />
-		<EditText android:id="@+id/email_subject_text" />
+		<EditText android:id="@+id/email_subject_text"
+			android:scrollHorizontally="true" />
 	</TableRow>
 
 

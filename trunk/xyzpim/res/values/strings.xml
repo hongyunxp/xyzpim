@@ -76,8 +76,12 @@
 	<string name="from">From</string>
 	<string name="to">To</string>
 	<string name="date_time">Date Time</string>
-	<string name="send">Eend</string>
+	<string name="send">Send</string>
 	
+	<string name="email_account_list">Email Account List</string>
+	<string name="email_account_setting">Email Account Setting</string>
+	<string name="email_folders">Email Folders</string>
+	<string name="email_message_list">Email Message List</string>
 	<string name="account_name">Account Name</string>
 	<string name="email_addr">Email Address</string>
 	<string name="ssl">SSL</string>
@@ -90,6 +94,8 @@
 	<string name="inbox">InBox</string>
 	<string name="outbox">OutBox</string>
 	<string name="compose">Compose</string>
+	<string name="read">Read</string>
+	<string name="content">Content</string>
 	
 	<string name="group_list">Group List</string>
 	<string name="group">Group</string>
