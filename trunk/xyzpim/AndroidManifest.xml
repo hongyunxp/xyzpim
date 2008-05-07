@@ -45,34 +45,52 @@
 		<activity android:name=".rss.RSSDescriptionView"
 			android:label="Read Article">
 		</activity>
-		
-		
-		<activity android:name=".organizer.TaskView" android:label="@string/schedule"></activity>
+
+
+		<activity android:name=".organizer.TaskView"
+			android:label="@string/schedule">
+		</activity>
 		<activity android:name=".organizer.NoteView"
 			android:label="@string/note">
 		</activity>
 		<activity android:name=".organizer.EditNote"
 			android:label="@string/note">
 		</activity>
-		
+
 		<activity android:name=".organizer.MeetingView"
 			android:label="@string/meeting">
 		</activity>
 		<activity android:name=".organizer.EditMeeting"
 			android:label="@string/meeting">
 		</activity>
-		<activity android:name=".organizer.EditTask" android:label="@string/schedule"></activity>
+		<activity android:name=".organizer.EditTask"
+			android:label="@string/schedule">
+		</activity>
 		<activity android:name=".contacts.GroupMembersView"
 			android:label="组成员视图">
 		</activity>
-		<activity android:name=".email.ui.EmailAccountList" android:label="@string/email_account_list"></activity>
-		<activity android:name=".email.ui.EditSettingsView" android:label="@string/email_account_setting" android:icon="@drawable/setting"></activity>
-		<activity android:name=".email.ui.FolderView" android:label="@string/email_folders"></activity>
-		<activity android:name=".email.ui.EmailCompose" android:label="@string/compose"></activity>
-		<activity android:name=".email.ui.EmailMessageList" android:label="@string/email_message_list"></activity>
-		<activity android:name=".email.ui.EmailReadView" android:label="@string/read"></activity>
-	<activity android:name=".finance.HouseLoanResult">
-</activity></application>
+		<activity android:name=".email.ui.EmailAccountList"
+			android:label="@string/email_account_list">
+		</activity>
+		<activity android:name=".email.ui.EditSettingsView"
+			android:label="@string/email_account_setting"
+			android:icon="@drawable/setting">
+		</activity>
+		<activity android:name=".email.ui.FolderView"
+			android:label="@string/email_folders">
+		</activity>
+		<activity android:name=".email.ui.EmailCompose"
+			android:label="@string/compose">
+		</activity>
+		<activity android:name=".email.ui.EmailMessageList"
+			android:label="@string/email_message_list">
+		</activity>
+		<activity android:name=".email.ui.EmailReadView"
+			android:label="@string/read">
+		</activity>
+		<activity android:name=".finance.ShowRate"></activity>
+		<activity android:name=".finance.HouseLoanResult"></activity>
+	</application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>
