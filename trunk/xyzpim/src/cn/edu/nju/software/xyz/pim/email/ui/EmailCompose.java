@@ -28,10 +28,15 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Contacts;
 import android.view.Menu;
+import android.view.View;
 import android.view.Menu.Item;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
 import cn.edu.nju.software.xyz.pim.email.Base64Coder;
@@ -51,9 +56,13 @@ public class EmailCompose extends Activity {
 	private static final int SEND_M_ID = 0;
 	private static final int RETURN_M_ID = 1;
 
-	private EditText SendToText;
-	private EditText SubjectText;
-	private EditText ContentText;
+	private static final int REQ_CODE_PICKCONTACT = 1;
+
+	private EditText sendToText;
+	private Button addContactButton;
+	private Button addGroupButton;
+	private EditText subjectText;
+	private EditText contentText;
 
 	private long a_id;
 
@@ -61,9 +70,29 @@ public class EmailCompose extends Activity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		this.setContentView(R.layout.email_compose);
-		SendToText = (EditText) findViewById(R.id.email_compose_to_text);
-		SubjectText = (EditText) findViewById(R.id.email_subject_text);
-		ContentText = (EditText) findViewById(R.id.email_content_text);
+		sendToText = (EditText) findViewById(R.id.email_compose_to_text);
+		addContactButton = (Button) findViewById(R.id.add_contact_button);
+		addContactButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				startSubActivity(new Intent(Intent.PICK_ACTION,
+						Contacts.ContactMethods.CONTENT_EMAIL_URI),
+						REQ_CODE_PICKCONTACT);
+			}
+
+		});
+		addGroupButton = (Button) findViewById(R.id.add_group_button);
+		addGroupButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+			}
+
+		});
+		subjectText = (EditText) findViewById(R.id.email_subject_text);
+		contentText = (EditText) findViewById(R.id.email_content_text);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -93,6 +122,17 @@ public class EmailCompose extends Activity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			String data, Bundle extras) {
+		super.onActivityResult(requestCode, resultCode, data, extras);
+		switch (requestCode) {
+		case REQ_CODE_PICKCONTACT:
+
+			break;
+		}
+	}
+
 	private void send() {
 		final ProgressDialog pb = ProgressDialog.show(this, "Sending", "",
 				true, false);
@@ -120,10 +160,10 @@ public class EmailCompose extends Activity {
 				msg.date = msgDate;
 
 				msg.from = "<xyzpim@gmail.com>";
-				msg.to = "<" + SendToText.getText().toString().trim() + ">";
-				msg.subject = SubjectText.getText().toString();
+				msg.to = "<" + sendToText.getText().toString().trim() + ">";
+				msg.subject = subjectText.getText().toString();
 
-				String content = ContentText.getText().toString();
+				String content = contentText.getText().toString();
 				String encodedContent = Base64Coder.encodeString(content);
 				// System.out.println(buf.toString());
 				StringBuilder buf = new StringBuilder();
