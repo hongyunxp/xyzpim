@@ -35,7 +35,7 @@ public class Log {
 	}
 
 	public static int i(String info) {
-		return null == info ? 0 : android.util.Log.i(tag, info);
+		return null == info ? 0 : info(tag, info);
 	}
 
 	public static int i(int info) {
@@ -71,7 +71,7 @@ public class Log {
 	}
 
 	public static int e(String info) {
-		return null == info ? 0 : android.util.Log.e(tag, info);
+		return null == info ? 0 : err(tag, info);
 	}
 
 	public static int e(int info) {
@@ -104,5 +104,25 @@ public class Log {
 
 	public static int e(Object info) {
 		return i(String.valueOf(info));
+	}
+
+	private static int info(String tag, String info) {
+		int length = info.length();
+		int index = 0;
+		while (index < length) {
+			android.util.Log.i(tag, info.substring(index));
+			index += 100;
+		}
+		return 1;
+	}
+
+	private static int err(String tag, String info) {
+		int length = info.length();
+		int index = 0;
+		while (index < length) {
+			android.util.Log.e(tag, info.substring(index));
+			index += 100;
+		}
+		return 1;
 	}
 }

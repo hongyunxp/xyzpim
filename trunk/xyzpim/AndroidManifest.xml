@@ -90,7 +90,8 @@
 		</activity>
 		<activity android:name=".finance.ShowRate"></activity>
 		<activity android:name=".finance.HouseLoanResult"></activity>
-	</application>
+	<activity android:name=".email.ui.GroupSelectView">
+</activity></application>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 </manifest>

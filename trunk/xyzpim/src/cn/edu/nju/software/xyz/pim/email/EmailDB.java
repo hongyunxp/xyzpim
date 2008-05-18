@@ -210,6 +210,21 @@ public class EmailDB {
 		return msg;
 	}
 
+	/**
+	 * 通过uid判断是否是新邮件，如果数据库中存在uid相同的邮件，则不是新邮件
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	public boolean isNewMessage(String uid) {
+		Cursor c = db.query(true, DATABASE_EMAIL_MESSAGES_TABLE, null,
+				EmailMessageColumns.UID + "=\'" + uid + "\'", null, null, null,
+				null);
+		if (c.count() == 0)
+			return true;
+		return false;
+	}
+
 	public long createEmailAccount(EmailAccount ea) {
 		ContentValues cv = new ContentValues();
 		cv.put(EmailAccountColumns.NAME, ea.name);
