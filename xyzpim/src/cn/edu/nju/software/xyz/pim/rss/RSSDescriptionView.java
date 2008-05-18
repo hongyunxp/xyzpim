@@ -38,6 +38,7 @@ import cn.edu.nju.software.xyz.pim.R;
 public class RSSDescriptionView extends Activity {
 
 	private static final int RETURN_M_ID = 0;
+	private static final int OPEN_M_ID = 1;
 
 	private long articleId;
 	private Article article;
@@ -76,6 +77,7 @@ public class RSSDescriptionView extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, RETURN_M_ID, R.string.back);
+		menu.add(1, OPEN_M_ID, R.string.open);
 		return true;
 	}
 
@@ -84,6 +86,11 @@ public class RSSDescriptionView extends Activity {
 		switch (item.getId()) {
 		case RETURN_M_ID:
 			finish();
+		case OPEN_M_ID:
+			NewsDroidDB rssDbAdp = NewsDroidDB.getInstance(this);
+			article = rssDbAdp.getArticle(articleId);
+			descriptionWebView.loadUrl(article.Url.toString());
+
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
