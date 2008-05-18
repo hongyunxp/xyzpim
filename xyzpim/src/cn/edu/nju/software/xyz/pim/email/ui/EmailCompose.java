@@ -25,10 +25,13 @@ package cn.edu.nju.software.xyz.pim.email.ui;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Contacts;
@@ -39,6 +42,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import cn.edu.nju.software.xyz.pim.R;
+import cn.edu.nju.software.xyz.pim.contacts.GroupMemberDbAdapter;
+import cn.edu.nju.software.xyz.pim.contacts.GroupsDbAdapter;
 import cn.edu.nju.software.xyz.pim.email.Base64Coder;
 import cn.edu.nju.software.xyz.pim.email.EmailAccount;
 import cn.edu.nju.software.xyz.pim.email.EmailDB;
@@ -57,6 +62,7 @@ public class EmailCompose extends Activity {
 	private static final int RETURN_M_ID = 1;
 
 	private static final int REQ_CODE_PICKCONTACT = 1;
+	private static final int REQ_CODE_PICKGROUP = 2;
 
 	private EditText sendToText;
 	private Button addContactButton;
@@ -77,8 +83,7 @@ public class EmailCompose extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				startSubActivity(new Intent(Intent.PICK_ACTION,
-						Contacts.ContactMethods.CONTENT_EMAIL_URI),
-						REQ_CODE_PICKCONTACT);
+						Contacts.People.CONTENT_URI), REQ_CODE_PICKCONTACT);
 			}
 
 		});
@@ -87,10 +92,12 @@ public class EmailCompose extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-
+				Intent i = new Intent(EmailCompose.this, GroupSelectView.class);
+				startSubActivity(i, REQ_CODE_PICKGROUP);
 			}
 
 		});
+
 		subjectText = (EditText) findViewById(R.id.email_subject_text);
 		contentText = (EditText) findViewById(R.id.email_content_text);
 
@@ -127,10 +134,61 @@ public class EmailCompose extends Activity {
 			String data, Bundle extras) {
 		super.onActivityResult(requestCode, resultCode, data, extras);
 		switch (requestCode) {
-		case REQ_CODE_PICKCONTACT:
+		case REQ_CODE_PICKCONTACT: {
+			String eAddr = getContactEmail(data);
+			if (null != eAddr) {
+				String currentAddr = sendToText.getText().toString();
+				if (currentAddr.trim().equals(""))
+					currentAddr += eAddr;
+				else
+					currentAddr += "," + eAddr;
+				sendToText.setText(currentAddr);
+			}
+		}
+			break;
 
+		case REQ_CODE_PICKGROUP: {
+			Integer gid = extras.getInt(GroupsDbAdapter.COL_ROWID);
+			if (null != gid) {
+				List<String> memURIList = GroupMemberDbAdapter
+						.getInstance(this).listMembers(gid);
+				for (String memURL : memURIList) {
+					String eAddr = getContactEmail(memURL);
+					if (null != eAddr) {
+						String currentAddr = sendToText.getText().toString();
+						if (currentAddr.trim().equals(""))
+							currentAddr += eAddr;
+						else
+							currentAddr += "," + eAddr;
+						sendToText.setText(currentAddr);
+					}
+				}
+			}
+		}
 			break;
 		}
+	}
+
+	private String getContactEmail(String pUriString) {
+		Cursor pcur = managedQuery(Uri.parse(pUriString), null, null, null);
+		pcur.first();
+		long pid = pcur.getLong(pcur.getColumnIndex(Contacts.People._ID));
+		String pName = pcur
+				.getString(pcur.getColumnIndex(Contacts.People.NAME));
+		String[] projection = new String[] { Contacts.ContactMethods._ID,
+				Contacts.ContactMethods.KIND, Contacts.ContactMethods.DATA };
+		Cursor ecur = managedQuery(Contacts.ContactMethods.CONTENT_URI,
+				projection, Contacts.ContactMethods.PERSON_ID + "=" + pid
+						+ " and " + Contacts.ContactMethods.KIND + "="
+						+ Contacts.ContactMethods.EMAIL_KIND, null);
+		if (ecur == null)
+			return null;
+		ecur.first();
+		// Log.i(ecur.getString(1));
+		String emailAddr = ecur.getString(ecur
+				.getColumnIndex(Contacts.ContactMethods.DATA));
+		return "\"" + pName + "\" " + "<" + emailAddr + ">";
+		// Log.i(emailAddr);
 	}
 
 	private void send() {
@@ -159,8 +217,10 @@ public class EmailCompose extends Activity {
 				msgDate = msgDate + " +0800";
 				msg.date = msgDate;
 
-				msg.from = "<xyzpim@gmail.com>";
-				msg.to = "<" + sendToText.getText().toString().trim() + ">";
+				msg.from = "<"
+						+ EmailDB.getInstance(EmailCompose.this)
+								.fetchEmailAccount(a_id).emailAddr + ">";
+				msg.to = sendToText.getText().toString().trim();
 				msg.subject = subjectText.getText().toString();
 
 				String content = contentText.getText().toString();
@@ -190,7 +250,7 @@ public class EmailCompose extends Activity {
 				s.username = account.user;
 				s.password = account.password;
 				try {
-					s.open(true);
+					s.open(account.isSSL);
 					s.sendMsg(msg);
 					s.close();
 				} catch (EmailException e) {

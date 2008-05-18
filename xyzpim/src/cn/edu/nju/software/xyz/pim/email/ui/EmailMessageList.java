@@ -26,8 +26,10 @@ package cn.edu.nju.software.xyz.pim.email.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -141,13 +143,14 @@ public class EmailMessageList extends ListActivity {
 				fillData();
 			}
 		};
+
 		Thread refreshThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				EmailDB db = EmailDB.getInstance(EmailMessageList.this);
 				EmailAccount ea = db.fetchEmailAccount(a_id);
-				db.deletEmailMessageByAccount(a_id);
+				// db.deletEmailMessageByAccount(a_id);
 				POP3Session ps = POP3Session.getInstance();
 				ps.isShowLog = true;
 				ps.host = ea.popHost;
@@ -156,14 +159,20 @@ public class EmailMessageList extends ListActivity {
 				ps.password = ea.password;
 				try {
 					ps.open(ea.isSSL);
-					messages = ps.getAllMsg();
+					// messages = ps.getAllMsg();
+					// 开始收新邮件
+					int count = ps.getMsgCount();
+					for (int index = 1; index <= count; ++index) {
+						if (db.isNewMessage(ps.getMsgUID(index))) {
+							Message msg = ps.getMsg(index);
+							messages.add(msg);
+							db.createEmailMessage(msg, folder, a_id);
+						}
+					}
+					// 结束收新邮件
 					ps.close();
 				} catch (EmailException e) {
 					Log.e(e.getMessage());
-				}
-				int count = messages.size();
-				for (int index = 0; index < count; ++index) {
-					db.createEmailMessage(messages.get(index), folder, a_id);
 				}
 				handler.post(dissMiss);
 			}
@@ -180,9 +189,77 @@ public class EmailMessageList extends ListActivity {
 	}
 
 	private void delMessage(int position) {
-		Message msg = messages.get(position);
-		EmailDB db = EmailDB.getInstance(EmailMessageList.this);
-		db.deleteEmailMessage(msg.id);
-		fillData();
+
+		final Message msg = messages.get(position);
+
+		final ProgressDialog pb = ProgressDialog.show(this, "Deleting", "",
+				true, false);
+
+		final Handler handler = new Handler();
+		final Runnable dissMiss = new Runnable() {
+			public void run() {
+				EmailDB db = EmailDB.getInstance(EmailMessageList.this);
+				db.deleteEmailMessage(msg.id);
+				ArrayAdapter<String> messageSubjectAdp = new ArrayAdapter<String>(
+						EmailMessageList.this, R.layout.email_message_row,
+						messageSubjects);
+				setListAdapter(messageSubjectAdp);
+				pb.dismiss();
+				fillData();
+			}
+		};
+
+		final Runnable dissMissFailed = new Runnable() {
+			public void run() {
+				ArrayAdapter<String> messageSubjectAdp = new ArrayAdapter<String>(
+						EmailMessageList.this, R.layout.email_message_row,
+						messageSubjects);
+				setListAdapter(messageSubjectAdp);
+				pb.dismiss();
+				fillData();
+				alert("Network Failed!");
+			}
+		};
+
+		Thread delThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				EmailDB db = EmailDB.getInstance(EmailMessageList.this);
+				EmailAccount ea = db.fetchEmailAccount(a_id);
+				POP3Session ps = POP3Session.getInstance();
+				ps.isShowLog = true;
+				ps.host = ea.popHost;
+				ps.port = ea.popPort;
+				ps.username = ea.user;
+				ps.password = ea.password;
+				try {
+					ps.open(ea.isSSL);
+					ps.delMsg(msg.uid);
+					ps.close();
+					handler.post(dissMiss);
+				} catch (EmailException e) {
+					Log.e(e.getMessage());
+					handler.post(dissMissFailed);
+				}
+			}
+		});
+		delThread.start();
+	}
+
+	private void alert(String info) {
+		new AlertDialog.Builder(this).setTitle(info).setPositiveButton(
+				R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						/* User clicked Yes so do some stuff */
+					}
+				}).setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						/* User clicked No so do some stuff */
+					}
+				}).show();
 	}
 }

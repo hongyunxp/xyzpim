@@ -156,6 +156,45 @@ public class POP3Session extends Session {
 	}
 
 	/**
+	 * 根据UID删除指定邮件
+	 * 
+	 * @param UID
+	 *            要删除邮件的UID
+	 * @throws EmailException
+	 */
+	public void delMsg(String UID) throws EmailException {
+		int count = getMsgCount();
+		for (int index = 1; index <= count; ++index) {
+			String rUID = getMsgUID(index);
+			if (rUID.equals(UID)) {
+				this.delMsg(index);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * 根据索引号删除邮件
+	 * 
+	 * @param index
+	 * @throws EmailException
+	 */
+	private void delMsg(int index) throws EmailException {
+		try {
+			String cmd = "dele" + " " + index + CRLF;
+			log(C, cmd);
+			out.write(cmd);
+			out.flush();
+			String line = in.readLine();
+			log(S, line);
+			if (line.startsWith("-"))// "-"是服务器的出错返回前缀
+				throw new EmailException(line);
+		} catch (IOException e) {
+			throw new EmailException(e.getMessage());
+		}
+	}
+
+	/**
 	 * 收取指定邮件的头部
 	 * 
 	 * @param index
