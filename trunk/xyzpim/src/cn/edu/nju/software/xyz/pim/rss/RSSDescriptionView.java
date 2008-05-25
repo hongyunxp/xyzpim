@@ -76,8 +76,8 @@ public class RSSDescriptionView extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, RETURN_M_ID, R.string.back);
-		menu.add(1, OPEN_M_ID, R.string.open);
+		menu.add(0, OPEN_M_ID, R.string.open, R.drawable.open);
+		menu.add(0, RETURN_M_ID, R.string.back, R.drawable.back);
 		return true;
 	}
 

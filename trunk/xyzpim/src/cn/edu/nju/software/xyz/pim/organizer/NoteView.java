@@ -81,10 +81,10 @@ public class NoteView extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, NEW_M_ID, R.string.create);
-		menu.add(0, DEL_M_ID, R.string.del);
-		menu.add(0, OPEN_M_ID, R.string.open);
-		menu.add(0, RETURN_M_ID, R.string.back);
+		menu.add(0, NEW_M_ID, R.string.create, R.drawable.add);
+		menu.add(0, DEL_M_ID, R.string.del, R.drawable.delete);
+		menu.add(0, OPEN_M_ID, R.string.open, R.drawable.open);
+		menu.add(0, RETURN_M_ID, R.string.back, R.drawable.back);
 		return true;
 	}
 

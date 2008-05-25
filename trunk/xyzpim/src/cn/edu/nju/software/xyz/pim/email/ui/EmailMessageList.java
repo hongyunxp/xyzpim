@@ -86,7 +86,8 @@ public class EmailMessageList extends ListActivity {
 			messageSubjects.add(messages.get(index).subject);
 		}
 		ArrayAdapter<String> messageSubjectAdp = new ArrayAdapter<String>(this,
-				R.layout.email_message_row, messageSubjects);
+				R.layout.email_message_row, R.id.email_message_row_text,
+				messageSubjects);
 		setListAdapter(messageSubjectAdp);
 	}
 
@@ -100,10 +101,10 @@ public class EmailMessageList extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		if (EmailDB.EmailFolder.INBOX.equals(folder))
-			menu.add(0, REFRESH_M_ID, R.string.refresh);
-		menu.add(0, OPEN_M_ID, R.string.open);
-		menu.add(0, DEL_M_ID, R.string.del);
-		menu.add(0, RETURN_M_ID, R.string.back);
+			menu.add(0, REFRESH_M_ID, R.string.refresh, R.drawable.refresh);
+		menu.add(0, OPEN_M_ID, R.string.open, R.drawable.open);
+		menu.add(0, DEL_M_ID, R.string.del, R.drawable.delete);
+		menu.add(0, RETURN_M_ID, R.string.back, R.drawable.back);
 		return true;
 	}
 

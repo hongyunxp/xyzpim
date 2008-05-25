@@ -103,9 +103,13 @@
 	<string name="update_rate">Update Rate</string>
 	
 	<string name="group_list">Group List</string>
+	<string name="group_member_list">Group Member List</string>
 	<string name="group">Group</string>
 	
 	<string name="feed_url">Feed URL</string>
+	<string name="rss_feeds">RSS Feeds</string>
+	<string name="rss_articles">RSS Articles</string>
+	<string name="rss_read_article">Read Article</string>
     
     <string name="test">Test</string>
 </resources>

@@ -93,8 +93,8 @@ public class FolderView extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, COMPOSE_M_ID, R.string.compose);
-		menu.add(0, RETURN_M_ID, R.string.back);
+		menu.add(0, COMPOSE_M_ID, R.string.compose, R.drawable.edit);
+		menu.add(0, RETURN_M_ID, R.string.back, R.drawable.back);
 		return true;
 	}
 

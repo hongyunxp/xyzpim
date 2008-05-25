@@ -181,8 +181,8 @@ public class ExchangeRateCal extends Activity implements OnClickListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, REFRESH_M_ID, R.string.update_rate);
-		menu.add(0, RETURN_M_ID, R.string.back);
+		menu.add(0, REFRESH_M_ID, R.string.update_rate, R.drawable.refresh);
+		menu.add(0, RETURN_M_ID, R.string.back, R.drawable.back);
 		return true;
 	}
 
