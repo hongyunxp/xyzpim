@@ -26,7 +26,7 @@
 -->
 <resources>
 	<string name="app_name">XYZPIM</string>
-	<string name="app_welcome">By Team XYZ Version Alpha</string>
+	<string name="app_welcome">By Team XYZ</string>
 	
 	<string name="ok">OK</string>
 	<string name="add">Add</string>

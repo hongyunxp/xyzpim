@@ -76,6 +76,10 @@ public class EditTask extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				int year = 2008, month = 1, day = 1;
+				Calendar calendar = Calendar.getInstance();
+				year = calendar.get(Calendar.YEAR);
+				month = calendar.get(Calendar.MONTH);
+				day = calendar.get(Calendar.DAY_OF_MONTH);
 
 				if (null != TaskId) {
 					OrganizerDB organizerDbAdp = OrganizerDB
@@ -86,13 +90,13 @@ public class EditTask extends Activity {
 					Matcher m = Pattern.compile(reg).matcher(task.Date);
 					if (m.find()) {
 						year = Integer.parseInt(m.group(1));
-						month = Integer.parseInt(m.group(2));
+						month = Integer.parseInt(m.group(2)) - 1;
 						day = Integer.parseInt(m.group(3));
 					}
 				}
 
 				new DatePickerDialog(EditTask.this, dateButtonListener, year,
-						month - 1, day, Calendar.SUNDAY).show();
+						month, day, Calendar.SUNDAY).show();
 			}
 
 		});
@@ -101,6 +105,9 @@ public class EditTask extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				int hour = 0, minute = 0;
+				Calendar calendar = Calendar.getInstance();
+				hour = calendar.get(Calendar.HOUR_OF_DAY);
+				minute = calendar.get(Calendar.MINUTE);
 
 				if (null != TaskId) {
 					OrganizerDB organizerDbAdp = OrganizerDB
