@@ -135,6 +135,8 @@ public class EmailCompose extends Activity {
 		super.onActivityResult(requestCode, resultCode, data, extras);
 		switch (requestCode) {
 		case REQ_CODE_PICKCONTACT: {
+			if (null == data)
+				break;
 			String eAddr = getContactEmail(data);
 			if (null != eAddr) {
 				String currentAddr = sendToText.getText().toString();
@@ -148,6 +150,8 @@ public class EmailCompose extends Activity {
 			break;
 
 		case REQ_CODE_PICKGROUP: {
+			if (null == data)
+				break;
 			Integer gid = extras.getInt(GroupsDbAdapter.COL_ROWID);
 			if (null != gid) {
 				List<String> memURIList = GroupMemberDbAdapter

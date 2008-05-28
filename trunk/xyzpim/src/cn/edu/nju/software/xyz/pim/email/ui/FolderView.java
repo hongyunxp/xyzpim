@@ -30,7 +30,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Menu.Item;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import cn.edu.nju.software.xyz.pim.R;
 import cn.edu.nju.software.xyz.pim.email.EmailDB;
 
@@ -43,8 +43,8 @@ public class FolderView extends Activity {
 	private static final int COMPOSE_M_ID = 0;
 	private static final int RETURN_M_ID = 2;
 
-	private Button inboxButton;
-	private Button outboxButton;
+	private ImageButton inboxButton;
+	private ImageButton outboxButton;
 
 	private Long a_id;
 
@@ -53,8 +53,8 @@ public class FolderView extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.email_folder);
 
-		inboxButton = (Button) findViewById(R.id.email_inbox_button);
-		outboxButton = (Button) findViewById(R.id.email_outbox_button);
+		inboxButton = (ImageButton) findViewById(R.id.email_inbox_button);
+		outboxButton = (ImageButton) findViewById(R.id.email_outbox_button);
 
 		inboxButton.setOnClickListener(new OnClickListener() {
 

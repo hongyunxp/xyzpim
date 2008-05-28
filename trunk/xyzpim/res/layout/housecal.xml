@@ -43,23 +43,20 @@
 			android:text="@string/loan_amount" />
 		<EditText android:id="@+id/loan_amount"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" 
-			android:digits="1234567890."/>
+			android:layout_height="wrap_content" android:digits="1234567890." />
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/loan_month" />
 		<EditText android:id="@+id/loan_month"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:drawSelectorOnTop="true" 
-			android:digits="1234567890"/>
+			android:layout_height="wrap_content" android:drawSelectorOnTop="true"
+			android:digits="1234567890" />
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/loan_rate" />
 		<EditText android:id="@+id/loan_rate"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" 
-			android:digits="1234567890."/>
+			android:layout_height="wrap_content" android:digits="1234567890." />
 		<TextView android:id="@+id/loan_result"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content" />
@@ -70,10 +67,6 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/calculate" />
-			<Button android:id="@+id/house_recalculate"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/recalculate" />
 		</LinearLayout>
 	</LinearLayout>
 </ScrollView>

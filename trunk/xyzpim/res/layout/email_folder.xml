@@ -5,12 +5,16 @@
 	android:padding="12dip" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:stretchColumns="0">
 
-	<TableRow>
-		<Button android:id="@+id/email_inbox_button"
-			android:text="@string/inbox" />
+	<TableRow android:gravity="center">
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="@string/inbox" />
+		<ImageButton android:id="@+id/email_inbox_button"
+			android:src="@drawable/mail_folder_inbox" />
 	</TableRow>
-	<TableRow>
-		<Button android:id="@+id/email_outbox_button"
-			android:text="@string/outbox" />
+	<TableRow android:gravity="center">
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="@string/outbox" />
+		<ImageButton android:id="@+id/email_outbox_button"
+			android:src="@drawable/mail_folder_outbox" />
 	</TableRow>
 </TableLayout>
