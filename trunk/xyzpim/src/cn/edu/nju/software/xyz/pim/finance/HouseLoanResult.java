@@ -23,6 +23,8 @@
  */
 package cn.edu.nju.software.xyz.pim.finance;
 
+import java.text.DecimalFormat;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -50,16 +52,20 @@ public class HouseLoanResult extends Activity {
 		loanMonthText = (TextView) findViewById(R.id.loan_month_text);
 		repayPerMonthText = (TextView) findViewById(R.id.repay_per_month_text);
 
+		DecimalFormat df = new DecimalFormat("0.00");
+
 		loanAmountText.setText(""
-				+ getIntent().getExtras().getDouble("loan_amount"));
+				+ df.format(getIntent().getExtras().getDouble("loan_amount")));
 		repayAmountText.setText(""
-				+ getIntent().getExtras().getDouble("repay_amount"));
+				+ df.format(getIntent().getExtras().getDouble("repay_amount")));
 		interestAmountText.setText(""
-				+ getIntent().getExtras().getDouble("interest_amount"));
+				+ df.format(getIntent().getExtras()
+						.getDouble("interest_amount")));
 		loanMonthText
 				.setText("" + getIntent().getExtras().getInt("loan_month"));
 		repayPerMonthText.setText(""
-				+ getIntent().getExtras().getDouble("repay_per_month"));
+				+ df.format(getIntent().getExtras()
+						.getDouble("repay_per_month")));
 
 		// Log.i("XYZPIM", "" +
 		// getIntent().getExtras().getString("loan_amount"));

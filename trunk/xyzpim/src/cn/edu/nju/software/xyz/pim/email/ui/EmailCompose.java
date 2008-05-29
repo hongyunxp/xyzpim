@@ -150,7 +150,7 @@ public class EmailCompose extends Activity {
 			break;
 
 		case REQ_CODE_PICKGROUP: {
-			if (null == data)
+			if (null == extras)
 				break;
 			Integer gid = extras.getInt(GroupsDbAdapter.COL_ROWID);
 			if (null != gid) {
